@@ -1,0 +1,192 @@
+section#collect {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: calc(100vh - 77px);
+    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
+  
+  .coin {
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+  
+  .fall {
+    animation: fall 1s linear forwards;
+  }
+  
+  @keyframes fall {
+    0% {
+      top: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 300px;
+      opacity: 0;
+    }
+  }
+  
+  .RadialProgress-container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    justify-items: center;
+    height: 100%;
+  }
+  
+  .RadialProgress {
+    --hue: 220;
+    --holesize: 65%;
+    --track-bg: hsl(233 34% 92%);
+    block-size: 50vmin;
+    inline-size: 50vmin;
+    min-inline-size: 100px;
+    min-block-size: 100px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    font-weight: 700;
+    font-size: max(10vmin, 1.4rem);
+  }
+  
+  .RadialProgress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    z-index: -1;
+    background: conic-gradient(
+      hsl(var(--hue) 100% 70%),
+      hsl(var(--hue) 100% 40%),
+      hsl(var(--hue) 100% 70%) var(--progress, 0%),
+      var(--track-bg) var(--progress, 0%) 100%
+    );
+    mask-image: radial-gradient(
+      transparent var(--holesize),
+      black calc(var(--holesize) + 0.5px)
+    );
+    --progress: calc(var(--progress-value) * 1%);
+  }
+  
+  .glossy-blue {
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    font-size: 2.2rem;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+    display: inline-block;
+  }
+  
+  .round-button {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+    transition: transform 0.1s;
+    z-index: 3;
+  }
+  
+  .round-button:active {
+    transform: scale(0.95);
+  }
+  
+  .round-button.pulse {
+    animation: pulse 1.5s;
+  }
+  
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 50px rgba(90, 153, 212, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(90, 153, 212, 0);
+    }
+  }
+  
+  .round-button img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+  }
+  
+  .glossy-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid transparent;
+    padding: 2px;
+    text-align: center;
+    border-radius: 16px;
+    width: 100px;
+    background: linear-gradient(#212121, #212121) padding-box,
+                linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .small-text {
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.00rem;
+  }
+  
+  .small-point-text {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: darkgray;
+  }
+  
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+  
+  .custom-mb-7 {
+    margin-bottom: 45rem;
+  }
+  
+  .collect-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .collect-button {
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, transform 0.1s;
+  }
+  
+  .collect-button:hover {
+    background: linear-gradient(145deg, #2563eb, #7c3aed);
+  }
+  
+  .collect-button:active {
+    transform: scale(0.95);
+  }
+  

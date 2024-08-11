@@ -1,0 +1,35 @@
+<section id="collect">
+    <div class="text-center mb-4">
+      <div class="flex justify-around">
+        <div class="glossy-card">
+          <div class="small-text">Profit per tap</div>
+          <div class="small-point-text">{{ profitPerTap }}</div>
+        </div>
+        <div class="glossy-card">
+          <div class="small-text">Next level</div>
+          <div class="small-point-text">{{ nextLevel }}</div>
+        </div>
+        <div class="glossy-card">
+          <div class="small-text">Profit per hour</div>
+          <div class="small-point-text">{{ profitPerHour }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center custom-mb-7">
+      <div class="RadialProgress-container">
+        <p class="glossy-blue">{{ buttonPressCount }}</p>
+        <div class="RadialProgress" role="progressbar" [ngStyle]="{'--progress-value': progressPercentage}" [attr.aria-valuenow]="progressPercentage" aria-valuemin="0" aria-valuemax="100">
+          <div class="round-button" #roundButton (click)="onButtonClick($event)">
+            <img src="/image/alien.jpeg" alt="Hexagon Image">
+          </div>
+        </div>
+      </div>
+      <div class="collect-button-container">
+        <button class="collect-button" (click)="onCollectClick()">Collect Coins</button>
+      </div>
+    </div>
+    <div id="coin-container" #coinContainer></div>
+  </section>
+  <canvas id="canvas-bg" #canvasBg></canvas>
+  <canvas id="canvas-fg" #canvasFg></canvas>
+  

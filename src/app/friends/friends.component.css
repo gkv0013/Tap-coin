@@ -1,0 +1,107 @@
+section#frens {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
+  
+  .friends-section {
+    background: linear-gradient(145deg, #1e293b, #2e3a56);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  }
+  
+  .friends-section .card {
+    background: linear-gradient(145deg, #29344d, #1a2438);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    margin-bottom: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .friends-section .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+  }
+  
+  .friends-section .card .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .friends-section .card .profile img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .friends-section .card .profile .details {
+    color: white;
+  }
+  
+  .friends-section .card .profile .details .name {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .friends-section .card .profile .details .points {
+    color: #9ca3af;
+  }
+  
+  .friends-section .card .invite-btn {
+    background: linear-gradient(145deg, #9333ea, #7e2cc2);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .friends-section .card .invite-btn:hover {
+    background: linear-gradient(145deg, #7e2cc2, #5b1e99);
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.7);
+  }
+  
+  .friends-section .card .invite-btn img {
+    margin-right: 8px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .claim-section {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  }
+  
+  .claim-section .claim-btn {
+    background: linear-gradient(145deg, #355dc6, #7258c9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  
+  .claim-section .claim-btn:hover {
+    background: linear-gradient(145deg, #2a4794, #5e4aa6);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+  }
+  
+  .claim-section .info {
+    color: #e0e7ff;
+    margin-top: 10px;
+  }
+  

@@ -1,0 +1,6 @@
+section#airdrop {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
