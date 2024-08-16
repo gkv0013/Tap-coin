@@ -7,4 +7,5 @@ export const routes: Routes = [
     { path: 'friends', loadComponent: () => import('./friends/friends.component').then(m => m.FriendsComponent) },
     { path: 'pumps', loadComponent: () => import('./pumps/pumps.component').then(m => m.PumpsComponent) },
     { path: 'airdrop', loadComponent: () => import('./airdrop/airdrop.component').then(m => m.AirdropComponent) },
+    { path: 'green', loadComponent: () => import('./green/green.component').then(m => m.GreenComponent) },
   ];
