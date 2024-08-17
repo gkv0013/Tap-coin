@@ -24,8 +24,13 @@
           </div>
         </div>
       </div>
+      <div class="progress-container">
+        <div class="progress-bar" role="progressbar" [ngStyle]="{'--progress-value': newProgressPercentage}" aria-valuemin="0" aria-valuemax="maxNewProgress" [attr.aria-valuenow]="newProgressPercentage">
+          <span>{{ newProgressCount }} / 100</span>
+        </div>
+      </div>
       <div class="collect-button-container">
-        <button class="collect-button" (click)="onCollectClick()">Collect Coins</button>
+        <button class="collect-button" (click)="onCollectClick()" [disabled]="newProgressCount==0">Collect Coins</button>
       </div>
     </div>
     <div id="coin-container" #coinContainer></div>

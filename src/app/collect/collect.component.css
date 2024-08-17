@@ -174,19 +174,85 @@ section#collect {
     color: white;
     border: none;
     border-radius: 20px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.3s, transform 0.1s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 10px rgba(59, 130, 246, 0.6), 0 0 20px rgba(139, 92, 246, 0.8);
+    transition: background 0.3s, transform 0.1s, box-shadow 0.3s;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
   }
   
   .collect-button:hover {
     background: linear-gradient(145deg, #2563eb, #7c3aed);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 0 15px rgba(59, 130, 246, 0.8), 0 0 25px rgba(139, 92, 246, 1);
   }
   
   .collect-button:active {
     transform: scale(0.95);
+  }
+  
+  .collect-button:disabled {
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.5;
+  }
+  
+  .progress-container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+  
+  .progress-bar {
+    height: 24px;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6), inset 0 0 10px rgba(59, 130, 246, 0.8);
+    border: 2px solid rgba(59, 130, 246, 0.6);
+  }
+  
+  .progress-bar::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: calc(var(--progress-value) * 1%);
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6, #3b82f6);
+    background-size: 200% 200%;
+    animation: gradientAnimation 3s ease infinite;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px #3b82f6, 0 0 20px #8b5cf6, 0 0 30px #3b82f6, 0 0 40px #8b5cf6;
+  }
+  
+  .progress-bar span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(59, 130, 246, 1), 0 0 12px rgba(139, 92, 246, 1);
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 1px;
+  }
+  
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
   
