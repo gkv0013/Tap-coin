@@ -15,7 +15,8 @@ export class CollectComponent implements AfterViewInit {
   profitPerTap = 1;
   profitPerHour = 0;
   buttonPressCount = 0;
-
+  newProgressCount = 0; // New variable for tracking progress
+  maxNewProgress = 100;
   @ViewChild('roundButton') roundButton!: ElementRef;
   @ViewChild('coinContainer') coinContainer!: ElementRef;
   @ViewChild('canvasBg') canvasBgRef!: ElementRef<HTMLCanvasElement>;
@@ -31,7 +32,9 @@ export class CollectComponent implements AfterViewInit {
   }
 
   onButtonClick(event: MouseEvent) {
-    this.buttonPressCount++;
+    if (this.newProgressCount < this.maxNewProgress) {
+      this.newProgressCount++;
+    
     this.telegramServices.hapticFeedback.impactOccurred('light');
     const button = this.roundButton.nativeElement;
     button.classList.add('pulse');
@@ -39,6 +42,7 @@ export class CollectComponent implements AfterViewInit {
     setTimeout(() => {
       button.classList.remove('pulse');
     }, 1000);
+  }
   }
 
   get progressPercentage() {
@@ -293,7 +297,14 @@ export class CollectComponent implements AfterViewInit {
 
     initFg();
   }
-
-  onCollectClick() {}
+  get newProgressPercentage() {
+    return (this.newProgressCount / this.maxNewProgress) * 100;
+  }
+  onCollectClick() {
+    if (this.newProgressCount <= this.maxNewProgress) {
+      this.buttonPressCount += this.newProgressCount;
+      this.newProgressCount = 0; // Reset new progress after collecting
+    }
+  }
 
 }
