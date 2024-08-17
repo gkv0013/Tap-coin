@@ -8,6 +8,18 @@ import { Component } from '@angular/core';
   styleUrl: './green.component.css',
 })
 export class GreenComponent {
+  cards = [
+    {
+      image:
+        'https://storage.googleapis.com/cms-sgg-file-store-prd/ASSET_fashion_revolution.webp',
+      title: 'Fashion revolution',
+      description:
+        'EWe love clothes. Increasingly, we love ‘fast fashion’. Not built to last, fast fashion doesn’t. Except in landfills. Take the quiz to check what our obsession with clothes is costing the Earth?',
+      linkText: 'More',
+      link: 'https://feature.undp.org/fashion-revolution/',
+    },
+    // Add more cards as needed
+  ];
   locationImg = [
     { path: 'image/sdg-icons/E-WEB-Goal-01.png' },
     { path: 'image/sdg-icons/E-WEB-Goal-02.png' },
