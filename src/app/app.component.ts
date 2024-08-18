@@ -121,6 +121,7 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedButton: HTMLElement | null = null;
   private subscriptions: Subscription[] = [];
   ngOnInit() {
+
     // this.userData = {
     //   id: '123456',  // Example user ID
     //   username: 'john_doe',  // Example username
@@ -139,6 +140,7 @@ export class AppComponent implements OnInit, OnDestroy {
     //   nextLevel: 5000,  // Example next level threshold
     //   achievements: ['First Tap', 'Invite 5 Friends'],  // Example achievements array
     // };
+
     this.telegramServices.ready();
     this.telegramServices.setHeaderColor('#000000'); // Dark header color
     this.telegramServices.setBackgroundColor('#1a1a1a'); // Dark background color
@@ -163,15 +165,19 @@ export class AppComponent implements OnInit, OnDestroy {
         }, 0);
       }
     });
-    const viewportChangedSubscription = this.telegramServices.onEvent('viewport_changed' as any).subscribe(params => {
-      this.handleViewportChange(params);
-    });
-    
+    const viewportChangedSubscription = this.telegramServices
+      .onEvent('viewport_changed' as any)
+      .subscribe((params) => {
+        this.handleViewportChange(params);
+      });
+
     this.subscriptions.push(viewportChangedSubscription);
     
   }
   handleViewportChange(params: any) {
-    const appContainer = this.el.nativeElement.querySelector('router-outlet') as HTMLElement;
+    const appContainer = this.el.nativeElement.querySelector(
+      'router-outlet'
+    ) as HTMLElement;
 
     if (appContainer && params.height) {
       // Adjust the height of the container based on the viewport height
@@ -265,7 +271,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   navigateTo(route: string): void {
-    this.activeTab=route;
+    this.activeTab = route;
     this.router.navigate([`/${route}`]);
     this.telegramServices.hapticFeedback.impactOccurred('light');
   }
@@ -301,7 +307,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     // Send data to the bot
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.telegramServices.sendData({ key: 'Onu Podai' });
   }
 
@@ -372,6 +378,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.telegramServices.expand();
     }, 3000); // Adjust the delay as needed
   }
+
   openModal(template: TemplateRef<any>) {
     this.bsModalRef = this.modalService.show(template);
     this.currentImageIndex=0
@@ -394,3 +401,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 }
+
+}
+
