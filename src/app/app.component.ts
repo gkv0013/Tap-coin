@@ -1,17 +1,14 @@
-import { NgClass, NgIf } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  inject,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { Component, ElementRef, inject, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { CommonService } from './common.service';
-import { UserData } from '../core/interface/user';
+import { postDataInterface, UserData } from '../core/interface/user';
 import { Subscription } from 'rxjs';
+import { PostDataService } from '../core/services/post-data.service';
+import { ModalService } from '../core/services/modal.service';
+//import { BsModalService, BsModalRef,ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 //import { UserService } from '../core/services/user.service';
 declare global {
   interface Window {
@@ -27,11 +24,13 @@ interface InitUserData {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgClass, NgIf],
+  imports: [RouterOutlet, NgClass, NgIf,NgFor],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  providers:[BsModalService]
 })
 export class AppComponent implements OnInit, OnDestroy {
+  bsModalRef?: BsModalRef;
   title = 'Nila';
   isCollectSection: boolean = false;
   userInfo: any;
@@ -39,7 +38,6 @@ export class AppComponent implements OnInit, OnDestroy {
   userData: UserData = {
     id: '',
     username: '',
-    email: '',
     createdAt: new Date(),
     lastLogin: new Date(),
     coinCounter: 0,
@@ -51,23 +49,98 @@ export class AppComponent implements OnInit, OnDestroy {
     friendsInvited: 0,
     referralBonus: 0,
     dailyLoginStreak: 0,
-    achievements: [],
-    preferences: {
-      notifications: true,
-    },
+    firstname: '',
+    lastname: '',
+    achievements: []
   };
+  currentImageIndex = 0;
+  images = [
+    '/image/bronze.jpeg',
+    '/image/silver.jpeg',
+    '/image/gold.jpeg',
+    '/image/platina.jpeg',
+    '/image/diamond.jpeg',
+       '/image/master.jpeg'
+  ];
+  titles = ['Bronze', 'Silver', 'Gold','Platina','Diamond','Master'];
+  descriptions = [
+    'From 1000',
+    'From 50000',
+    'From 500000',
+    'From 1000000',
+    'From 2500000',
+    'From 5000000'
+  ];
+  coins = [
+    {
+      image: '/assets/images/bronze.png',
+      title: 'Bronze',
+      description: 'Your number of shares determines the league you enter.',
+      progress: '112 / 1000'
+    },
+    {
+      image: '/assets/images/silver.png',
+      title: 'Silver',
+      description: 'Your number of shares determines the league you enter.',
+      progress: 'From 50,000'
+    },
+    {
+      image: '/assets/images/gold.png',
+      title: 'Gold',
+      description: 'Your number of shares determines the league you enter.',
+      progress: 'From 500,000'
+    },
+    {
+      image: '/assets/images/platina.png',
+      title: 'Platina',
+      description: 'Your number of shares determines the league you enter.',
+      progress: 'From 1,000,000'
+    },
+    {
+      image: '/assets/images/diamond.png',
+      title: 'Diamond',
+      description: 'Your number of shares determines the league you enter.',
+      progress: 'From 2,500,000'
+    },
+    {
+      image: '/assets/images/master.png',
+      title: 'Master',
+      description: 'Your number of shares determines the league you enter.',
+      progress: 'From 5,000,000'
+    }
+  ];
+  
   activeTab: string = 'collect';
   progressValue: number = 25;
-  constructor(private renderer: Renderer2, private el: ElementRef) {}
+  constructor(private renderer: Renderer2, private el: ElementRef, private postDataService: PostDataService,private modalService: BsModalService) {}
   private readonly telegramServices = inject(TelegramWebappService);
   public router = inject(Router);
   public commonService = inject(CommonService);
   //private readonly userService = inject(UserService);
   platformInfo: any;
-
+  selectedButton: HTMLElement | null = null;
   private subscriptions: Subscription[] = [];
   ngOnInit() {
-    this.telegramServices;
+
+    // this.userData = {
+    //   id: '123456',  // Example user ID
+    //   username: 'john_doe',  // Example username
+    //   firstname: 'John',  // Example first name
+    //   lastname: 'Doe',  // Example last name
+    //   createdAt: new Date('2024-01-01T10:00:00Z'),  // Example account creation date
+    //   lastLogin: new Date(),  // Example last login date (current date and time)
+    //   profitPerTap: 1.5,  // Example profit per tap
+    //   profitPerHour: 10,  // Example profit per hour
+    //   buttonPressCount: 50,  // Example button press count
+    //   totalCoins: 1500,  // Example total coins
+    //   friendsInvited: 10,  // Example number of friends invited
+    //   referralBonus: 20.0,  // Example referral bonus
+    //   dailyLoginStreak: 7,  // Example daily login streak
+    //   coinCounter: 1000,  // Example coin counter
+    //   nextLevel: 5000,  // Example next level threshold
+    //   achievements: ['First Tap', 'Invite 5 Friends'],  // Example achievements array
+    // };
+
     this.telegramServices.ready();
     this.telegramServices.setHeaderColor('#000000'); // Dark header color
     this.telegramServices.setBackgroundColor('#1a1a1a'); // Dark background color
@@ -81,6 +154,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.loadUserData(this.userInfo.id);
       this.commonService.setUserInfo(this.userInfo);
     }
+    // else{
+    //   this.loadUserData('123456');
+    // }
     console.log(this.telegramServices.initDataUnsafe?.user);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -96,6 +172,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.subscriptions.push(viewportChangedSubscription);
+    
   }
   handleViewportChange(params: any) {
     const appContainer = this.el.nativeElement.querySelector(
@@ -125,62 +202,78 @@ export class AppComponent implements OnInit, OnDestroy {
     this.navigateTo(tab);
   }
   loadUserData(userId: string) {
-    // this.userService.getUser(userId).subscribe((data: UserData | null) => {
-    //   if (data) {
-    //     this.userData = data;
-    //   } else {
-    //     const telegramUser = this.telegramServices.initDataUnsafe?.user;
-    //     if (telegramUser) {
-    //       this.userData.id = String(telegramUser.id);
-    //       this.userData.username = telegramUser.username ?? '';
-    //       this.userData.createdAt = new Date();
-    //       this.saveUserData();
-    //     }
-    //   }
-    // });
+    const postData: postDataInterface = {
+      Mode: 0, // Mode depending on your logic
+      CrudType: 1, // Example value
+      FetchData: [{
+        mode:0,
+        id: this.userData.id,
+        username: this.userData.username,
+        firstname: this.userData.firstname,
+        lastname: this.userData.lastname,
+        createdAt: this.userData.createdAt,
+        lastLogin: this.userData.lastLogin,
+        profitPerTap: this.userData.profitPerTap,
+        profitPerHour: this.userData.profitPerHour,
+        buttonPressCount: this.userData.buttonPressCount,
+        totalCoins: this.userData.totalCoins,
+        friendsInvited: this.userData.friendsInvited,
+        referralBonus: this.userData.referralBonus,
+        dailyLoginStreak: this.userData.dailyLoginStreak,
+      }],
+    };
+
+    this.postDataService.sendData('Login',postData).subscribe(
+      (response) => {
+        console.log('Data saved successfully:', response);
+      },
+      (error) => {
+        console.error('Error saving data:', error);
+      }
+    );
+  }
+  claimCoin(){
+
   }
   saveUserData() {
-    // this.userData.lastLogin = new Date();
-    // this.userService.userExists(this.userData.id).subscribe(
-    //   (exists) => {
-    //     if (exists) {
-    //       this.userService
-    //         .updateUser(this.userData.id, this.userData)
-    //         .subscribe(
-    //           () => {
-    //             console.log('User data updated successfully');
-    //           },
-    //           (error) => {
-    //             console.error('Error updating user data: ', error);
-    //           }
-    //         );
-    //     } else {
-    //       this.userService.createUser(this.userData).subscribe(
-    //         () => {
-    //           console.log('User data created successfully');
-    //         },
-    //         (error) => {
-    //           console.error('Error creating user data: ', error);
-    //         }
-    //       );
-    //     }
-    //   },
-    //   (error) => {
-    //     console.error('Error checking user existence: ', error);
-    //   }
-    // );
+   
   }
+  getCurrentCoinTitle(totalCoins: number): string {
+    if (totalCoins >= 5000000) {
+      return 'Master';
+    } else if (totalCoins >= 2500000) {
+      return 'Diamond';
+    } else if (totalCoins >= 1000000) {
+      return 'Platina';
+    } else if (totalCoins >= 500000) {
+      return 'Gold';
+    } else if (totalCoins >= 50000) {
+      return 'Silver';
+    } else {
+      return 'Bronze';
+    }
+  }
+
+  getCoinClass(totalCoins: number): string {
+    if (totalCoins >= 5000000) {
+      return 'master';
+    } else if (totalCoins >= 2500000) {
+      return 'diamond';
+    } else if (totalCoins >= 1000000) {
+      return 'platina';
+    } else if (totalCoins >= 500000) {
+      return 'gold';
+    } else if (totalCoins >= 50000) {
+      return 'silver';
+    } else {
+      return 'bronze';
+    }
+  }
+
   navigateTo(route: string): void {
     this.activeTab = route;
     this.router.navigate([`/${route}`]);
     this.telegramServices.hapticFeedback.impactOccurred('light');
-    if (route == 'airdrop') {
-      this.telegramServices
-        .showPopup({ message: 'Comming Soon' })
-        .subscribe((airdrop) => {
-          console.log(airdrop);
-        });
-    }
   }
 
   scrollActive() {
@@ -218,9 +311,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telegramServices.sendData({ key: 'Onu Podai' });
   }
 
-  showSection(sectionId: string, btn: EventTarget | null) {
-    this.navigateTo(sectionId);
+  showSection(sectionId: string, button: EventTarget | null): void {
+      this.navigateTo(sectionId);
+      this.activeTab=sectionId;
   }
+  
+  
 
   showTab(tab: string) {
     const tabs = document.querySelectorAll('.tab-header div');
@@ -282,4 +378,29 @@ export class AppComponent implements OnInit, OnDestroy {
       this.telegramServices.expand();
     }, 3000); // Adjust the delay as needed
   }
+
+  openModal(template: TemplateRef<any>) {
+    this.bsModalRef = this.modalService.show(template);
+    this.currentImageIndex=0
+  }
+
+  closeModal() {
+    if (this.bsModalRef) {
+      this.bsModalRef.hide();
+    }
+  }
+  nextImage() {
+    if (this.currentImageIndex < this.images.length - 1) {
+      this.currentImageIndex++;
+    }
+  }
+
+  previousImage() {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    }
+  }
 }
+
+}
+

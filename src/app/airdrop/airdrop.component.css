@@ -4,3 +4,22 @@ section#airdrop {
     padding-top: 110px; /* Extra padding to ensure content isn't hidden */
     padding-bottom: 20px;
   }
+  .task-card-container {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    display: block;
+    background-color: #1a1a1a; /* Dark background color */
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 90px);
+    bottom: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
