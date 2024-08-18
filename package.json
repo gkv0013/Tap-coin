@@ -19,6 +19,8 @@
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.2",
     "@zakarliuka/ng-telegram-webapp": "^1.0.6",
+    "bootstrap": "^5.3.3",
+    "ngx-bootstrap": "^18.0.2",
     "rxjs": "~7.8.0",
     "telegram": "^2.23.2",
     "tslib": "^2.3.0",

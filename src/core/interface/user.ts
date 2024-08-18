@@ -2,11 +2,10 @@
 export interface UserData {
     id: string;
     username?: string;
-    email?: string;
+    firstname:string;
+    lastname:string;
     createdAt: Date;
     lastLogin: Date;
-    coinCounter: number;
-    nextLevel: number;
     profitPerTap: number;
     profitPerHour: number;
     buttonPressCount: number;
@@ -14,9 +13,18 @@ export interface UserData {
     friendsInvited: number;
     referralBonus: number;
     dailyLoginStreak: number;
-    achievements: string[];
-    preferences: {
-      notifications: boolean;
-    };
+    coinCounter:number;
+    nextLevel:number;
+    achievements:string[];
   }
   
+  export interface postDataInterface {
+    Mode: number;
+    CrudType?: number;
+    FetchData?: Array<any>;
+    SaveData?: {};
+    ApplicationType?: number;//Used  for  type eg: mobile,dekstop,laptop,tab
+    SaveDataObject?: {}
+    TargetElement?: string;  
+    ComponentName?: string;
+}

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, AfterViewInit, Renderer2, ViewChild, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 
 @Component({
@@ -17,24 +18,27 @@ export class CollectComponent implements AfterViewInit {
   buttonPressCount = 0;
   newProgressCount = 0; // New variable for tracking progress
   maxNewProgress = 100;
+  currentEnergy = 100; // Current energy value
+  maxEnergy = 110; // Maximum energy value
+  shouldShakeBoostIcons = false;
+
   @ViewChild('roundButton') roundButton!: ElementRef;
   @ViewChild('coinContainer') coinContainer!: ElementRef;
   @ViewChild('canvasBg') canvasBgRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('canvasFg') canvasFgRef!: ElementRef<HTMLCanvasElement>;
-
+  public router = inject(Router);
   private readonly telegramServices = inject(TelegramWebappService);
   private readonly renderer = inject(Renderer2);
 
   ngAfterViewInit(): void {
     this.initBackgroundAnimation();
     this.initForegroundAnimation();
-    
   }
 
   onButtonClick(event: MouseEvent) {
-    if (this.newProgressCount < this.maxNewProgress) {
+    if (this.newProgressCount < this.maxNewProgress && this.currentEnergy > 0) {
       this.newProgressCount++;
-    
+      this.currentEnergy--; // Decrease energy on button click
     this.telegramServices.hapticFeedback.impactOccurred('light');
     const button = this.roundButton.nativeElement;
     button.classList.add('pulse');
@@ -42,9 +46,18 @@ export class CollectComponent implements AfterViewInit {
     setTimeout(() => {
       button.classList.remove('pulse');
     }, 1000);
+  }else{
+    this.shouldShakeBoostIcons = true;
+    setTimeout(() => {
+      this.shouldShakeBoostIcons = false;
+    }, 500); 
   }
   }
-
+  routeToBoost(){
+    if (this.currentEnergy == 0) {
+      this.router.navigate(['/pumps']);
+    }
+  }
   get progressPercentage() {
     return (this.buttonPressCount / this.nextLevel) * 100;
   }

@@ -150,4 +150,46 @@ section#task-card {
   button:hover {
     opacity: 0.8;
   }
+  .task-card-container {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    display: block;
+    background-color: #1a1a1a; /* Dark background color */
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 90px);
+    bottom: 0;
+  }
   
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.task-info {
+    flex-grow: 1; /* Make task information take up available space */
+}
+
+.task-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.875rem;
+    text-align: center;
+    width: auto;
+    white-space: nowrap; /* Ensure the button doesn't wrap text */
+}

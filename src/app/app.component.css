@@ -1,5 +1,5 @@
 .header {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  /* background: linear-gradient(to right, #3b82f6, #8b5cf6); */
   padding: 10px 20px;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -21,23 +21,30 @@
 }
 
 .header h1 {
-  font-size: 1.5rem;
+  font-size: 1 rem;
   font-weight: bold;
   margin: 0;
 }
 
+section {
+  padding-top: 120px; /* Space for the fixed header */
+  padding-bottom: 80px; /* Space for the fixed navbar */
+  z-index: 1;
+}
 .navbar {
   display: flex;
   justify-content: space-around;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.8);
+  background: linear-gradient(177deg, #353547, #22223d);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 10;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(59, 130, 246, 0.8);
+  border-radius: 40px 40px 40px 40px;
 }
 
 .navbar button {
@@ -49,25 +56,202 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s, transform 0.2s;
+  transition: color 0.2s, transform 0.2s, box-shadow 0.3s;
+  position: relative;
+  width: 55px; /* Set equal width */
+  height: 55px; /* Set equal height */
+  border-radius: 10px;
 }
 
 .navbar button:hover {
   color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 1);
 }
 
 .navbar button.nav-icon-selected {
-  color: #3b82f6;
+  color: #fdae00;
+  box-shadow: 0 0 15px rgb(255 176 0), 0 0 25px rgb(255 176 0);
 }
 
 .navbar button svg {
   width: 24px;
   height: 24px;
   margin-bottom: 4px;
+  transition: filter 0.3s;
 }
-section {
-  padding-top: 120px; /* Space for the fixed header */
-  padding-bottom: 80px; /* Space for the fixed navbar */
-  z-index: 1;
+
+.navbar button:hover svg {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
+}
+
+.navbar button span {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+}
+
+.navbar button:before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  bottom: -10px;
+  left: -10px;
+  border-radius: 15px;
+  background: rgba(59, 130, 246, 0.2);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.navbar button:hover:before {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2c2c2c; /* Dark background for the modal */
+
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 90%; /* Adjust the width as necessary */
+  max-width: 500px; /* Limit the maximum width */
+}
+
+.modal-backdrop.show {
+  opacity: 0.7;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent backdrop */
+}
+
+.modal-header, .modal-body, .modal-footer {
+  background-color: #2c2c2c;
+  color: #ffffff; /* Ensure text is white */
+}
+
+.modal-header .close {
+  color: #ffffff; /* Ensure close button is white */
+}
+
+.modal-content {
+  max-width: 600px;
+  margin: auto;
+}
+
+.pagination-wrapper {
+  text-align: center;
+  position: relative;
+  padding: 20px 40px; /* Add padding to make space for arrows */
+}
+
+.img-fluid.rounded-circle {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #fff; /* Optional: Add a border around the circle */
+}
+
+.arrow-left, .arrow-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrow-left {
+  left: 10px;
+}
+
+.arrow-right {
+  right: 10px;
+}
+
+.arrow-left[disabled], .arrow-right[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.coin-indicator {
+  margin-left: auto;
+  padding: 5px 10px;
+}
+
+.futuristic-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border-radius: 15px;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif; /* Futuristic font */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  background: linear-gradient(135deg, #1f1c2c, #928dab); /* Default gradient */
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.futuristic-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.bronze {
+  background: linear-gradient(135deg, #654321, #d7b89e);
+}
+
+.silver {
+  background: linear-gradient(135deg, #bdc3c7, #2c3e50);
+}
+
+.gold {
+  background: linear-gradient(135deg, #fbd786, #f7797d);
+}
+
+.platina {
+  background: linear-gradient(135deg, #e3e3e3, #8e9eab);
+}
+
+.diamond {
+  background: linear-gradient(135deg, #83a4d4, #b6fbff);
+}
+
+.master {
+  background: linear-gradient(135deg, #d53369, #daae51);
+}
+
+.futuristic-badge:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px;
+  background: inherit;
+  filter: blur(15px);
+  opacity: 0.7;
+  z-index: -1;
+}
+
+.futuristic-badge:hover:before {
+  filter: blur(20px);
+  opacity: 1;
 }

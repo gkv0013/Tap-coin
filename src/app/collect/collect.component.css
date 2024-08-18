@@ -3,7 +3,7 @@ section#collect {
     z-index: 2;
     overflow: hidden;
     height: calc(100vh - 77px);
-    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-top: 146px; /* Extra padding to ensure content isn't hidden */
     padding-bottom: 20px;
   }
   
@@ -39,6 +39,7 @@ section#collect {
     align-items: center;
     justify-items: center;
     height: 100%;
+    margin-top: 50px;
   }
   
   .RadialProgress {
@@ -79,18 +80,28 @@ section#collect {
   }
   
   .glossy-blue {
-    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
     font-weight: bold;
     font-size: 2.2rem;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
-    display: inline-block;
+    display: inline-flex;
+  }
+  .glossy-blue img {
+    margin-right: 10px; /* Space between image and text */
   }
   
+  .glossy-blue .count {
+    color: #ffffff; /* White color for the buttonPressCount */
+  }
+  .glossy-blue .nila-text {
+    background: linear-gradient(145deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-left: 10px;
+  }
   .round-button {
     width: 150px;
     height: 150px;
@@ -154,10 +165,13 @@ section#collect {
   
   canvas {
     position: absolute;
-    top: 0;
+    top: 90px;
     left: 0;
     display: block;
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
   }
+  
   
   .custom-mb-7 {
     margin-bottom: 45rem;
@@ -254,5 +268,96 @@ section#collect {
     100% {
       background-position: 0% 50%;
     }
+  }
+  .collect-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .resource-container, .boost-container {
+    display: flex;
+    align-items: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 1), 0 0 15px rgba(59, 130, 246, 0.7);
+  }
+  
+  .resource-icon img, .boost-icon img {
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    margin-right: 10px;
+  }
+  
+  .resource-value, .boost-text {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 16px;
+    text-shadow: 0 0 8px rgba(59, 130, 246, 1), 0 0 12px rgba(139, 92, 246, 1);
+  }
+  .claim-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a; /* Dark background similar to the image */
+    border-radius: 10px;
+    padding: 10px 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+  }
+  
+  .max-value {
+    display: flex;
+    align-items: center;
+  }
+  
+  .max-value .value {
+    font-size: 20px; /* Font size for the number */
+    color: white; /* White color for the number */
+    margin-right: 5px;
+  }
+  
+  .max-value .max-text {
+    font-size: 16px; /* Font size for "MAX" */
+    color: #fbbf24; /* Gold color for "MAX" */
+    font-weight: bold;
+  }
+  
+  .claim-button {
+    background-color: #fbbf24; /* Gold color for the button */
+    color: black; /* Black text for the button */
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .claim-button:hover {
+    background-color: #d97706; /* Darker gold on hover */
+  }
+  
+  .claim-button:disabled {
+    background-color: #b45309; /* Darker gold for disabled state */
+    cursor: not-allowed;
+  }
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+  
+  .shake {
+    animation: shake 0.5s;
   }
   
