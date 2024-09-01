@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, AfterViewInit, Renderer2, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, Renderer2, ViewChild, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
+import { CommonService } from '../common.service';
+import { CollectService } from '../../core/services/collect.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-collect',
@@ -10,8 +13,7 @@ import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
   templateUrl: './collect.component.html',
   styleUrls: ['./collect.component.css']
 })
-export class CollectComponent implements AfterViewInit {
-  coinCounter = 0;
+export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
   nextLevel = 5000;
   profitPerTap = 1;
   profitPerHour = 0;
@@ -21,7 +23,9 @@ export class CollectComponent implements AfterViewInit {
   currentEnergy = 100; // Current energy value
   maxEnergy = 110; // Maximum energy value
   shouldShakeBoostIcons = false;
-
+  timerDuration = 60; // Timer duration in seconds (1 minute)
+  timeRemaining = 0; // Time remaining for the timer
+  isTimerRunning = false;
   @ViewChild('roundButton') roundButton!: ElementRef;
   @ViewChild('coinContainer') coinContainer!: ElementRef;
   @ViewChild('canvasBg') canvasBgRef!: ElementRef<HTMLCanvasElement>;
@@ -29,24 +33,66 @@ export class CollectComponent implements AfterViewInit {
   public router = inject(Router);
   private readonly telegramServices = inject(TelegramWebappService);
   private readonly renderer = inject(Renderer2);
+  public commonService = inject(CommonService);
+  private readonly collectService = inject(CollectService);
+  private subscriptions: Subscription[] = [];
 
   ngAfterViewInit(): void {
     this.initBackgroundAnimation();
     this.initForegroundAnimation();
   }
+  ngOnInit() {
+    this.subscriptions.push(
+      this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count),
+      this.collectService.getNewProgressCount().subscribe(count => this.newProgressCount = count),
+      this.collectService.getMaxNewProgress().subscribe(max => this.maxNewProgress = max),
+      this.collectService.getCurrentEnergy().subscribe(energy => this.currentEnergy = energy),
+      this.collectService.getTimeRemaining().subscribe(time => this.timeRemaining = time),
+      this.collectService.isTimerCurrentlyRunning().subscribe(running => {
+        this.isTimerRunning = running;
+        if (running) {
+          this.collectService.startTimer(this.telegramServices);
+        }
+      })
+    );
+  }
+  ngOnDestroy() {
+    // Save the current state to the service
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.collectService.clearTimer();
+  }
 
+  startTimer() {
+    this.timeRemaining = this.timerDuration;
+    this.isTimerRunning = true;
+
+    const interval = setInterval(() => {
+      this.timeRemaining--;
+
+      if (this.timeRemaining <= 0) {
+        clearInterval(interval);
+        this.currentEnergy = 100; // Reset energy to 100
+        this.isTimerRunning = false;
+        this.telegramServices.hapticFeedback.impactOccurred('medium');
+      }
+    }, 1000); // 1000 ms = 1 second
+  }
   onButtonClick(event: MouseEvent) {
     if (this.newProgressCount < this.maxNewProgress && this.currentEnergy > 0) {
       this.newProgressCount++;
       this.currentEnergy--; // Decrease energy on button click
-    this.telegramServices.hapticFeedback.impactOccurred('light');
+    this.telegramServices.hapticFeedback.impactOccurred('medium');
     const button = this.roundButton.nativeElement;
     button.classList.add('pulse');
+    this.collectService.incrementNewProgressCount();
+    this.collectService.decrementCurrentEnergy();
     this.createFallingCoin();
     setTimeout(() => {
       button.classList.remove('pulse');
     }, 1000);
-  }else{
+  }else if (this.currentEnergy === 0 && !this.isTimerRunning) {
+    this.collectService.startTimer(this.telegramServices);
+  } else {
     this.shouldShakeBoostIcons = true;
     setTimeout(() => {
       this.shouldShakeBoostIcons = false;
@@ -55,6 +101,7 @@ export class CollectComponent implements AfterViewInit {
   }
   routeToBoost(){
     if (this.currentEnergy == 0) {
+      this.commonService.setActiveTab('pumps');
       this.router.navigate(['/pumps']);
     }
   }
@@ -89,7 +136,7 @@ export class CollectComponent implements AfterViewInit {
     if (!ctxBg) return;
 
     const wBg = canvasBg.width = window.innerWidth;
-    const hBg = canvasBg.height = window.innerHeight;
+    const hBg = canvasBg.height = window.innerHeight-90;
     const hueBg = 235;
     const starsBg: StarBg[] = [];
     let countBg = 0;
@@ -196,7 +243,7 @@ export class CollectComponent implements AfterViewInit {
     if (!ctxFg) return;
 
     const wFg = canvasFg.width = window.innerWidth;
-    const hFg = canvasFg.height = window.innerHeight;
+    const hFg = canvasFg.height = window.innerHeight-90;
     let starsFg: StarFg[] = [];
     let spiralsFg: any[] = [];
     let tickFg = 0;
@@ -316,7 +363,10 @@ export class CollectComponent implements AfterViewInit {
   onCollectClick() {
     if (this.newProgressCount <= this.maxNewProgress) {
       this.buttonPressCount += this.newProgressCount;
+      this.collectService.addButtonPressCount(this.newProgressCount);
+      this.collectService.resetNewProgressCount();
       this.newProgressCount = 0; // Reset new progress after collecting
+      this.telegramServices.hapticFeedback.impactOccurred('medium');
     }
   }
 

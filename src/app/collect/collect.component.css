@@ -165,7 +165,7 @@ section#collect {
   
   canvas {
     position: absolute;
-    top: 90px;
+    top: 120px;
     left: 0;
     display: block;
     border-radius: 40px 40px 0 0;
@@ -173,10 +173,7 @@ section#collect {
   }
   
   
-  .custom-mb-7 {
-    margin-bottom: 45rem;
-  }
-  
+
   .collect-button-container {
     display: flex;
     justify-content: center;
@@ -360,4 +357,30 @@ section#collect {
   .shake {
     animation: shake 0.5s;
   }
+
+
+  @media (max-width: 575px) {
+    section#collect {
+      padding-top: 130px; /* Extra padding to ensure content isn't hidden */
+ 
+    }
+    .RadialProgress-container {
   
+      margin-top: 10px;
+    }
+    .progress-container {
+      margin-top:25px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    .claim-container {
+
+      padding: 5px 25px;
+
+      margin: 10px;
+    }
+    .claim-button {
+      padding: 5px 10px;
+
+    }
+  }
