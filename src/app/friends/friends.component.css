@@ -124,3 +124,30 @@ section#frens {
     max-width: 800px;
     margin: 0 auto;
   }
+  /* Extra small devices (phones, 0px to 575px) */
+@media (max-width: 575px) {
+  .task-card-container {
+    max-height: calc(100vh - 151px); /* Adjust as per small devices */
+  }
+}
+
+/* Small devices (tablets, 576px to 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .task-card-container {
+    max-height: calc(100vh - 80px); /* Adjust as per small tablets */
+  }
+}
+
+/* Medium devices (small laptops, 768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .task-card-container {
+    max-height: calc(100vh - 90px); /* Adjust as per medium devices */
+  }
+}
+
+/* Large devices (desktops, 992px and above) */
+@media (min-width: 992px) {
+  .task-card-container {
+    max-height: calc(100vh - 100px); /* Adjust as per large devices */
+  }
+}

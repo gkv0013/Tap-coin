@@ -121,25 +121,27 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedButton: HTMLElement | null = null;
   private subscriptions: Subscription[] = [];
   ngOnInit() {
-
-    // this.userData = {
-    //   id: '123456',  // Example user ID
-    //   username: 'john_doe',  // Example username
-    //   firstname: 'John',  // Example first name
-    //   lastname: 'Doe',  // Example last name
-    //   createdAt: new Date('2024-01-01T10:00:00Z'),  // Example account creation date
-    //   lastLogin: new Date(),  // Example last login date (current date and time)
-    //   profitPerTap: 1.5,  // Example profit per tap
-    //   profitPerHour: 10,  // Example profit per hour
-    //   buttonPressCount: 50,  // Example button press count
-    //   totalCoins: 1500,  // Example total coins
-    //   friendsInvited: 10,  // Example number of friends invited
-    //   referralBonus: 20.0,  // Example referral bonus
-    //   dailyLoginStreak: 7,  // Example daily login streak
-    //   coinCounter: 1000,  // Example coin counter
-    //   nextLevel: 5000,  // Example next level threshold
-    //   achievements: ['First Tap', 'Invite 5 Friends'],  // Example achievements array
-    // };
+    this.commonService.activeTab$.subscribe(tab => {
+      this.activeTab = tab;
+    });
+    this.userData = {
+      id: '123456',  // Example user ID
+      username: 'john_doe',  // Example username
+      firstname: 'John',  // Example first name
+      lastname: 'Doe',  // Example last name
+      createdAt: new Date('2024-01-01T10:00:00Z'),  // Example account creation date
+      lastLogin: new Date(),  // Example last login date (current date and time)
+      profitPerTap: 1.5,  // Example profit per tap
+      profitPerHour: 10,  // Example profit per hour
+      buttonPressCount: 50,  // Example button press count
+      totalCoins: 1500,  // Example total coins
+      friendsInvited: 10,  // Example number of friends invited
+      referralBonus: 20.0,  // Example referral bonus
+      dailyLoginStreak: 7,  // Example daily login streak
+      coinCounter: 1000,  // Example coin counter
+      nextLevel: 5000,  // Example next level threshold
+      achievements: ['First Tap', 'Invite 5 Friends'],  // Example achievements array
+    };
 
     this.telegramServices.ready();
     this.telegramServices.setHeaderColor('#000000'); // Dark header color
@@ -273,7 +275,7 @@ export class AppComponent implements OnInit, OnDestroy {
   navigateTo(route: string): void {
     this.activeTab = route;
     this.router.navigate([`/${route}`]);
-    this.telegramServices.hapticFeedback.impactOccurred('light');
+    this.telegramServices.hapticFeedback.impactOccurred('medium');
   }
 
   scrollActive() {
@@ -392,12 +394,14 @@ export class AppComponent implements OnInit, OnDestroy {
   nextImage() {
     if (this.currentImageIndex < this.images.length - 1) {
       this.currentImageIndex++;
+      this.telegramServices.hapticFeedback.impactOccurred('light');
     }
   }
 
   previousImage() {
     if (this.currentImageIndex > 0) {
       this.currentImageIndex--;
+      this.telegramServices.hapticFeedback.impactOccurred('light');
     }
   }
 }
