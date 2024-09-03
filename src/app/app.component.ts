@@ -156,9 +156,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.loadUserData(this.userInfo.id);
       this.commonService.setUserInfo(this.userInfo);
     }
-    // else{
-    //   this.loadUserData('123456');
-    // }
+    else{
+      this.loadUserData('123456');
+    }
     console.log(this.telegramServices.initDataUnsafe?.user);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -395,6 +395,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.currentImageIndex < this.images.length - 1) {
       this.currentImageIndex++;
       this.telegramServices.hapticFeedback.impactOccurred('light');
+      this.preloadImage(this.currentImageIndex + 1);
     }
   }
 
@@ -402,6 +403,13 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.currentImageIndex > 0) {
       this.currentImageIndex--;
       this.telegramServices.hapticFeedback.impactOccurred('light');
+      this.preloadImage(this.currentImageIndex - 1);
+    }
+  }
+  preloadImage(index: number) {
+    if (index >= 0 && index < this.images.length) {
+      const img = new Image();
+      img.src = this.images[index];
     }
   }
 }

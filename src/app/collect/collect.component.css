@@ -103,8 +103,8 @@ section#collect {
     margin-left: 10px;
   }
   .round-button {
-    width: 150px;
-    height: 150px;
+    width: 173px;
+    height: 173px;
     background: linear-gradient(145deg, #3b82f6, #8b5cf6);
     border-radius: 50%;
     display: flex;
@@ -116,11 +116,11 @@ section#collect {
   }
   
   .round-button:active {
-    transform: scale(0.95);
+    transform: scale(0.90);
   }
   
   .round-button.pulse {
-    animation: pulse 1.5s;
+    animation: pulse 0.5s;
   }
   
   @keyframes pulse {
@@ -133,8 +133,8 @@ section#collect {
   }
   
   .round-button img {
-    width: 140px;
-    height: 140px;
+    width: 173px;
+    height: 173px;
     border-radius: 50%;
   }
   

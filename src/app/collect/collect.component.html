@@ -6,7 +6,7 @@
           </div>
           <div class="resource-value">
             <ng-container *ngIf="currentEnergy > 0; else showTimer">
-              {{ currentEnergy }} taps left
+              {{ currentEnergy }}/1000
             </ng-container>
             <ng-template #showTimer>
               {{ timeRemaining }} seconds left
@@ -30,7 +30,7 @@
           </p>
           <div class="RadialProgress" role="progressbar" [ngStyle]="{'--progress-value': progressPercentage}" [attr.aria-valuenow]="progressPercentage" aria-valuemin="0" aria-valuemax="100">
             <div class="round-button" #roundButton (click)="onButtonClick($event)">
-              <img src="/image/Nila.jpeg" alt="Hexagon Image">
+              <img src="/image/Nila.jpeg" alt="Hexagon Image" width="173" height="173">
             </div>
           </div>
         </div>
@@ -41,10 +41,10 @@
         </div>
         <div class="claim-container">
           <div class="max-value">
-            <span class="value">{{newProgressCount}}</span>
-            <span class="max-text">NILA</span>
+            <!-- <span class="value">{{100-newProgressCount}} taps left</span> -->
+            <span class="max-text">{{100-newProgressCount}} taps left</span>
           </div>
-          <button class="claim-button" (click)="onCollectClick()" [disabled]="newProgressCount==0">Claim</button>
+          <button class="claim-button" (click)="onCollectClick()" [disabled]="newProgressCount<100">Claim</button>
         </div>
         
       </div>
