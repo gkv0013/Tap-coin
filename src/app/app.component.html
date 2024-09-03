@@ -12,42 +12,32 @@
 <router-outlet></router-outlet>
 <nav class="navbar">
   <button (click)="showSection('collect', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'collect'}" class="nav-icon">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h4a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1z"></path>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" >
+      <path path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M434-211h91v-41q49-10 81.5-44.5t32.5-86.35q0-48.61-28.5-84.88Q582-504 522-524q-60-22-78.5-37.16-18.5-15.16-18.5-36.57Q425-610 438.78-619q13.79-9 32.22-9 27.47 0 48.74 14Q541-600 547-573l81-34q-13-43-38.5-67.5T525-708.11V-749h-90v42.36q-49 12.64-74.5 43.93-25.5 31.28-25.5 71.15Q335-542 369.5-506T482-444q32 10 50 25.39t18 35.48q0 20-15 35.07Q520-333 487.56-333q-32.43 0-56-22Q408-377 402-417l-84 34q9 52 43.5 86t72.5 43.17V-211Zm46 161q-88.64 0-167.48-33.02-78.84-33.02-137.66-91.84-58.82-58.82-91.84-137.66T50-480q0-89.9 33.08-167.96 33.08-78.07 92.16-137.03 59.08-58.96 137.66-91.98Q391.48-910 480-910q89.89 0 167.99 33.01 78.1 33.01 137.05 91.95 58.94 58.95 91.95 137.08Q910-569.83 910-479.92q0 88.92-33.03 167.26-33.02 78.34-91.98 137.42-58.96 59.08-137.03 92.16Q569.9-50 480-50Z"/>
     </svg>
-    <span>Collect</span>
+    <span>Earn</span>
   </button>
-
+  <button (click)="showSection('green', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'green'}" class="nav-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M456-39q-37 0-71.5-6T317-64q1-133 61-250t157-209q-118 61-200 166T209-126q-5-5-11-10l-12-10q-53-53-81.5-120T76-405q0-76 30.5-143.5T190-669q92-92 239.5-120.5T833-791q27 252-.5 400.5T714-150q-54 54-120 82.5T456-39Z"/></svg>
+    <span>Goals</span>
+  </button>
+  <button (click)="showSection('friends', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'friends'}" class="nav-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M-14-86v-159q0-46.3 23.88-84.45Q33.77-367.6 72-387q67-34 137.23-51 70.22-17 142.77-17 74.12 0 144.56 17T632-388q39.23 19.25 62.62 57.12Q718-293 718-245.05V-86H-14Zm829 0v-166q0-47-23.5-96T719-444q45 8 86 22t79 34q41.84 21.77 65.92 58.69Q974-292.38 974-249v163H815ZM352-500q-78.55 0-133.27-54.72Q164-609.45 164-687q0-78.55 54.73-133.28Q273.45-875 352-875q77.55 0 132.77 54.72Q540-765.55 540-687q0 77.55-55.23 132.28Q429.55-500 352-500Zm481-187.01q0 76.56-55.17 131.79Q722.66-500 646.16-500 632-500 613-503q-19-3-36-9 30-37 45-81.7t15-93.15q0-48.45-15-93.8Q607-826 577-863q17-7 34-9.5t34.53-2.5q76.76 0 132.11 55.22Q833-764.57 833-687.01Z"/></svg>
+    <span>Refer</span>
+  </button>
   <button (click)="showSection('tasks', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'tasks'}" class="nav-icon">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12M8 11h12M8 15h12M4 7h.01M4 11h.01M4 15h.01"></path>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z"/></svg>
     <span>Tasks</span>
   </button>
 
-  <button (click)="showSection('friends', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'friends'}" class="nav-icon">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M12 20h.01M7 20h.01M17 16v-6a4 4 0 00-4-4H7a4 4 0 00-4 4v6m16 0a4 4 0 01-8 0m8 0H5"></path>
-    </svg>
-    <span>Frens</span>
-  </button>
-
   <button (click)="showSection('pumps', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'pumps'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999">
-      <path d="m226-559 78 33q14-28 29-54t33-52l-56-11-84 84Zm142 83 114 113q42-16 90-49t90-75q70-70 109.5-155.5T806-800q-72-5-158 34.5T492-656q-42 42-75 90t-49 90Zm178-65q-23-23-23-56.5t23-56.5q23-23 57-23t57 23q23 23 23 56.5T660-541q-23 23-57 23t-57-23Zm19 321 84-84-11-56q-26 18-52 32.5T532-299l33 79Zm313-653q19 121-23.5 235.5T708-419l20 99q4 20-2 39t-20 33L538-80l-84-197-171-171-197-84 167-168q14-14 33.5-20t39.5-2l99 20q104-104 218-147t235-24ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-25 25-83.5 43T82-76q14-103 32-161.5t43-83.5Zm57 56q-10 10-20 36.5T180-175q27-4 53.5-13.5T270-208q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="m33-569 187-189q24-24 57-33.5t67-3.5l60 12q-60 72-99 136.5T223-488L33-569Zm270 106q45-99 94-173t105-130q85-85 206-128t237-30q13 115-29.5 236.5T788-482q-54 55-129.5 105T484-282L303-463Zm323-142q20 20 49 20t49-20q20-20 20-48.5T724-702q-20-20-49-20t-49 20q-20 20-20 48.5t20 48.5ZM590-12l-82-190q94-44 158.5-83T803-384l12 61q6 34-3.5 66.5T778-200L590-12ZM109-304q46-46 110.5-46T330-304q46 45 46 110T330-83q-35 34-114.5 58T17 8q10-119 34-198.5T109-304Z"/></svg>
     <span>Boost</span>
   </button>
 
   <button (click)="showSection('airdrop', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'airdrop'}" class="nav-icon">
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7M5 10v10a1 1 0 001 1h3m10-1a1 1 0 001-1V10m-8-7v18"></path>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760H520q-71 0-115.5 44.5T360-600v240q0 71 44.5 115.5T520-200h320q0 33-23.5 56.5T760-120H200Zm320-160q-33 0-56.5-23.5T440-360v-240q0-33 23.5-56.5T520-680h280q33 0 56.5 23.5T880-600v240q0 33-23.5 56.5T800-280H520Zm120-140q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Z"/></svg>
     <span>Airdrop</span>
-  </button>
-
-  <button (click)="showSection('green', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'green'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999"><path d="M216-176q-45-45-70.5-104T120-402q0-63 24-124.5T222-642q35-35 86.5-60t122-39.5Q501-756 591.5-759t202.5 7q8 106 5 195t-16.5 160.5q-13.5 71.5-38 125T684-182q-53 53-112.5 77.5T450-80q-65 0-127-25.5T216-176Zm112-16q29 17 59.5 24.5T450-160q46 0 91-18.5t86-59.5q18-18 36.5-50.5t32-85Q709-426 716-500.5t2-177.5q-49-2-110.5-1.5T485-670q-61 9-116 29t-90 55q-45 45-62 89t-17 85q0 59 22.5 103.5T262-246q42-80 111-153.5T534-520q-72 63-125.5 142.5T328-192Zm0 0Zm0 0Z"/></svg>
-    <span>Goals</span>
   </button>
 </nav>
 <ng-template #paginationModal let-modal>
@@ -70,6 +60,7 @@
     </div>
   </div>
 </ng-template>
+
 
 
 

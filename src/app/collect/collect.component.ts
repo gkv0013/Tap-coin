@@ -20,7 +20,7 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
   buttonPressCount = 0;
   newProgressCount = 0; // New variable for tracking progress
   maxNewProgress = 100;
-  currentEnergy = 100; // Current energy value
+  currentEnergy = 1000; // Current energy value
   maxEnergy = 110; // Maximum energy value
   shouldShakeBoostIcons = false;
   timerDuration = 60; // Timer duration in seconds (1 minute)
@@ -51,7 +51,7 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
       this.collectService.isTimerCurrentlyRunning().subscribe(running => {
         this.isTimerRunning = running;
         if (running) {
-          this.collectService.startTimer(this.telegramServices);
+         // this.collectService.startTimer(this.telegramServices);
         }
       })
     );
@@ -59,46 +59,35 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
   ngOnDestroy() {
     // Save the current state to the service
     this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.collectService.clearTimer();
+   // this.collectService.clearTimer();
   }
 
-  startTimer() {
-    this.timeRemaining = this.timerDuration;
-    this.isTimerRunning = true;
-
-    const interval = setInterval(() => {
-      this.timeRemaining--;
-
-      if (this.timeRemaining <= 0) {
-        clearInterval(interval);
-        this.currentEnergy = 100; // Reset energy to 100
-        this.isTimerRunning = false;
-        this.telegramServices.hapticFeedback.impactOccurred('medium');
-      }
-    }, 1000); // 1000 ms = 1 second
-  }
   onButtonClick(event: MouseEvent) {
-    if (this.newProgressCount < this.maxNewProgress && this.currentEnergy > 0) {
+    if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
       this.newProgressCount++;
       this.currentEnergy--; // Decrease energy on button click
-    this.telegramServices.hapticFeedback.impactOccurred('medium');
-    const button = this.roundButton.nativeElement;
-    button.classList.add('pulse');
-    this.collectService.incrementNewProgressCount();
-    this.collectService.decrementCurrentEnergy();
-    this.createFallingCoin();
-    setTimeout(() => {
-      button.classList.remove('pulse');
-    }, 1000);
-  }else if (this.currentEnergy === 0 && !this.isTimerRunning) {
-    this.collectService.startTimer(this.telegramServices);
-  } else {
-    this.shouldShakeBoostIcons = true;
-    setTimeout(() => {
-      this.shouldShakeBoostIcons = false;
-    }, 500); 
+      this.telegramServices.hapticFeedback.impactOccurred('medium');
+      const button = this.roundButton.nativeElement;
+      button.classList.add('pulse');
+      this.collectService.incrementNewProgressCount();
+      this.collectService.decrementCurrentEnergy();
+      this.createFallingCoin();
+      if (this.currentEnergy === 0 && !this.isTimerRunning) {
+        this.collectService.startTimer(this.telegramServices);
+      }
+      setTimeout(() => {
+        button.classList.remove('pulse');
+      }, 1000);
+    } else if (this.currentEnergy === 0 && !this.isTimerRunning) {
+      this.collectService.startTimer(this.telegramServices);
+    } else {
+      this.shouldShakeBoostIcons = true;
+      setTimeout(() => {
+        this.shouldShakeBoostIcons = false;
+      }, 500);
+    }
   }
-  }
+  
   routeToBoost(){
     if (this.currentEnergy == 0) {
       this.commonService.setActiveTab('pumps');

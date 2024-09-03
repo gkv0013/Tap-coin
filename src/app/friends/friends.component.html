@@ -1,4 +1,4 @@
-<section id="frens">
+<!-- <section id="frens">
   <div class="task-card-container">
     <h2 class="text-2xl font-bold mb-4">Invite Friends</h2>
     <div class="claim-section">
@@ -8,7 +8,7 @@
     </div>
     <div class="text-center mb-4">
       <div class="text-lg">Earn <span class="font-bold">10%</span> from direct referrals and <span class="font-bold">5%</span> from secondary referrals.</div>
-      <!-- <div class="info">Status on referral points will be updated every 6 hours.</div> -->
+  
     </div>
     <div class="friends-section">
       <div class="text-xl mb-4">Your friends: 0</div>
@@ -25,8 +25,76 @@
           Invite a friend
         </div>
       </div>
-      <!-- Repeat the card for additional friends as needed -->
+     
     </div>
   </div>
+  </section>
+   -->
+   <section id="frens">
+    <div class="task-card-container">
+      <div class="container mx-auto px-4">
+        <div class="tab-header">
+          <div id="tasks-tab" class="active" (click)="showTab('tasks')">Invite</div>
+          <div id="challenges-tab" (click)="showTab('challenges')">Friends</div>
+        </div>
+        <div id="tasks-content" class="tab-content active">
+          <div class="text-center">
+            <h2 class="text-xl font-bold">Earn more tokens</h2>
+            <p class="text-gray-400">Perform tasks daily to earn more Nila tokens and level up real quick!</p>
+          </div>
+          <div class="mt-4">
+            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img src="/image/telegram.png" alt="Telegram Icon" class="icon">
+                  <div class="task-info">
+                    <div class="font-bold">Join my Telegram Channel</div>
+                  </div>
+                </div>
+                <div class="task-buttons">
+                  <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()">Perform</button>
+                  <button class="btn bg-gray-700 text-white">Verify</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="challenges-content" class="tab-content">
+          <div class="text-center">
+            <h2 class="text-xl font-bold">Milestone rewards</h2>
+            <p class="text-gray-400">Complete specific milestones to unlock huge rewards and bonuses!</p>
+          </div>
+          <div class="mt-4">
+            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-bold">Bronze</div>
+                  <div class="text-gray-400">50 000</div>
+                </div>
+                <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+              </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-bold">Silver</div>
+                  <div class="text-gray-400">100 000</div>
+                </div>
+                <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+              </div>
+            </div>
+            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-bold">Gold</div>
+                  <div class="text-gray-400">250 000</div>
+                </div>
+                <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
   
