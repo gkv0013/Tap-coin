@@ -1,17 +1,34 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
+import { CommonService } from '../common.service';
 
 @Component({
   selector: 'app-friends',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css'
 })
 export class FriendsComponent {
-  constructor(private telegramWebappService: TelegramWebappService) {}
+  userInfo:any;
+  constructor() {}
+  public commonService = inject(CommonService);
   activeTab: string = 'tasks'; // Set default active tab
-
+  friendsList = [
+    {
+      name: 'John Doe',
+      avatar: '/image/avatar1.jpeg',
+      points: 100
+    },
+    {
+      name: 'Jane Smith',
+      avatar: '/image/avatar2.jpeg',
+      points: 50
+    },
+    // Add more friends as needed
+  ];
+  
   showTab(tab: string): void {
     this.activeTab = tab;
     // Update the active class for the tab headers
@@ -41,13 +58,25 @@ export class FriendsComponent {
         challengesContent.classList.add('active');
       }
     }
+    if(tab=='challenges'){
+        this.callReferred()
+    }
   }
+  callReferred(){
 
+  }
+  ngOnInit() {
+    this.userInfo=this.commonService.getUserInfo();
+    }
   shareOnTelegram() {
-    const urlToShare = encodeURIComponent('https://yourapp.com/referral?user=123'); // Replace with your actual URL
-    const textToShare = encodeURIComponent('Join our app and earn rewards!'); // Optional text
+    // Generate the bot join link with a referral code
+    const urlToShare = encodeURIComponent(`https://t.me/Nila_Coin_Bot?start=referral_${this.userInfo.telegramId}`);
+    const textToShare = encodeURIComponent('Join Nila Coin Bot and earn rewards!');
 
+    // Create the Telegram share URL
     const telegramShareUrl = `https://t.me/share/url?url=${urlToShare}&text=${textToShare}`;
+    
+    // Open the share URL in a new tab
     window.open(telegramShareUrl, '_blank');
   }
 }

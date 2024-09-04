@@ -9,7 +9,7 @@
               {{ currentEnergy }}/1000
             </ng-container>
             <ng-template #showTimer>
-              {{ timeRemaining }} seconds left
+              {{ getFormattedTimeUTC(timeRemaining)}}
             </ng-template>
           </div>
         </div>

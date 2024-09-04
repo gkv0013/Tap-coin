@@ -8,8 +8,8 @@ export class CollectService {
   private buttonPressCount = new BehaviorSubject<number>(0);
   private newProgressCount = new BehaviorSubject<number>(0);
   private maxNewProgress = new BehaviorSubject<number>(100);
-  private currentEnergy = new BehaviorSubject<number>(10);
-  private timerDuration = new BehaviorSubject<number>(60);
+  private currentEnergy = new BehaviorSubject<number>(1000);
+  private timerDuration = new BehaviorSubject<number>(this.getRandomTimerDuration());
   private timeRemaining = new BehaviorSubject<number>(0);
   private isTimerRunning = new BehaviorSubject<boolean>(false);
 
@@ -19,7 +19,12 @@ export class CollectService {
   getButtonPressCount() {
     return this.buttonPressCount.asObservable();
   }
-
+  setButtonPressCount(value: number) {
+    this.buttonPressCount.next(value);
+  }
+  private getRandomTimerDuration(): number {
+    return Math.floor(Math.random() * (120 - 40 + 1)) + 40;
+  }
   getNewProgressCount() {
     return this.newProgressCount.asObservable();
   }
