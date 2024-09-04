@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { CommonService } from '../../app/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CollectService {
 
   private timerIntervalId: any = null; // To store the interval ID
   private energyRegenIntervalId: any = null; // To store the energy regeneration interval ID
-
+  public commonService = inject(CommonService);
   getButtonPressCount() {
     return this.buttonPressCount.asObservable();
   }
@@ -58,7 +59,11 @@ export class CollectService {
   }
 
   addButtonPressCount(count: number) {
+    const userData=this.commonService.getUserInfo();
     const newValue = this.buttonPressCount.value + count;
+    userData.totalCoins=newValue;
+    this.commonService.setUserInfo(userData);
+    this.commonService.saveCoins(userData);
     this.buttonPressCount.next(newValue);
   }
 

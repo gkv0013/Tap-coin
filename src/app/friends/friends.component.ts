@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { CommonService } from '../common.service';
-
+import { Friend, postDataInterface } from '../../core/interface/user';
+import { PostDataService } from '../../core/services/post-data.service';
+import { AvatarModule } from '@boringer-avatars/angular';
+import { CollectService } from '../../core/services/collect.service';
 @Component({
   selector: 'app-friends',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,AvatarModule],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css'
 })
@@ -14,20 +17,10 @@ export class FriendsComponent {
   userInfo:any;
   constructor() {}
   public commonService = inject(CommonService);
+  private postDataService = inject(PostDataService);
+  private collectService = inject(CollectService);
   activeTab: string = 'tasks'; // Set default active tab
-  friendsList = [
-    {
-      name: 'John Doe',
-      avatar: '/image/avatar1.jpeg',
-      points: 100
-    },
-    {
-      name: 'Jane Smith',
-      avatar: '/image/avatar2.jpeg',
-      points: 50
-    },
-    // Add more friends as needed
-  ];
+  friendsList:Friend[]= [];
   
   showTab(tab: string): void {
     this.activeTab = tab;
@@ -63,6 +56,58 @@ export class FriendsComponent {
     }
   }
   callReferred(){
+    const postData: postDataInterface = {
+      Mode: 1, // Mode depending on your logic
+      CrudType: 1, // Example value
+      FetchData: [{
+        mode:0,
+        telegramId: this.userInfo.telegramId,
+      }],
+    };
+    this.postDataService.sendData('Login',postData).subscribe(
+      (response) => {
+        if(response.StatusCode==200){
+          if(response.Result){
+            this.friendsList=response.Result;
+          }
+        }
+      },
+      (error) => {
+        console.error('Error saving data:', error);
+      }
+    );
+  }
+  getAvatarUrl(name: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+  }
+  claimReward(referid: any) {
+    const friend = this.friendsList.find(f => f.referid === referid);
+    if (friend) {
+      friend.claimed = true;
+      this.friendsList = [...this.friendsList];
+    }
+    const postData: postDataInterface = {
+      Mode: 1, // Mode depending on your logic
+      CrudType: 1, // Example value
+      FetchData: [{
+        mode:1,
+        telegramId: referid,
+      }],
+    };
+    this.postDataService.sendData('Login',postData).subscribe(
+      (response) => {
+        if(response.StatusCode==200){
+          if(response.Result){
+            this.collectService.addButtonPressCount(20);
+            const userData=this.commonService.getUserInfo();
+            this.commonService.saveCoins(userData);
+          }
+        }
+      },
+      (error) => {
+        console.error('Error saving data:', error);
+      }
+    );
 
   }
   ngOnInit() {
