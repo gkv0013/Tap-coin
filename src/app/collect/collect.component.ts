@@ -5,6 +5,8 @@ import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { CommonService } from '../common.service';
 import { CollectService } from '../../core/services/collect.service';
 import { Subscription } from 'rxjs';
+import { postDataInterface } from '../../core/interface/user';
+import { PostDataService } from '../../core/services/post-data.service';
 
 @Component({
   selector: 'app-collect',
@@ -36,12 +38,12 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
   public commonService = inject(CommonService);
   private readonly collectService = inject(CollectService);
   private subscriptions: Subscription[] = [];
+  private postDataService = inject(PostDataService);
 
-  ngAfterViewInit(): void {
-    this.initBackgroundAnimation();
-    this.initForegroundAnimation();
-  }
   ngOnInit() {
+  this.initSubscriptions();
+  }
+  initSubscriptions(){
     this.subscriptions.push(
       this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count),
       this.collectService.getNewProgressCount().subscribe(count => this.newProgressCount = count),
@@ -56,12 +58,21 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
       })
     );
   }
+  ngAfterViewInit(): void {
+    this.initBackgroundAnimation();
+    this.initForegroundAnimation();
+  }
   ngOnDestroy() {
     // Save the current state to the service
     this.subscriptions.forEach(sub => sub.unsubscribe());
    // this.collectService.clearTimer();
   }
-
+  getFormattedTimeUTC(seconds: number): string {
+    const date = new Date(0); // Epoch time
+    date.setSeconds(seconds);
+    return date.toISOString().substr(14, 5); // Get mm:ss part of the ISO string
+  }
+  
   onButtonClick(event: MouseEvent) {
     if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
       this.newProgressCount++;
@@ -119,6 +130,47 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
     }, 1000);
   }
 
+  get newProgressPercentage() {
+    return (this.newProgressCount / this.maxNewProgress) * 100;
+  }
+  onCollectClick() {
+    if (this.newProgressCount <= this.maxNewProgress) {
+
+      const userData=this.commonService.getUserInfo();
+      this.buttonPressCount += this.newProgressCount;
+      this.collectService.addButtonPressCount(this.newProgressCount);
+      this.collectService.resetNewProgressCount();
+      this.newProgressCount = 0; // Reset new progress after collecting
+      this.telegramServices.hapticFeedback.impactOccurred('medium');
+      userData.totalCoins=this.buttonPressCount;
+      this.commonService.setUserInfo(userData);
+      this.saveCoins(userData);
+    }
+  }
+  saveCoins(telegramUser: any) {
+    const postData: postDataInterface = {
+      Mode: 1, // Mode depending on your logic
+      CrudType: 0, // Example value
+      SaveData: {'collect':[{
+        mode:1,
+        id: telegramUser.telegramId,
+        profitPerTap: telegramUser.profitPerTap,
+        profitPerHour: telegramUser.profitPerHour,
+        totalCoins: telegramUser.totalCoins,
+      }]},
+    };
+
+    this.postDataService.sendData('Login',postData).subscribe(
+      (response) => {
+        if(response.StatusCode==200){
+          console.log('Data saved successfully:', response);
+        }
+      },
+      (error) => {
+        console.error('Error saving data:', error);
+      }
+    );
+  }
   initBackgroundAnimation() {
     const canvasBg = this.canvasBgRef.nativeElement;
     const ctxBg = canvasBg.getContext('2d');
@@ -346,17 +398,4 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
 
     initFg();
   }
-  get newProgressPercentage() {
-    return (this.newProgressCount / this.maxNewProgress) * 100;
-  }
-  onCollectClick() {
-    if (this.newProgressCount <= this.maxNewProgress) {
-      this.buttonPressCount += this.newProgressCount;
-      this.collectService.addButtonPressCount(this.newProgressCount);
-      this.collectService.resetNewProgressCount();
-      this.newProgressCount = 0; // Reset new progress after collecting
-      this.telegramServices.hapticFeedback.impactOccurred('medium');
-    }
-  }
-
 }

@@ -1,10 +1,16 @@
+
+
+<div *ngIf="isLoading; else content">
+  <app-loading></app-loading>
+</div>
+<ng-template #content>
 <div class="header">
   <img src="/image/Nila.jpeg" alt="Profile Image" width="40" height="40">
-  <h1>{{userInfo?.first_name}}</h1>
+  <h1>{{userInfo?.firstName}}</h1>
   <!-- <button (click)="openModal(paginationModal)">Open Modal</button> -->
   <div class="coin-indicator">
-    <span class="badge futuristic-badge" (click)="openModal(paginationModal)" [ngClass]="getCoinClass(userData.totalCoins)">
-      {{ getCurrentCoinTitle(userData.totalCoins) }}
+    <span class="badge futuristic-badge" (click)="openModal(paginationModal)" [ngClass]="getCoinClass(userInfo.totalCoins)">
+      {{ getCurrentCoinTitle(userInfo.totalCoins) }}
     </span>
   </div>
   
@@ -60,7 +66,7 @@
     </div>
   </div>
 </ng-template>
-
+</ng-template>
 
 
 

@@ -52,8 +52,7 @@
                   </div>
                 </div>
                 <div class="task-buttons">
-                  <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()">Perform</button>
-                  <button class="btn bg-gray-700 text-white">Verify</button>
+                  <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()">Invite</button>
                 </div>
               </div>
             </div>
@@ -65,31 +64,16 @@
             <p class="text-gray-400">Complete specific milestones to unlock huge rewards and bonuses!</p>
           </div>
           <div class="mt-4">
-            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+            <div *ngFor="let friend of friendsList" class="bg-gray-800 rounded-lg shadow p-4 mb-4">
               <div class="flex items-center justify-between">
-                <div>
-                  <div class="font-bold">Bronze</div>
-                  <div class="text-gray-400">50 000</div>
+                <div class="flex items-center">
+                  <!-- <img [src]="friend.avatar" alt="{{ friend.name }}'s avatar" class="icon"> -->
+                  <div class="ml-4">
+                    <div class="font-bold">{{ friend.name }}</div>
+                    <div class="text-gray-400">{{ friend.points }} NILA</div>
+                  </div>
                 </div>
-                <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
-              </div>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
-              <div class="flex items-center justify-between">
-                <div>
-                  <div class="font-bold">Silver</div>
-                  <div class="text-gray-400">100 000</div>
-                </div>
-                <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
-              </div>
-            </div>
-            <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
-              <div class="flex items-center justify-between">
-                <div>
-                  <div class="font-bold">Gold</div>
-                  <div class="text-gray-400">250 000</div>
-                </div>
-                <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+               
               </div>
             </div>
           </div>

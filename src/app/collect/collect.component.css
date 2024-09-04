@@ -343,7 +343,7 @@ section#collect {
   }
   
   .claim-button:disabled {
-    background-color: #b45309; /* Darker gold for disabled state */
+    background-color: #63615f; /* Darker gold for disabled state */
     cursor: not-allowed;
   }
   @keyframes shake {
