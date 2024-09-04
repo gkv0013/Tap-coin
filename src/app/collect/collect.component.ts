@@ -138,13 +138,13 @@ export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
 
       const userData=this.commonService.getUserInfo();
       this.buttonPressCount += this.newProgressCount;
-      this.collectService.addButtonPressCount(this.newProgressCount);
       this.collectService.resetNewProgressCount();
       this.newProgressCount = 0; // Reset new progress after collecting
       this.telegramServices.hapticFeedback.impactOccurred('medium');
       userData.totalCoins=this.buttonPressCount;
-      this.commonService.setUserInfo(userData);
-      this.saveCoins(userData);
+      this.collectService.addButtonPressCount(this.newProgressCount);
+     // this.commonService.setUserInfo(userData);
+    //  this.commonService.saveCoins(userData);
     }
   }
   saveCoins(telegramUser: any) {

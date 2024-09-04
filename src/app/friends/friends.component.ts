@@ -5,6 +5,7 @@ import { CommonService } from '../common.service';
 import { Friend, postDataInterface } from '../../core/interface/user';
 import { PostDataService } from '../../core/services/post-data.service';
 import { AvatarModule } from '@boringer-avatars/angular';
+import { CollectService } from '../../core/services/collect.service';
 @Component({
   selector: 'app-friends',
   standalone: true,
@@ -17,6 +18,7 @@ export class FriendsComponent {
   constructor() {}
   public commonService = inject(CommonService);
   private postDataService = inject(PostDataService);
+  private collectService = inject(CollectService);
   activeTab: string = 'tasks'; // Set default active tab
   friendsList:Friend[]= [];
   
@@ -75,7 +77,9 @@ export class FriendsComponent {
       }
     );
   }
-
+  getAvatarUrl(name: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+  }
   claimReward(referid: any) {
     const friend = this.friendsList.find(f => f.referid === referid);
     if (friend) {
@@ -94,7 +98,9 @@ export class FriendsComponent {
       (response) => {
         if(response.StatusCode==200){
           if(response.Result){
-           
+            this.collectService.addButtonPressCount(20);
+            const userData=this.commonService.getUserInfo();
+            this.commonService.saveCoins(userData);
           }
         }
       },
