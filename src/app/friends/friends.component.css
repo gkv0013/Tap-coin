@@ -1,222 +1,303 @@
-section#frens {
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
-  padding-top: 110px; /* Extra padding to ensure content isn't hidden */
-  padding-bottom: 20px;
+  section#frens {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
+
+  .tab-header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab-header div {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4a5568;
+    border-radius: 5px;
+    margin: 5px 0;
+    flex: 1 1 45%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .tab-header div:hover {
+    background-color: #2d3748;
+  }
+
+  .tab-header .active {
+    background-color: #2d3748;
+    color: #f7fafc;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  #tasks-content h2, 
+  #challenges-content h2 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+  }
+
+  #tasks-content p, 
+  #challenges-content p {
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+  }
+
+  .bg-gray-800 {
+    background-color: #2d3748;
+  }
+
+  .text-gray-400 {
+    color: #cbd5e0;
+  }
+
+  .shadow {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .rounded-lg {
+    border-radius: 12px;
+  }
+
+  .font-bold {
+    font-weight: bold;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .justify-between {
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .mt-4 {
+    margin-top: 16px;
+  }
+
+  .mb-4 {
+    margin-bottom: 16px;
+  }
+
+  .w-10 {
+    width: 2.5rem;
+  }
+
+  .h-10 {
+    height: 2.5rem;
+  }
+
+  .mr-4 {
+    margin-right: 1rem;
+  }
+
+  .p-4 {
+    padding: 1rem;
+  }
+
+  .bg-gray-700 {
+    background-color: #4a5568;
+  }
+
+  .bg-yellow-500 {
+    background-color: #ecc94b;
+  }
+
+  .text-white {
+    color: #ffffff;
+  }
+
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .rounded {
+    border-radius: 0.25rem;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    opacity: 0.8;
+  }
+  .task-card-container {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    display: block;
+    background-color: #1a1a1a; /* Dark background color */
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 90px);
+    bottom: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  .task-info {
+    flex-grow: 1; /* Make task information take up available space */
+  }
+
+  .task-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.875rem;
+    text-align: center;
+    width: auto;
+    white-space: nowrap; /* Ensure the button doesn't wrap text */
+  }
+  
+  /* Extra small devices (phones, 0px to 575px) */
+  @media (max-width: 575px) {
+  .task-card-container {
+    max-height: calc(100vh - 151px); /* Adjust as per small devices */
+  }
+  }
+
+  /* Small devices (tablets, 576px to 767px) */
+  @media (min-width: 576px) and (max-width: 767px) {
+  .task-card-container {
+    max-height: calc(100vh - 80px); /* Adjust as per small tablets */
+  }
+  }
+
+  /* Medium devices (small laptops, 768px to 991px) */
+  @media (min-width: 768px) and (max-width: 991px) {
+  .task-card-container {
+    max-height: calc(100vh - 90px); /* Adjust as per medium devices */
+  }
+  }
+
+  /* Large devices (desktops, 992px and above) */
+  @media (min-width: 992px) {
+  .task-card-container {
+    max-height: calc(100vh - 100px); /* Adjust as per large devices */
+  }
+  }
+/* Card container for each friend */
+.friend-card {
+  background-color: #2d3748; /* Dark gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 16px; /* Space between cards */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
 }
 
-.tab-header {
+.friend-card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Flex container for friend content (image, name, and button) */
+.friend-content {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.tab-header div {
-  cursor: pointer;
-  padding: 10px 20px;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #4a5568;
-  border-radius: 5px;
-  margin: 5px 0;
-  flex: 1 1 45%;
-  text-align: center;
-  transition: background-color 0.3s ease;
-}
-
-.tab-header div:hover {
-  background-color: #2d3748;
-}
-
-.tab-header .active {
-  background-color: #2d3748;
-  color: #f7fafc;
-}
-
-.tab-content {
-  display: none;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-#tasks-content h2, 
-#challenges-content h2 {
-  margin-bottom: 10px;
-  font-size: 1.25rem;
-}
-
-#tasks-content p, 
-#challenges-content p {
-  margin-bottom: 20px;
-  font-size: 0.875rem;
-}
-
-.bg-gray-800 {
-  background-color: #2d3748;
-}
-
-.text-gray-400 {
-  color: #cbd5e0;
-}
-
-.shadow {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.rounded-lg {
-  border-radius: 12px;
-}
-
-.font-bold {
-  font-weight: bold;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.flex {
-  display: flex;
-  flex-direction: column;
-}
-
-.items-center {
   align-items: center;
+  justify-content: space-between; /* Space between avatar, name, and button */
 }
 
-.justify-between {
-  justify-content: space-between;
-  flex-direction: column;
+/* Avatar styling */
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* Circular avatar */
+  object-fit: cover; /* Ensure the image fits the container */
+  border: 2px solid #ecc94b; /* Golden border */
+  margin-right: 16px; /* Space between avatar and name */
 }
 
-.mt-4 {
-  margin-top: 16px;
+/* Friend info container (for name and points) */
+.friend-info-container {
+  flex-grow: 1; /* Ensure the name section takes up available space */
+  text-align: center; /* Center the name */
 }
 
-.mb-4 {
-  margin-bottom: 16px;
-}
-
-.w-10 {
-  width: 2.5rem;
-}
-
-.h-10 {
-  height: 2.5rem;
-}
-
-.mr-4 {
-  margin-right: 1rem;
-}
-
-.p-4 {
-  padding: 1rem;
-}
-
-.bg-gray-700 {
-  background-color: #4a5568;
-}
-
-.bg-yellow-500 {
-  background-color: #ecc94b;
-}
-
-.text-white {
-  color: #ffffff;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.rounded {
-  border-radius: 0.25rem;
-}
-
-button {
-  width: 100%;
-  margin-top: 10px;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-.task-card-container {
-  position: absolute;
-  top: 90px;
-  left: 0;
-  right: 0;
-  display: block;
-  background-color: #1a1a1a; /* Dark background color */
-  border-radius: 40px 40px 0 0;
-  box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
-  padding: 20px;
-  overflow-y: auto;
-  max-height: calc(100vh - 90px);
-  bottom: 0;
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-.icon {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
-
-.task-info {
-  flex-grow: 1; /* Make task information take up available space */
-}
-
-.task-buttons {
-  display: flex;
-  gap: 10px; /* Space between buttons */
-}
-
-.btn {
-  padding: 8px 16px;
-  border-radius: 8px;
+/* Friend name styling */
+.friend-name {
+  font-size: 1.125rem; /* Slightly larger font */
   font-weight: bold;
+  color: #ffffff; /* White text */
+}
+
+/* Friend info styling (points) */
+.friend-info {
   font-size: 0.875rem;
-  text-align: center;
-  width: auto;
-  white-space: nowrap; /* Ensure the button doesn't wrap text */
-}
-/* Extra small devices (phones, 0px to 575px) */
-@media (max-width: 575px) {
-.task-card-container {
-  max-height: calc(100vh - 151px); /* Adjust as per small devices */
-}
+  color: #a0aec0; /* Light gray */
+  margin-top: 4px;
 }
 
-/* Small devices (tablets, 576px to 767px) */
-@media (min-width: 576px) and (max-width: 767px) {
-.task-card-container {
-  max-height: calc(100vh - 80px); /* Adjust as per small tablets */
+/* Claim button container */
+.claim-btn-container {
+  display: flex;
+  align-items: center;
+  min-width: 100px; /* Ensure consistent space for button, even when it's hidden */
+  justify-content: flex-end;
 }
+.claim-btn-container .btn{
+  margin-top: 0px;
+}
+/* Claim button */
+.claim-btn {
+  padding: 6px 12px;
+  background-color: #ecc94b; /* Gold/yellow background */
+  color: #1a202c; /* Dark text */
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
 }
 
-/* Medium devices (small laptops, 768px to 991px) */
-@media (min-width: 768px) and (max-width: 991px) {
-.task-card-container {
-  max-height: calc(100vh - 90px); /* Adjust as per medium devices */
-}
+.claim-btn:hover {
+  background-color: #d69e2e; /* Darker gold on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-/* Large devices (desktops, 992px and above) */
-@media (min-width: 992px) {
-.task-card-container {
-  max-height: calc(100vh - 100px); /* Adjust as per large devices */
-}
+.claim-btn:active {
+  transform: scale(0.98); /* Shrink slightly on click */
 }

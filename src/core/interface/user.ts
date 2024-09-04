@@ -28,3 +28,9 @@ export interface UserData {
     TargetElement?: string;  
     ComponentName?: string;
 }
+export interface Friend {
+  referid:number;
+  name: string;
+  avatar: string;
+  claimed: boolean; // Add the claimed property
+}

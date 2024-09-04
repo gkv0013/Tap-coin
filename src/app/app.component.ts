@@ -214,7 +214,7 @@ export class AppComponent implements OnInit, OnDestroy {
       CrudType: 1, // Example value
       FetchData: [{
         mode:0,
-        id: telegramUser.id??123,
+        id: 678977314,
         username: telegramUser.username??'fa',
         firstname: telegramUser.first_name??'fa',
         lastname: telegramUser.last_name?? 'fa',
