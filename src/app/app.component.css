@@ -34,7 +34,7 @@ section {
 .navbar {
   display: flex;
   justify-content: space-around;
-  padding: 1rem;
+  padding: 0.5rem; /* Reduce padding to create more space */
   background: linear-gradient(177deg, #353547, #22223d);
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
@@ -51,16 +51,17 @@ section {
   background: none;
   border: none;
   color: #9ca3af;
-  font-size: 0.875rem;
+  font-size: 0.75rem; /* Reduced font size */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   transition: color 0.2s, transform 0.2s, box-shadow 0.3s;
   position: relative;
-  width: 55px; /* Set equal width */
-  height: 55px; /* Set equal height */
+  width: 45px; /* Reduce button width */
+  height: 45px; /* Reduce button height */
   border-radius: 10px;
+  padding: 0; /* Remove extra padding */
 }
 
 .navbar button:hover {
@@ -75,10 +76,9 @@ section {
 }
 
 .navbar button svg {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 4px;
-  transition: filter 0.3s;
+  width: 20px; /* Smaller icon size */
+  height: 20px;
+  margin-bottom: 2px; /* Less margin between icon and text */
 }
 
 .navbar button:hover svg {
@@ -86,8 +86,8 @@ section {
 }
 
 .navbar button span {
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 1px;
+  font-size: 0.75rem; /* Smaller text size */
+  letter-spacing: 0.5px; /* Reduce letter spacing */
 }
 
 .navbar button:before {

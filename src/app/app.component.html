@@ -53,12 +53,14 @@
         <button type="button" class="arrow-left" [disabled]="currentImageIndex === 0" (click)="previousImage()">
           <span>&#8249;</span>
         </button>
-        <img [src]="images[currentImageIndex]" class="img-fluid rounded-circle mx-auto d-block" alt="Coin Image">
-        <button type="button" class="arrow-right" [disabled]="currentImageIndex === images.length - 1" (click)="nextImage()">
+        <!-- Use coins array to display content dynamically -->
+        <img [src]="coins[currentImageIndex].image" class="img-fluid rounded-circle mx-auto d-block" alt="{{coins[currentImageIndex].title}} Image">
+        <button type="button" class="arrow-right" [disabled]="currentImageIndex === coins.length - 1" (click)="nextImage()">
           <span>&#8250;</span>
         </button>
-        <h5 class="text-center mt-3">{{titles[currentImageIndex]}}</h5>
-        <p class="text-center">{{descriptions[currentImageIndex]}}</p>
+        <h5 class="text-center mt-3">{{coins[currentImageIndex].title}}</h5>
+        <p class="text-center">{{coins[currentImageIndex].description}}</p>
+        <p class="text-center">Progress: {{coins[currentImageIndex].progress}}</p>
       </div>
     </div>
     <div class="modal-footer bg-dark">
@@ -66,6 +68,7 @@
     </div>
   </div>
 </ng-template>
+
 </ng-template>
 
 

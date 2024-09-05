@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   bsModalRef?: BsModalRef;
   title = 'Nila';
   isCollectSection: boolean = false;
+  currentCoinIndex = 0;
   userInfo: any;
   profilePhotos: any;
   isLoading = true;
@@ -57,67 +58,64 @@ export class AppComponent implements OnInit, OnDestroy {
     achievements: []
   };
   currentImageIndex = 0;
-  images = [
-    '/image/bronze.jpeg',
-    '/image/silver.jpeg',
-    '/image/gold.jpeg',
-    '/image/platina.jpeg',
-    '/image/diamond.jpeg',
-       '/image/master.jpeg'
-  ];
-  titles = ['Bronze', 'Silver', 'Gold','Platina','Diamond','Master'];
-  descriptions = [
-    'From 1000',
-    'From 50000',
-    'From 500000',
-    'From 1000000',
-    'From 2500000',
-    'From 5000000'
-  ];
+
   coins = [
     {
-      image: '/assets/images/bronze.png',
+      image: '/image/newbie.jpeg',
+      title: 'Newbie',
+      description: 'Starting your journey.',
+      progress: 0,
+      color: 'linear-gradient(135deg, #a9a9a9, #dcdcdc)' // Newbie gradient
+    },
+    {
+      image: '/image/bronze.jpeg',
       title: 'Bronze',
       description: 'Your number of shares determines the league you enter.',
-      progress: '112 / 1000'
+      progress: 5000,
+      color: 'linear-gradient(135deg, #654321, #d7b89e)' // Bronze gradient
     },
     {
-      image: '/assets/images/silver.png',
+      image: '/image/silver.jpeg',
       title: 'Silver',
       description: 'Your number of shares determines the league you enter.',
-      progress: 'From 50,000'
+      progress: 50000,
+      color: 'linear-gradient(135deg, #C0C0C0, #e5e5e5)' // Silver gradient
     },
     {
-      image: '/assets/images/gold.png',
+      image: '/image/gold.jpeg',
       title: 'Gold',
       description: 'Your number of shares determines the league you enter.',
-      progress: 'From 500,000'
+      progress: 500000,
+      color: 'linear-gradient(135deg, #FFD700, #FFEB3B)' // Gold gradient
     },
     {
-      image: '/assets/images/platina.png',
+      image: '/image/platina.jpeg',
       title: 'Platina',
       description: 'Your number of shares determines the league you enter.',
-      progress: 'From 1,000,000'
+      progress: 1000000,
+      color: 'linear-gradient(135deg, #E5E4E2, #d1d1d1)' // Platina gradient
     },
     {
-      image: '/assets/images/diamond.png',
+      image: '/image/diamond.jpeg',
       title: 'Diamond',
       description: 'Your number of shares determines the league you enter.',
-      progress: 'From 2,500,000'
+      progress: 2500000,
+      color: 'linear-gradient(135deg, #b9f2ff, #80e0ff)' // Diamond gradient
     },
     {
-      image: '/assets/images/master.png',
+      image: '/image/master.jpeg',
       title: 'Master',
       description: 'Your number of shares determines the league you enter.',
-      progress: 'From 5,000,000'
+      progress: 5000000,
+      color: 'linear-gradient(135deg, #4b0082, #6a0dad)' // Master gradient
     }
   ];
+  
   platformInfo: any;
   selectedButton: HTMLElement | null = null;
   activeTab: string = 'collect';
   progressValue: number = 25;
   constructor() {}
-  private renderer = inject(Renderer2);
   private el = inject(ElementRef);
   private postDataService = inject(PostDataService);
   private modalService = inject(BsModalService);
@@ -125,14 +123,13 @@ export class AppComponent implements OnInit, OnDestroy {
   public router = inject(Router);
   public commonService = inject(CommonService);
   private collectService = inject(CollectService);
-  //private readonly userService = inject(UserService);
   private subscriptions: Subscription[] = [];
   ngOnInit() {
     this.commonService.activeTab$.subscribe(tab => {
       this.activeTab = tab;
     });
     this.userData = {
-      id: '123456',  // Example user ID
+      id: '678977314',  // Example user ID
       username: 'Dinkann',  // Example username
       firstname: 'John',  // Example first name
       lastname: 'Doe',  // Example last name
@@ -214,10 +211,10 @@ export class AppComponent implements OnInit, OnDestroy {
       CrudType: 1, // Example value
       FetchData: [{
         mode:0,
-        id: 678977314,
-        username: telegramUser.username??'fa',
-        firstname: telegramUser.first_name??'fa',
-        lastname: telegramUser.last_name?? 'fa',
+        id: telegramUser.id,
+        username: telegramUser.username,
+        firstname: telegramUser.first_name??'',
+        lastname: telegramUser.last_name??'',
         createdAt: this.userData.createdAt,
         lastLogin: this.userData.lastLogin,
         profitPerTap: this.userData.profitPerTap,
@@ -253,36 +250,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getCurrentCoinTitle(totalCoins: number): string {
-    if (totalCoins >= 5000000) {
-      return 'Master';
-    } else if (totalCoins >= 2500000) {
-      return 'Diamond';
-    } else if (totalCoins >= 1000000) {
-      return 'Platina';
-    } else if (totalCoins >= 500000) {
-      return 'Gold';
-    } else if (totalCoins >= 50000) {
-      return 'Silver';
-    } else {
-      return 'Bronze';
-    }
+    const sortedCoins = [...this.coins].sort((a, b) => b.progress - a.progress);
+    const coin = sortedCoins.find(coin => totalCoins >= coin.progress);
+    return coin ? coin.title : 'Bronze';
   }
 
   getCoinClass(totalCoins: number): string {
-    if (totalCoins >= 5000000) {
-      return 'master';
-    } else if (totalCoins >= 2500000) {
-      return 'diamond';
-    } else if (totalCoins >= 1000000) {
-      return 'platina';
-    } else if (totalCoins >= 500000) {
-      return 'gold';
-    } else if (totalCoins >= 50000) {
-      return 'silver';
-    } else {
-      return 'bronze';
-    }
+    const sortedCoins = [...this.coins].sort((a, b) => b.progress - a.progress);
+    const coin = sortedCoins.find(c => totalCoins >= c.progress);
+    return coin ? coin.title.toLowerCase() : 'bronze'; 
   }
+  
 
   showSection(sectionId: string, button: EventTarget | null): void {
       this.navigateTo(sectionId);
@@ -305,9 +283,8 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   nextImage() {
-    if (this.currentImageIndex < this.images.length - 1) {
+    if (this.currentImageIndex < this.coins.length - 1) {
       this.currentImageIndex++;
-      this.telegramServices.hapticFeedback.impactOccurred('light');
       this.preloadImage(this.currentImageIndex + 1);
     }
   }
@@ -315,14 +292,13 @@ export class AppComponent implements OnInit, OnDestroy {
   previousImage() {
     if (this.currentImageIndex > 0) {
       this.currentImageIndex--;
-      this.telegramServices.hapticFeedback.impactOccurred('light');
       this.preloadImage(this.currentImageIndex - 1);
     }
   }
   preloadImage(index: number) {
-    if (index >= 0 && index < this.images.length) {
+    if (index >= 0 && index < this.coins.length) {
       const img = new Image();
-      img.src = this.images[index];
+      img.src = this.coins[index].image;
     }
   }
 }
