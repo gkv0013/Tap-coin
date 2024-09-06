@@ -34,3 +34,8 @@ export interface Friend {
   avatar: string;
   claimed: boolean; // Add the claimed property
 }
+
+export interface Boost {
+  userId:number;
+  DateTime: string;
+}

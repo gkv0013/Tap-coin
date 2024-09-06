@@ -157,8 +157,8 @@
     
     routeToBoost(){
       if (this.currentEnergy == 0) {
-        this.commonService.setActiveTab('pumps');
-        this.router.navigate(['/pumps']);
+        this.commonService.setActiveTab('boost');
+        this.router.navigate(['/boost']);
       }
     }
     get currentCoin() {
