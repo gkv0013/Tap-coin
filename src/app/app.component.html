@@ -5,9 +5,17 @@
 </div>
 <ng-template #content>
 <div class="header">
-  <img src="/image/Nila.jpeg" alt="Profile Image" width="40" height="40">
-  <h1>{{userInfo?.firstName}}</h1>
-  <!-- <button (click)="openModal(paginationModal)">Open Modal</button> -->
+
+    <div class="user-info">
+      <div class="user-details">
+        <img [src]="getAvatarUrl(userInfo?.firstName)" alt="{{ userInfo?.firstName }}'s avatar" class="avatar">
+        <div class="name-id-container">
+          <h1>{{userInfo?.firstName}}</h1>
+          <p class="user-id">{{buttonPressCount}} <span class="nila-text">NILA</span></p>
+        </div>
+      </div>
+    </div>
+  
   <div class="coin-indicator">
     <span class="badge futuristic-badge" (click)="openModal(paginationModal)" [ngClass]="getCoinClass(userInfo.totalCoins)">
       {{ getCurrentCoinTitle(userInfo.totalCoins) }}
@@ -43,7 +51,7 @@
 
   <button (click)="showSection('airdrop', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'airdrop'}" class="nav-icon">
     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760H520q-71 0-115.5 44.5T360-600v240q0 71 44.5 115.5T520-200h320q0 33-23.5 56.5T760-120H200Zm320-160q-33 0-56.5-23.5T440-360v-240q0-33 23.5-56.5T520-680h280q33 0 56.5 23.5T880-600v240q0 33-23.5 56.5T800-280H520Zm120-140q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Z"/></svg>
-    <span>Airdrop</span>
+    <span>Wallet</span>
   </button>
 </nav>
 <ng-template #paginationModal let-modal>

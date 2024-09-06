@@ -35,28 +35,5 @@ export class CommonService {
   getActiveTab(): string {
     return this.activeTabSubject.value;
   }
-  saveCoins(telegramUser: any) {
-    const postData: postDataInterface = {
-      Mode: 1, // Mode depending on your logic
-      CrudType: 0, // Example value
-      SaveData: {'collect':[{
-        mode:1,
-        id: telegramUser.telegramId,
-        profitPerTap: telegramUser.profitPerTap,
-        profitPerHour: telegramUser.profitPerHour,
-        totalCoins: telegramUser.totalCoins,
-      }]},
-    };
 
-    this.postDataService.sendData('Login',postData).subscribe(
-      (response) => {
-        if(response.StatusCode==200){
-          console.log('Data saved successfully:', response);
-        }
-      },
-      (error) => {
-        console.error('Error saving data:', error);
-      }
-    );
-  }
 }

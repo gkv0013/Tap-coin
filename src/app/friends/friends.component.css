@@ -77,7 +77,9 @@
   .text-center {
     text-align: center;
   }
-
+.text-center .p{
+  margin-bottom: 0px!important;
+}
   .flex {
     display: flex;
     flex-direction: column;
@@ -227,7 +229,7 @@
   border-radius: 15px; /* Rounded corners */
   padding: 6px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  margin-bottom: 16px; /* Space between cards */
+  margin-bottom: 9px; /* Space between cards */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
 }
 
@@ -261,7 +263,7 @@
 
 /* Friend name styling */
 .friend-name {
-  font-size: 1.125rem; /* Slightly larger font */
+  font-size: 0.9rem; /* Slightly larger font */
   font-weight: bold;
   color: #ffffff; /* White text */
 }
@@ -272,7 +274,11 @@
   color: #a0aec0; /* Light gray */
   margin-top: 4px;
 }
-
+.friends-card-container {
+  max-height: calc(100vh - 380px);
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 10px; /* Add some padding for better UX when scrolling */
+}
 /* Claim button container */
 .claim-btn-container {
   display: flex;
@@ -296,6 +302,20 @@
 .claim-btn:hover {
   background-color: #d69e2e; /* Darker gold on hover */
   transform: scale(1.05); /* Slightly enlarge on hover */
+}
+.total-coins-earned {
+  text-align: center;
+
+}
+
+.total-coins-earned h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.total-coins-earned p {
+  font-size: 1.5rem;
+  color: #ecc94b; /* Gold color for the total coins */
 }
 
 .claim-btn:active {

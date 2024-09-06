@@ -16,6 +16,8 @@ export class CollectService {
 
   private timerIntervalId: any = null; // To store the interval ID
   private energyRegenIntervalId: any = null; // To store the energy regeneration interval ID
+  private progressDecreaseIntervalId: any = null; // To store the progress decrease interval ID
+  private progressDecreaseTimeoutId: any = null;
   public commonService = inject(CommonService);
   getButtonPressCount() {
     return this.buttonPressCount.asObservable();
@@ -60,15 +62,16 @@ export class CollectService {
 
   addButtonPressCount(count: number) {
     const userData=this.commonService.getUserInfo();
-    const newValue = this.buttonPressCount.value + count;
-    userData.totalCoins=newValue;
+    userData.totalCoins=count;
     this.commonService.setUserInfo(userData);
-    this.commonService.saveCoins(userData);
-    this.buttonPressCount.next(newValue);
+    this.buttonPressCount.next(count);
+    
   }
 
   resetNewProgressCount() {
     this.newProgressCount.next(0);
+    this.stopProgressDecrease(); // Stop the progress decrease interval
+  this.startProgressDecrease(); // Restart the decrease interval after reset
   }
 
   startTimer(telegramServices: any) {
@@ -130,5 +133,36 @@ export class CollectService {
       clearInterval(this.energyRegenIntervalId);
       this.energyRegenIntervalId = null;
     }
+  }
+  startProgressDecrease() {
+    if (this.progressDecreaseIntervalId !== null) {
+      return; // Avoid starting multiple intervals
+    }
+
+    this.progressDecreaseIntervalId = setInterval(() => {
+      if (this.newProgressCount.value > 0) {
+        const newValue = this.newProgressCount.value - 1;
+        this.newProgressCount.next(newValue);
+      } else {
+        clearInterval(this.progressDecreaseIntervalId);
+        this.progressDecreaseIntervalId = null; // Clear the interval when progress reaches 0
+      }
+    }, 2000); // 2000 ms = 2 seconds
+  }
+
+  stopProgressDecrease() {
+    if (this.progressDecreaseIntervalId !== null) {
+      clearInterval(this.progressDecreaseIntervalId);
+      this.progressDecreaseIntervalId = null;
+    }
+  }
+  resetProgressDecreaseAfterInactivity() {
+    if (this.progressDecreaseTimeoutId !== null) {
+      clearTimeout(this.progressDecreaseTimeoutId); // Clear any existing timeout
+    }
+
+    this.progressDecreaseTimeoutId = setTimeout(() => {
+      this.startProgressDecrease(); // Restart progress decrease after 5 seconds of inactivity
+    }, 5000); // 5000 ms = 5 seconds
   }
 }

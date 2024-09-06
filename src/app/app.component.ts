@@ -115,6 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedButton: HTMLElement | null = null;
   activeTab: string = 'collect';
   progressValue: number = 25;
+  buttonPressCount = 0;
   constructor() {}
   private el = inject(ElementRef);
   private postDataService = inject(PostDataService);
@@ -173,7 +174,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.subscriptions.push(viewportChangedSubscription);
-    
+    this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
   }
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -260,7 +261,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const coin = sortedCoins.find(c => totalCoins >= c.progress);
     return coin ? coin.title.toLowerCase() : 'bronze'; 
   }
-  
+  getAvatarUrl(name: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
+  }
 
   showSection(sectionId: string, button: EventTarget | null): void {
       this.navigateTo(sectionId);
@@ -268,10 +271,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   navigateTo(route: string): void {
     this.activeTab = route;
-    this.router.navigate([`/${route}`]);
-    this.telegramServices.hapticFeedback.impactOccurred('medium');
+    this.router.navigate([`/${route}`]).then(() => {
+      this.telegramServices.hapticFeedback.impactOccurred('medium');
+    }).catch((err) => {
+      console.error('Navigation failed:', err);
+    });
   }
-
+  
   openModal(template: TemplateRef<any>) {
     this.bsModalRef = this.modalService.show(template);
     this.currentImageIndex=0

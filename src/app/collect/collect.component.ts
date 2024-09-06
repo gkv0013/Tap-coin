@@ -91,9 +91,11 @@
     private readonly collectService = inject(CollectService);
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
-
+    userInfo:any;
     ngOnInit() {
     this.initSubscriptions();
+    this.collectService.startProgressDecrease()
+    this.userInfo=this.commonService.getUserInfo();
     }
     initSubscriptions(){
       this.subscriptions.push(
@@ -134,6 +136,8 @@
         button.classList.add('pulse');
         this.collectService.incrementNewProgressCount();
         this.collectService.decrementCurrentEnergy();
+        this.collectService.stopProgressDecrease(); // Stop the decrease timer
+        this.collectService.resetProgressDecreaseAfterInactivity();
         this.createFallingCoin();
         if (this.currentEnergy === 0 && !this.isTimerRunning) {
           this.collectService.startTimer(this.telegramServices);
@@ -196,33 +200,34 @@
     }
     onCollectClick() {
       if (this.newProgressCount <= this.maxNewProgress) {
-
         this.buttonPressCount += this.newProgressCount;
-        this.collectService.addButtonPressCount(this.newProgressCount);
+        this.saveCoins(this.newProgressCount)
         this.collectService.resetNewProgressCount();
+        this.collectService.startProgressDecrease();
         this.newProgressCount = 0; // Reset new progress after collecting
         this.telegramServices.hapticFeedback.impactOccurred('medium');
-        
-
       }
     }
-    saveCoins(telegramUser: any) {
+    saveCoins(claim:number) {
       const postData: postDataInterface = {
         Mode: 1, // Mode depending on your logic
         CrudType: 0, // Example value
         SaveData: {'collect':[{
           mode:1,
-          id: telegramUser.telegramId,
-          profitPerTap: telegramUser.profitPerTap,
-          profitPerHour: telegramUser.profitPerHour,
-          totalCoins: telegramUser.totalCoins,
+          id: this.userInfo.telegramId,
+          claim: claim,
         }]},
       };
-
+  
       this.postDataService.sendData('Login',postData).subscribe(
         (response) => {
           if(response.StatusCode==200){
-            console.log('Data saved successfully:', response);
+           if(response?.Result?.length>0){
+            let claim:number=response?.Result?.[0]?.totalCoins;
+            if(claim){
+              this.collectService.addButtonPressCount(claim);
+            }
+           }
           }
         },
         (error) => {
@@ -230,6 +235,7 @@
         }
       );
     }
+ 
     initBackgroundAnimation() {
       const canvasBg = this.canvasBgRef.nativeElement;
       const ctxBg = canvasBg.getContext('2d');

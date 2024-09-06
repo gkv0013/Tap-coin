@@ -59,22 +59,28 @@
         </div>
       </div>
       <div id="challenges-content" class="tab-content">
+
+        <div class="total-coins-earned">
+          <h3 class="text-lg font-bold">Total Coins Earned:</h3>
+          <p class="text-2xl text-yellow-500 font-bold">435 NILA</p>
+        </div>
         <div class="text-center">
-          <h2 class="text-xl font-bold">Milestone rewards</h2>
-          <p class="text-gray-400">Complete specific milestones to unlock huge rewards and bonuses!</p>
+          <p class="text-gray-400">Earn rewards of 20 NILA for every direct referrals</p>
         </div>
         <div class="mt-4">
-          <div *ngFor="let friend of friendsList" class="friend-card">
-            <div class="friend-content">
-              <img [src]="getAvatarUrl(friend.name)" alt="{{ friend.name }}'s avatar" class="avatar">
-              <div class="friend-info-container">
-                <div class="friend-name">{{ friend.name }}</div>
-              </div>
+          <div class="friends-card-container">
+            <div *ngFor="let friend of friendsList" class="friend-card">
+              <div class="friend-content">
+                <img [src]="getAvatarUrl(friend.name)" alt="{{ friend.name }}'s avatar" class="avatar">
+                <div class="friend-info-container">
+                  <div class="friend-name">{{ friend.name }}</div>
+                </div>
 
-              <!-- Claim button on the right (even if button is hidden, container is kept) -->
-              <div class="claim-btn-container">
-                <button *ngIf="!friend.claimed" class="btn claim-btn"
-                  (click)="claimReward(friend.referid)">Claim</button>
+                <!-- Claim button on the right (even if button is hidden, container is kept) -->
+                <div class="claim-btn-container">
+                  <!-- <button *ngIf="!friend.claimed" class="btn claim-btn"
+                  (click)="claimReward(friend.referid)">Claim</button> -->
+                </div>
               </div>
             </div>
           </div>

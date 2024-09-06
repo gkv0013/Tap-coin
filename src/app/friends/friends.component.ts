@@ -18,7 +18,6 @@ export class FriendsComponent {
   constructor() {}
   public commonService = inject(CommonService);
   private postDataService = inject(PostDataService);
-  private collectService = inject(CollectService);
   activeTab: string = 'tasks'; // Set default active tab
   friendsList:Friend[]= [];
   
@@ -79,36 +78,6 @@ export class FriendsComponent {
   }
   getAvatarUrl(name: string): string {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
-  }
-  claimReward(referid: any) {
-    const friend = this.friendsList.find(f => f.referid === referid);
-    if (friend) {
-      friend.claimed = true;
-      this.friendsList = [...this.friendsList];
-    }
-    const postData: postDataInterface = {
-      Mode: 1, // Mode depending on your logic
-      CrudType: 1, // Example value
-      FetchData: [{
-        mode:1,
-        telegramId: referid,
-      }],
-    };
-    this.postDataService.sendData('Login',postData).subscribe(
-      (response) => {
-        if(response.StatusCode==200){
-          if(response.Result){
-            this.collectService.addButtonPressCount(20);
-            const userData=this.commonService.getUserInfo();
-            this.commonService.saveCoins(userData);
-          }
-        }
-      },
-      (error) => {
-        console.error('Error saving data:', error);
-      }
-    );
-
   }
   ngOnInit() {
     this.userInfo=this.commonService.getUserInfo();
