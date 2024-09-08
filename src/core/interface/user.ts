@@ -36,6 +36,6 @@ export interface Friend {
 }
 
 export interface Boost {
-  userId:number;
-  DateTime: string;
+  mode:number;
+  telegramId: string;
 }

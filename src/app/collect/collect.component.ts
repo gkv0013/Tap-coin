@@ -129,7 +129,8 @@
     
     onButtonClick(event: MouseEvent) {
       if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
-        this.newProgressCount++;
+        this.newProgressCount=this.newProgressCount+2;
+        console.log((this.newProgressCount+3));
         this.currentEnergy--; // Decrease energy on button click
         this.telegramServices.hapticFeedback.impactOccurred('medium');
         const button = this.roundButton.nativeElement;
