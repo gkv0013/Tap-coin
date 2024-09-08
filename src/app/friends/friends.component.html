@@ -62,7 +62,7 @@
 
         <div class="total-coins-earned">
           <h3 class="text-lg font-bold">Total Coins Earned:</h3>
-          <p class="text-2xl text-yellow-500 font-bold">435 NILA</p>
+          <p class="text-2xl text-yellow-500 font-bold">{{totalRewards}} NILA</p>
         </div>
         <div class="text-center">
           <p class="text-gray-400">Earn rewards of 20 NILA for every direct referrals</p>
@@ -78,9 +78,10 @@
 
                 <!-- Claim button on the right (even if button is hidden, container is kept) -->
                 <div class="claim-btn-container">
-                  <!-- <button *ngIf="!friend.claimed" class="btn claim-btn"
-                  (click)="claimReward(friend.referid)">Claim</button> -->
+                  {{friend.claimed ? friend.claimed : 0}} NILA
                 </div>
+                
+                
               </div>
             </div>
           </div>

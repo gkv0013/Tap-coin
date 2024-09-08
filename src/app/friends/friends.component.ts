@@ -4,17 +4,17 @@ import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { CommonService } from '../common.service';
 import { Friend, postDataInterface } from '../../core/interface/user';
 import { PostDataService } from '../../core/services/post-data.service';
-import { AvatarModule } from '@boringer-avatars/angular';
 import { CollectService } from '../../core/services/collect.service';
 @Component({
   selector: 'app-friends',
   standalone: true,
-  imports: [CommonModule,AvatarModule],
+  imports: [CommonModule],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.css'
 })
 export class FriendsComponent {
   userInfo:any;
+  totalRewards:number=0;
   constructor() {}
   public commonService = inject(CommonService);
   private postDataService = inject(PostDataService);
@@ -67,7 +67,8 @@ export class FriendsComponent {
       (response) => {
         if(response.StatusCode==200){
           if(response.Result){
-            this.friendsList=response.Result;
+            this.friendsList=response.Result?.friends??[];
+            this.totalRewards = response?.Result?.Totalrewards[0]?.total_referral_reward ??0
           }
         }
       },
