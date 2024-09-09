@@ -121,6 +121,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private postDataService = inject(PostDataService);
   private modalService = inject(BsModalService);
   private readonly telegramServices = inject(TelegramWebappService);
+  private readonly  = inject(TelegramWebappService);
   public router = inject(Router);
   public commonService = inject(CommonService);
   private collectService = inject(CollectService);
@@ -130,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.activeTab = tab;
     });
     this.userData = {
-      id: '678977314',  // Example user ID
+      id: '12',  // Example user ID
       username: 'Dinkann',  // Example username
       firstname: 'John',  // Example first name
       lastname: 'Doe',  // Example last name
@@ -160,20 +161,21 @@ export class AppComponent implements OnInit, OnDestroy {
       this.loadUserData(this.userData);
     }
     console.log(this.telegramServices.initDataUnsafe?.user);
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        setTimeout(() => {
-          window.scrollTo(0, 0); // Force scroll position to reset
-        }, 0);
-      }
-    });
-    const viewportChangedSubscription = this.telegramServices
-      .onEvent('viewport_changed' as any)
-      .subscribe((params) => {
-        this.handleViewportChange(params);
-      });
+    this.telegramServices.expand();
+    // this.router.events.subscribe((event) => {
+    //   if (event instanceof NavigationEnd) {
+    //     setTimeout(() => {
+    //       window.scrollTo(0, 0); // Force scroll position to reset
+    //     }, 0);
+    //   }
+    // });
+    // const viewportChangedSubscription = this.telegramServices
+    //   .onEvent('viewport_changed' as any)
+    //   .subscribe((params) => {
+    //     this.handleViewportChange(params);
+    //   });
 
-    this.subscriptions.push(viewportChangedSubscription);
+    // this.subscriptions.push(viewportChangedSubscription);
     this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
   }
   ngOnDestroy() {
