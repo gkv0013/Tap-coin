@@ -2,40 +2,40 @@
   <div class="task-card-container">
     <div class="container mx-auto px-4">
       <div class="tab-header">
-        <div id="tasks-tab" class="active" (click)="showTab('tasks')">Tasks</div>
-        <div id="challenges-tab" (click)="showTab('challenges')">Challenges</div>
+        <!-- <div id="tasks-tab" class="active" (click)="showTab('tasks')">Tasks</div> -->
+        <!-- <div id="challenges-tab" (click)="showTab('challenges')">Challenges</div> -->
       </div>
       <div id="tasks-content" class="tab-content active">
         <div class="text-center">
-          <h2 class="text-xl font-bold">Earn more tokens</h2>
-          <p class="text-gray-400">Perform tasks daily to earn more Nila tokens and level up real quick!</p>
+          <h2 class="text-xl font-bold">Earn more Credits</h2>
+          <p class="text-gray-400">Perform tasks to earn more Media Credits and level up real quick!</p>
         </div>
         <div class="mt-4">
-          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4"   [@cardAnimation]="'enter'"  (@cardAnimation.done)="onCardAnimationDone()">
             <div class="flex items-center justify-between">
               <div class="flex items-center">
-                <img src="/image/telegram.png" alt="Telegram Icon" class="icon">
+                <img src="/image/telegram.png" alt="Telegram Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
                 <div class="task-info">
                   <div class="font-bold">Join my Telegram Channel</div>
                 </div>
               </div>
               <div class="task-buttons">
-                <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()">Perform</button>
-                <button class="btn bg-gray-700 text-white">Verify</button>
+                <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()" *ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Perform</button>
+                <button class="btn bg-gray-700 text-white"  *ngIf="isCardAnimationDone"[@buttonAnimation]="'enter'">Verify</button>
               </div>
             </div>
           </div>
-          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4"  [@cardAnimation]="'enter'">
             <div class="flex items-center justify-between">
               <div class="flex items-center">
-                <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                <img src="/image/youtube.png" alt="YouTube Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
                 <div class="task-info">
                   <div class="font-bold">Subscribe to my YouTube</div>
                 </div>
               </div>
               <div class="task-buttons">
-                <button class="btn bg-gray-700 text-white">Done</button>
-                <button class="btn bg-yellow-500 text-white">Claim</button>
+                <button class="btn bg-gray-700 text-white" *ngIf="isCardAnimationDone"  [@buttonAnimation]="'enter'">Perform</button>
+                <button class="btn bg-gray-700 text-white"  *ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Verify</button>
               </div>
             </div>
           </div>
