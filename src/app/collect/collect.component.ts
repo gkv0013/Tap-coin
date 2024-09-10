@@ -7,13 +7,21 @@
   import { Subscription } from 'rxjs';
   import { postDataInterface } from '../../core/interface/user';
   import { PostDataService } from '../../core/services/post-data.service';
-
+  import { trigger, style, animate, transition} from '@angular/animations';
   @Component({
     selector: 'app-collect',
     standalone: true,
     imports: [CommonModule],
     templateUrl: './collect.component.html',
-    styleUrls: ['./collect.component.css']
+    styleUrls: ['./collect.component.css'],
+    animations: [
+     trigger('buttonAnimation', [
+        transition(':enter', [
+          style({ transform: 'scale(0)', opacity: 0 }), // Initial state (scaled down, invisible)
+          animate('0.5s ease-out', style({ transform: 'scale(1)', opacity: 1 })) // Final state (scaled up, visible)
+        ])
+      ])
+    ]
   })
   export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
     nextLevel = 5000;

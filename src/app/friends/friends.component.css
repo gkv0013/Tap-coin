@@ -11,7 +11,15 @@
     margin-bottom: 20px;
     flex-wrap: wrap;
   }
-
+  .highlight-bar {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color: rgba(255, 193, 7, 1); /* Initial color of the highlight */
+    width: 0%; /* Start with 0% width, animated to 100% */
+    transition: width 0.4s ease-out; /* Smooth width animation */
+  }
   .tab-header div {
     cursor: pointer;
     padding: 10px 20px;

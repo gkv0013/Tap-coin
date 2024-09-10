@@ -4,13 +4,26 @@ import { postDataInterface } from '../../core/interface/user';
 import { CommonService } from '../common.service';
 import { PostDataService } from '../../core/services/post-data.service';
 import { CollectService } from '../../core/services/collect.service';
-
+import { trigger, style, animate, transition} from '@angular/animations';
 @Component({
   selector: 'app-airdrop',
   standalone: true,
   imports: [],
   templateUrl: './airdrop.component.html',
-  styleUrl: './airdrop.component.css'
+  styleUrl: './airdrop.component.css',
+  animations: [
+    trigger('cardAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(50px)' }), // Start with opacity 0 and slide up from below
+        animate('0.5s ease-out', style({ opacity: 1, transform: 'translateY(0)' })) // Animate to visible state and original position
+      ])
+    ]),      trigger('buttonAnimation', [
+      transition(':enter', [
+        style({ transform: 'scale(0)', opacity: 0 }), // Initial state (scaled down, invisible)
+        animate('0.5s ease-out', style({ transform: 'scale(1)', opacity: 1 })) // Final state (scaled up, visible)
+      ])
+    ])
+  ]
 })
 export class AirdropComponent {
   public commonService = inject(CommonService);
