@@ -25,6 +25,7 @@
     currentEnergy = 1000; // Current energy value
     maxEnergy = 110; // Maximum energy value
     shouldShakeBoostIcons = false;
+    shouldShakeClaimIcons=false;
     timerDuration = 60; // Timer duration in seconds (1 minute)
     timeRemaining = 0; // Time remaining for the timer
     isTimerRunning = false;
@@ -139,19 +140,27 @@
         this.collectService.stopProgressDecrease(); // Stop the decrease timer
         this.collectService.resetProgressDecreaseAfterInactivity();
         this.createFallingCoin();
-        if (this.currentEnergy === 0 && !this.isTimerRunning) {
-          this.collectService.startTimer(this.telegramServices);
-        }
+        // if (this.currentEnergy === 0 && !this.isTimerRunning) {
+        //   this.collectService.startTimer(this.telegramServices);
+        // }
         setTimeout(() => {
           button.classList.remove('pulse');
         }, 1000);
-      } else if (this.currentEnergy === 0 && !this.isTimerRunning) {
-        this.collectService.startTimer(this.telegramServices);
-      } else {
+      // } else if (this.currentEnergy === 0 && !this.isTimerRunning) {
+      //   this.collectService.startTimer(this.telegramServices);
+      // 
+      } 
+      else if(this.currentEnergy < 1){
         this.shouldShakeBoostIcons = true;
         setTimeout(() => {
           this.shouldShakeBoostIcons = false;
         }, 500);
+      }
+        else {
+          this.shouldShakeClaimIcons = true;
+          setTimeout(() => {
+            this.shouldShakeClaimIcons = false;
+          }, 500);
       }
     }
     
