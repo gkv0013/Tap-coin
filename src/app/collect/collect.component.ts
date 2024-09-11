@@ -106,23 +106,7 @@
     private boostDataFetch = inject(BoostDataFetch);
 
     constructor() { 
-      const postData: Boost = {
-            mode:0,
-            telegramId: this.userInfo.telegramId,
-            boostType: "coinMutipler"
-        };
-        this.boostDataFetch.sendData('Boost',postData).subscribe(
-          (response) => {
-            if(response.StatusCode==200){
-              if(response.Result){
 
-              }
-            }
-          },
-          (error) => {
-            console.error('Error saving data:', error);
-          }
-        ); 
     }
 
 
@@ -130,6 +114,26 @@
     this.initSubscriptions();
     this.collectService.startProgressDecrease()
     this.userInfo=this.commonService.getUserInfo();
+    this.getBoostData();
+    }
+    getBoostData(){
+      const postData: Boost = {
+        mode:0,
+        telegramId: this.userInfo.telegramId,
+        boostType: "coinMutipler"
+    };
+    this.boostDataFetch.sendData('Boost',postData).subscribe(
+      (response) => {
+        if(response.StatusCode==200){
+          if(response.Result){
+
+          }
+        }
+      },
+      (error) => {
+        console.error('Error saving data:', error);
+      }
+    ); 
     }
     initSubscriptions(){
       this.subscriptions.push(
