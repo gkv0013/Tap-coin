@@ -37,20 +37,21 @@
       <div class="text-center">
         <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
 
-          <div (click)="claimBoost('coinMutipler')"class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+          <div (click)="claimBoost('coinMutipler')" [class.disabled]="tapBooster.active != 0" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
             
             <div class="icon-container  mr-4" >
               <img src="/image/tap.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
             </div>
             
             <div class="text-center flex-grow">
-              <div class="text-lg font-bold">Muti Tap</div>
+              <div class="text-lg font-bold">Muti Tap</div> 
+              <div class="text-lg font-bold" [class.disabled]="tapBooster.active = 0" >Active</div>
               
              <!-- Progress Bar Section -->
-          <div class="text-xl font-bold mt-2"> x2 </div>
-          <div class="text-xl font-bold mt-2" style="display: inline-block;">
-            <span class="font-bold mt-2" style="float:center;">20</span>
-          <img src="/image/Nila.png" alt="Coin Icon" class="coin-icon"  style="float:Left;"/>
+             <div class="text-xl font-bold mt-2"> x{{tapBooster.boostEffect}} </div>
+             <div class="text-xl font-bold mt-2" style="display: inline-block;" >
+               <span class="font-bold mt-2" style="float:center;">{{tapBooster.boostCost}}</span>
+             <img src="/image/Nila.png" alt="Coin Icon" class="coin-icon"  style="float:Left;"/>
             
           </div>
        
@@ -70,7 +71,7 @@
         <div class="text-center">
           <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
   
-            <div (click)="claimBoost('energyMutiplier')"class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+            <div (click)="claimBoost('energyMutiplier')" [class.disabled]="energyBooster.active != 0" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
               
               <div class="icon-container  mr-4" >
                 <img src="/image/enegry.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
@@ -79,10 +80,15 @@
               <div class="text-center flex-grow">
                 <div class="text-lg font-bold">Energy Boost</div>
                 
-               <!-- Progress Bar Section -->
-            <div class="text-xl font-bold mt-2"> x2 </div>
-            <div class="text-xl font-bold mt-2" style="display: inline-block;">
-              <span class="font-bold mt-2" style="float:center;">20</span>
+               <!-- Progress Bar Section  boostCost:number;
+  boostEnd: number;
+  totalUsed: number;
+  boostEffect:number;
+  boostType: string;
+  active: number;-->
+            <div class="text-xl font-bold mt-2"> x{{energyBooster.boostEffect}} </div>
+            <div class="text-xl font-bold mt-2" style="display: inline-block;" >
+              <span class="font-bold mt-2" style="float:center;">{{energyBooster.boostCost}}</span>
             <img src="/image/Nila.png" alt="Coin Icon" class="coin-icon"  style="float:Left;"/>
               
             </div>

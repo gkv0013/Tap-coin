@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonService } from '../common.service';
 import { BoostDataFetch } from '../../core/services/boost.service';
-import { Boost, postDataInterface } from '../../core/interface/user';
+import { Boost, BoosterData } from '../../core/interface/user';
 import { CollectService } from '../../core/services/collect.service';
 @Component({
   selector: 'app-boost',
@@ -21,6 +21,9 @@ export class BoostComponent {
   totalDay: number = 0;
   dayDifference: number = 0;
   progress: number = 0;
+  tapBooster: BoosterData ={    boostCost:0,boostEnd: 0,totalUsed: 0,boostEffect:0,boostType: '',active: 0} ;
+  energyBooster: BoosterData ={    boostCost:0,boostEnd: 0,totalUsed: 0,boostEffect:0,boostType: '',active: 0} ;
+  
 
   
   
@@ -82,7 +85,14 @@ export class BoostComponent {
           (response) => {
             if(response.StatusCode==200){
               if(response.Result){
-                console.log(response.Result);
+                // boostCost:0,boostEnd: 0,totalUsed: 0,boostEffect:0,boostType: '',active: 0
+                this.tapBooster.boostCost=response.Result[0].boostCost;
+                this.tapBooster.boostEnd=response.Result[0].boostEnd;
+                this.tapBooster.totalUsed=response.Result[0].totalUsed;
+                this.tapBooster.boostEffect=response.Result[0].boostEffect;
+                this.tapBooster.boostType=response.Result[0].boostType;
+                this.tapBooster.active=response.Result[0].active;
+                
               }
             }
           },
@@ -90,7 +100,6 @@ export class BoostComponent {
             console.error('Error saving data:', error);
           }
         );
-        
     }
 
     fetchEnergyBoost():void{
@@ -103,7 +112,12 @@ export class BoostComponent {
           (response) => {
             if(response.StatusCode==200){
               if(response.Result){
-                console.log(response.Result);
+                this.energyBooster.boostCost=response.Result[0].boostCost;
+                this.energyBooster.boostEnd=response.Result[0].boostEnd;
+                this.energyBooster.totalUsed=response.Result[0].totalUsed;
+                this.energyBooster.boostEffect=response.Result[0].boostEffect;
+                this.energyBooster.boostType=response.Result[0].boostType;
+                this.energyBooster.active=response.Result[0].active;
               }
             }
           },
@@ -147,7 +161,6 @@ export class BoostComponent {
         telegramId: this.userInfo.telegramId,
         boostType: "coinMutipler"
         };
-
         this.boostDataFetch.sendData('Boost',postData).subscribe(
             (response) => {
               if(response.StatusCode==200){

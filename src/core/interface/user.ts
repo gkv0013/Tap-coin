@@ -41,3 +41,11 @@ export interface Boost {
   boostType: string;
 }
 
+export interface BoosterData {
+  boostCost:number;
+  boostEnd: number;
+  totalUsed: number;
+  boostEffect:number;
+  boostType: string;
+  active: number;
+}

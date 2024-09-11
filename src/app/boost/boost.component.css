@@ -165,6 +165,7 @@ button:disabled {
 .dimmed {
   opacity: 0.6; /* Dim the entire container */
 }
+
 .amount-container {
   display: flex;
   align-items: center; /* Align items vertically in the center */
@@ -181,6 +182,10 @@ button:disabled {
   font-weight: bold;
 }
 
+
+.text-lg.disabled {
+  display: none;
+}
 
 
   /* Extra small devices (phones, 0px to 575px) */
