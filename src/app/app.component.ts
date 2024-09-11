@@ -281,6 +281,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   
   openModal(template: TemplateRef<any>) {
+    if (this.bsModalRef) {
+      this.bsModalRef.hide();
+    }
     this.bsModalRef = this.modalService.show(template);
     this.currentImageIndex=0
   }
