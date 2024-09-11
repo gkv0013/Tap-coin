@@ -37,7 +37,7 @@
       <div class="text-center">
         <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
 
-          <div (click)="claimBoost('coinMutipler')"  class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+          <div (click)="claimBoost('coinMutipler')" [class.disabled]="tapBooster.balance < tapBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
             
             <div class="icon-container  mr-4" >
               <img src="/image/tap.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
@@ -45,7 +45,6 @@
             
             <div class="text-center flex-grow">
               <div class="text-lg font-bold">Muti Tap</div> 
-              <div class="text-lg font-bold"  >Active</div>
               
              <!-- Progress Bar Section -->
              <div class="text-xl font-bold mt-2"> x{{tapBooster.boostEffect}} </div>
@@ -71,7 +70,7 @@
         <div class="text-center">
           <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
   
-            <div (click)="claimBoost('energyMutiplier')"  class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+            <div (click)="claimBoost('energyMutiplier')" [class.disabled]="energyBooster.balance < energyBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
               
               <div class="icon-container  mr-4" >
                 <img src="/image/enegry.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
@@ -86,7 +85,12 @@
   boostEffect:number;
   boostType: string;
   active: number;-->
- 
+            <div class="text-xl font-bold mt-2"> x{{energyBooster.boostEffect}} </div>
+            <div class="text-xl font-bold mt-2" style="display: inline-block;" >
+              <span class="font-bold mt-2" style="float:center;">{{energyBooster.boostCost}}</span>
+            <img src="/image/Nila.png" alt="Coin Icon" class="coin-icon"  style="float:Left;"/>
+              
+            </div>
          
             <!-- Single button to update progress -->
            

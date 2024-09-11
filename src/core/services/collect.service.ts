@@ -20,6 +20,7 @@ export class CollectService {
   private progressDecreaseTimeoutId: any = null;
   public commonService = inject(CommonService);
   private energyIncrement = 1;
+  private profitPerTap = 1;
   private energyRegenIntervalTime = 1500;
   getButtonPressCount() {
     return this.buttonPressCount.asObservable();
@@ -51,7 +52,7 @@ export class CollectService {
   }
 
   incrementNewProgressCount() {
-    const newValue = this.newProgressCount.value + 1;
+    const newValue = (this.newProgressCount.value + this.profitPerTap) > this.maxNewProgress.getValue()? this.maxNewProgress.getValue(): (this.newProgressCount.value + this.profitPerTap);
     this.newProgressCount.next(newValue);
     this.stopEnergyRegen(); // Stop regenerating energy when the button is clicked
   }
@@ -139,6 +140,13 @@ export class CollectService {
   }
   resetEnergyIncrement() {
     this.energyIncrement = 1;
+  }
+
+  setprofitPerTap(value: number) {
+    this.profitPerTap = value;
+  }
+  resetprofitPerTap() {
+    this.profitPerTap = 1;
   }
 
   stopEnergyRegen() {

@@ -105,17 +105,34 @@
 
     private boostDataFetch = inject(BoostDataFetch);
 
-    constructor() { 
-      const postData: Boost = {
+    boosterEffectFetch() { 
+      const postDataMutipler: Boost = {
             mode:0,
             telegramId: this.userInfo.telegramId,
             boostType: "coinMutipler"
         };
-        this.boostDataFetch.sendData('Boost',postData).subscribe(
+        const postDataEnergy: Boost = {
+          mode:0,
+          telegramId: this.userInfo.telegramId,
+          boostType: "energyMutiplier"
+      };
+        this.boostDataFetch.sendData('Boost',postDataMutipler).subscribe(
           (response) => {
             if(response.StatusCode==200){
               if(response.Result){
-
+                this.collectService.setprofitPerTap(response.Result[0].boostEffectCurrent);
+              }
+            }
+          },
+          (error) => {
+            console.error('Error saving data:', error);
+          }
+        ); 
+        this.boostDataFetch.sendData('Boost',postDataEnergy).subscribe(
+          (response) => {
+            if(response.StatusCode==200){
+              if(response.Result){
+                this.collectService.setEnergyIncrement(response.Result[0].boostEffectCurrent);
               }
             }
           },
@@ -128,8 +145,9 @@
 
     ngOnInit() {
     this.initSubscriptions();
-    this.collectService.startProgressDecrease()
+    this.collectService.startProgressDecrease();
     this.userInfo=this.commonService.getUserInfo();
+    this.boosterEffectFetch();
     }
     initSubscriptions(){
       this.subscriptions.push(
