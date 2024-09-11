@@ -38,4 +38,6 @@ export interface Friend {
 export interface Boost {
   mode:number;
   telegramId: string;
+  boostType: string;
 }
+

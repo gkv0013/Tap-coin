@@ -52,8 +52,7 @@ section#pump {
   position: relative;
   background-color: #3b3b3b;
   border-radius: 5px;
-  margin: 20px auto;
-  width: 80%;
+  width: 100%;
   height: 20px;
   overflow: hidden;
 }
@@ -122,6 +121,66 @@ button:disabled {
   cursor: not-allowed;
   transform: none;
 }
+
+/* Add transition for smooth scaling */
+.boost-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* When clicked (active state), shrink the div a little bit and add a shadow */
+.boost-card:active {
+  transform: scale(0.98); /* Slightly shrink */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Add a deeper shadow effect */
+  opacity: .3;
+}
+
+/* Optional hover effect */
+.boost-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Slightly larger shadow on hover */
+}
+
+/* Add transition for smooth scaling */
+.boost-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+}
+
+/* When clicked (active state), shrink the div a little bit and add a shadow */
+.boost-card:active {
+  transform: scale(0.98); /* Slightly shrink */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Add a deeper shadow effect */
+}
+
+/* Optional hover effect */
+.boost-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Slightly larger shadow on hover */
+}
+
+/* Disabled click state */
+.boost-card.disabled {
+  opacity: 0.6; /* Dims the div */
+  pointer-events: none; /* Disables click */
+}
+
+/* Additional class for dimming when progress < 2 */
+.dimmed {
+  opacity: 0.6; /* Dim the entire container */
+}
+.amount-container {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
+.coin-icon {
+  width: 24px; /* Adjust the size as needed */
+  height: 24px;
+  margin-right: 8px; /* Space between the icon and the text */
+}
+
+.amount-text {
+  font-size: 16px; /* Adjust the font size as needed */
+  font-weight: bold;
+}
+
 
 
   /* Extra small devices (phones, 0px to 575px) */

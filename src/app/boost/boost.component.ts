@@ -19,26 +19,30 @@ export class BoostComponent {
   totalDay: number = 0;
   dayDifference: number = 0;
   progress: number = 0;
+
+  
   
   constructor() { 
     this.userInfo=this.commonService.getUserInfo();
  
-    this.featchBoost();
-    console.log(this.dayDifference);
+    this.fetchDailyBoost();
+    this.fetchTapBoost();
+    this.fetchEnergyBoost();
     
     this.updateProgress();
   }
 
-  featchBoost():void{
+  //fetch Daily boost data
+  fetchDailyBoost():void{
     const postData: Boost = {
           mode:0,
-          telegramId: this.userInfo.telegramId
+          telegramId: this.userInfo.telegramId,
+          boostType: "dailyBoost"
       };
       this.boostDataFetch.sendData('Boost',postData).subscribe(
         (response) => {
           if(response.StatusCode==200){
             if(response.Result){
-              console.log(response.Result);
               this.pendingCount = response.Result[0].pendingCount;
               this.limit = response.Result[0].limit;
               this.totalUsed = response.Result[0].totalUsed;
@@ -48,12 +52,11 @@ export class BoostComponent {
 
               const timeDifference = currentDate.getTime() - lastReset.getTime();
               this.dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
-              console.log(this.dayDifference);
               if (this.dayDifference>=1)
                 {
                   
                   this.dayReset();
-                  this.featchBoost();
+                  this.fetchDailyBoost();
                 }
               this.updateProgress();
             }
@@ -66,50 +69,143 @@ export class BoostComponent {
       
   }
 
-
-
-  claimBoost():void {
-    const postData: Boost = {
-      mode:1,
-      telegramId: this.userInfo.telegramId
-  };
-  this.boostDataFetch.sendData('Boost',postData).subscribe(
-    (response) => {
-      if(response.StatusCode==200){
-        if(response.Result){
-          console.log(response.Result);
-          this.featchBoost();
-        }
-      }
-    },
-    (error) => {
-      console.error('Error saving data:', error);
+    //fetch mutitap
+    fetchTapBoost():void{
+      const postData: Boost = {
+            mode:0,
+            telegramId: this.userInfo.telegramId,
+            boostType: "coinMutipler"
+        };
+        this.boostDataFetch.sendData('Boost',postData).subscribe(
+          (response) => {
+            if(response.StatusCode==200){
+              if(response.Result){
+                console.log(response.Result);
+              }
+            }
+          },
+          (error) => {
+            console.error('Error saving data:', error);
+          }
+        );
+        
     }
-  );
-  
+
+    fetchEnergyBoost():void{
+      const postData: Boost = {
+            mode:0,
+            telegramId: this.userInfo.telegramId,
+            boostType: "energyMutiplier"
+        };
+        this.boostDataFetch.sendData('Boost',postData).subscribe(
+          (response) => {
+            if(response.StatusCode==200){
+              if(response.Result){
+                console.log(response.Result);
+              }
+            }
+          },
+          (error) => {
+            console.error('Error saving data:', error);
+          }
+        );
+        
+    }
+
+
+  //boost claim button
+  claimBoost(type:string):void {
+    if (type!='dailyBoost'){
+      if (this.pendingCount!=0)
+        {
+            const postData: Boost = {
+              mode:1,
+              telegramId: this.userInfo.telegramId,
+              boostType: "dailyBoost"
+          };
+          this.boostDataFetch.sendData('Boost',postData).subscribe(
+            (response) => {
+              if(response.StatusCode==200){
+                if(response.Result){
+                  this.fetchDailyBoost();
+                }
+              }
+            },
+            (error) => {
+              console.error('Error saving data:', error);
+            }
+          );  
+        } 
+    }
+    if (type!='coinMutipler'){
+
+      const postData: Boost = {
+        mode:1,
+        telegramId: this.userInfo.telegramId,
+        boostType: "coinMutipler"
+        };
+
+        this.boostDataFetch.sendData('Boost',postData).subscribe(
+            (response) => {
+              if(response.StatusCode==200){
+                if(response.Result){
+                  this.fetchDailyBoost();
+                }
+              }
+            },
+            (error) => {
+              console.error('Error saving data:', error);
+            }
+        );  
+      
+    }
+    if (type!='energyMutiplier'){
+
+      const postData: Boost = {
+            mode:1,
+            telegramId: this.userInfo.telegramId,
+            boostType: "energyMutiplier"
+        };
+      this.boostDataFetch.sendData('Boost',postData).subscribe(
+        (response) => {
+          if(response.StatusCode==200){
+            if(response.Result){
+              this.fetchDailyBoost();
+            }
+          }
+        },
+        (error) => {
+          console.error('Error saving data:', error);
+        }
+      );  
+
+
+    }
+    
+   
   }
 
-
-  dayReset():void {
-    const postData: Boost = {
-      mode:2,
-      telegramId: this.userInfo.telegramId
-  };
-  this.boostDataFetch.sendData('Boost',postData).subscribe(
-    (response) => {
-      if(response.StatusCode==200){
-        if(response.Result){
-          console.log(response.Result);
-          this.featchBoost();
+    //daily reset function
+    dayReset():void {
+      const postData: Boost = {
+        mode:2,
+        telegramId: this.userInfo.telegramId,
+        boostType: "dailyBoost"
+    };
+    this.boostDataFetch.sendData('Boost',postData).subscribe(
+      (response) => {
+        if(response.StatusCode==200){
+          if(response.Result){
+            this.fetchDailyBoost();
+          }
         }
+      },
+      (error) => {
+        console.error('Error saving data:', error);
       }
-    },
-    (error) => {
-      console.error('Error saving data:', error);
+    );
+    
     }
-  );
-  
-  }
 
     // Function to update the progress value
     updateProgress(): void {
