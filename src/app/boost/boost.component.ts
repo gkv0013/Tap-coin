@@ -21,6 +21,7 @@ export class BoostComponent {
   private postDataService = inject(PostDataService);
   pendingCount:number=0;
   limit:number=0;
+  currentEnergy:number=0;
   totalUsed:number=0;
   totalDay: number = 0;
   dayDifference: number = 0;
@@ -136,8 +137,10 @@ export class BoostComponent {
   //boost claim button
   claimBoost(type:string):void {
     if (type=='dailyBoost'){
-      if (this.pendingCount!=0)
+      this.collectService.getCurrentEnergy().subscribe(energy => this.currentEnergy = energy)
+      if (this.pendingCount!=0 && this.currentEnergy!=1000)
         {
+          
             const postData: Boost = {
               mode:1,
               telegramId: this.userInfo.telegramId,
