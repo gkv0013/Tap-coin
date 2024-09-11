@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonService } from '../common.service';
 import { BoostDataFetch } from '../../core/services/boost.service';
 import { Boost, postDataInterface } from '../../core/interface/user';
+import { CollectService } from '../../core/services/collect.service';
 @Component({
   selector: 'app-boost',
   standalone: true,
@@ -13,6 +14,7 @@ export class BoostComponent {
   userInfo:any;
   public commonService = inject(CommonService);
   private boostDataFetch = inject(BoostDataFetch);
+  private readonly collectService = inject(CollectService);
   pendingCount:number=0;
   limit:number=0;
   totalUsed:number=0;
@@ -115,7 +117,7 @@ export class BoostComponent {
 
   //boost claim button
   claimBoost(type:string):void {
-    if (type!='dailyBoost'){
+    if (type=='dailyBoost'){
       if (this.pendingCount!=0)
         {
             const postData: Boost = {
@@ -127,6 +129,7 @@ export class BoostComponent {
             (response) => {
               if(response.StatusCode==200){
                 if(response.Result){
+                  this.collectService.resetCurrentEnergy();
                   this.fetchDailyBoost();
                 }
               }
@@ -137,7 +140,7 @@ export class BoostComponent {
           );  
         } 
     }
-    if (type!='coinMutipler'){
+    if (type=='coinMutipler'){
 
       const postData: Boost = {
         mode:1,
@@ -159,7 +162,7 @@ export class BoostComponent {
         );  
       
     }
-    if (type!='energyMutiplier'){
+    if (type=='energyMutiplier'){
 
       const postData: Boost = {
             mode:1,
