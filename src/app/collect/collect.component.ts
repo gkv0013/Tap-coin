@@ -5,8 +5,9 @@
   import { CommonService } from '../common.service';
   import { CollectService } from '../../core/services/collect.service';
   import { Subscription } from 'rxjs';
-  import { postDataInterface } from '../../core/interface/user';
+  import { postDataInterface,Boost } from '../../core/interface/user';
   import { PostDataService } from '../../core/services/post-data.service';
+  import { BoostDataFetch } from '../../core/services/boost.service';
   import { trigger, style, animate, transition} from '@angular/animations';
   @Component({
     selector: 'app-collect',
@@ -101,6 +102,30 @@
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
     userInfo:any;
+
+    private boostDataFetch = inject(BoostDataFetch);
+
+    constructor() { 
+      const postData: Boost = {
+            mode:0,
+            telegramId: this.userInfo.telegramId,
+            boostType: "coinMutipler"
+        };
+        this.boostDataFetch.sendData('Boost',postData).subscribe(
+          (response) => {
+            if(response.StatusCode==200){
+              if(response.Result){
+
+              }
+            }
+          },
+          (error) => {
+            console.error('Error saving data:', error);
+          }
+        ); 
+    }
+
+
     ngOnInit() {
     this.initSubscriptions();
     this.collectService.startProgressDecrease()
@@ -138,8 +163,7 @@
     
     onButtonClick(event: MouseEvent) {
       if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
-        this.newProgressCount=this.newProgressCount+2;
-        console.log((this.newProgressCount+3));
+        this.newProgressCount=this.newProgressCount+1;
         this.currentEnergy--; // Decrease energy on button click
         this.telegramServices.hapticFeedback.impactOccurred('medium');
         const button = this.roundButton.nativeElement;

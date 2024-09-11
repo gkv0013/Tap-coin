@@ -1,4 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
 import { CommonService } from '../common.service';
 import { BoostDataFetch } from '../../core/services/boost.service';
 import { Boost, BoosterData } from '../../core/interface/user';
