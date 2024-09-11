@@ -1,4 +1,16 @@
-import { Component } from '@angular/core';
+import { CommonService } from '../common.service';
+import { CollectService } from '../../core/services/collect.service';
+import {
+  Component,
+  ElementRef,
+  AfterViewInit,
+  Renderer2,
+  ViewChild,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-green',
@@ -8,6 +20,13 @@ import { Component } from '@angular/core';
   styleUrl: './green.component.css',
 })
 export class GreenComponent {
+  public commonService = inject(CommonService);
+  public router = inject(Router);
+
+  routeToGoal(goal: Number) {
+    this.commonService.setActiveTab('green');
+    this.router.navigate(['/goals/' + goal]);
+  }
   cards = [
     {
       image:
@@ -37,5 +56,6 @@ export class GreenComponent {
     { path: 'image/sdg-icons/E-WEB-Goal-14.png' },
     { path: 'image/sdg-icons/E-WEB-Goal-15.png' },
     { path: 'image/sdg-icons/E-WEB-Goal-16.png' },
+    { path: 'image/sdg-icons/E-WEB-Goal-17.png' },
   ];
 }
