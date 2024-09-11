@@ -63,49 +63,49 @@ export class AppComponent implements OnInit, OnDestroy {
     {
       image: '/image/newbie.jpeg',
       title: 'Newbie',
-      description: 'Starting your journey.',
+      description: 'Just getting started, every step brings you closer.',
       progress: 0,
       color: 'linear-gradient(135deg, #a9a9a9, #dcdcdc)' // Newbie gradient
     },
     {
       image: '/image/bronze.jpeg',
       title: 'Bronze',
-      description: 'Your number of shares determines the league you enter.',
+      description: 'You’ve made your mark, the journey has begun.',
       progress: 5000,
       color: 'linear-gradient(135deg, #654321, #d7b89e)' // Bronze gradient
     },
     {
       image: '/image/silver.jpeg',
       title: 'Silver',
-      description: 'Your number of shares determines the league you enter.',
+      description: 'Shining brighter, your skills are advancing.',
       progress: 50000,
       color: 'linear-gradient(135deg, #C0C0C0, #e5e5e5)' // Silver gradient
     },
     {
       image: '/image/gold.jpeg',
       title: 'Gold',
-      description: 'Your number of shares determines the league you enter.',
+      description: 'You’re golden! Your progress is noteworthy.',
       progress: 500000,
       color: 'linear-gradient(135deg, #FFD700, #FFEB3B)' // Gold gradient
     },
     {
       image: '/image/platina.jpeg',
       title: 'Platina',
-      description: 'Your number of shares determines the league you enter.',
+      description: 'Rising above the rest, your achievements are exceptional.',
       progress: 1000000,
       color: 'linear-gradient(135deg, #E5E4E2, #d1d1d1)' // Platina gradient
     },
     {
       image: '/image/diamond.jpeg',
       title: 'Diamond',
-      description: 'Your number of shares determines the league you enter.',
+      description: 'A rare gem, your presence is as valuable as it gets.',
       progress: 2500000,
       color: 'linear-gradient(135deg, #b9f2ff, #80e0ff)' // Diamond gradient
     },
     {
       image: '/image/master.jpeg',
       title: 'Master',
-      description: 'Your number of shares determines the league you enter.',
+      description: 'Mastery achieved, you’re in a league of your own.',
       progress: 5000000,
       color: 'linear-gradient(135deg, #4b0082, #6a0dad)' // Master gradient
     }
