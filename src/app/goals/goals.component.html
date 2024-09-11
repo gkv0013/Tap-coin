@@ -1,0 +1,56 @@
+<div class="sm:max-w-sm flex-col items-center mx-auto mt-14 mb-24">
+    <h1 class="  mx-3 text-center pt-10 text-4xl font-bold tracking-tight text-white  ">
+        <div class=" rounded-sm overflow-hidden  ">
+            <img [src]="goalData.imagePath" alt="Goal Image" class="w-full   object-cover">
+        </div>
+        <div class="mt-3">
+            Goal No:{{ goalData.goalNo }} <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-tr to-cyan-500 from-blue-600">
+                {{ goalData.title }}
+            </span>
+            <p class="font-normal text-sm tracking-normal  text-justify mx-1 my-2.5  ">
+                {{ goalData.description }}
+            </p>
+
+        </div>
+    </h1>
+
+    <!-- <div class="goal-card">
+        <h2>{{ goalData.title }}</h2>
+        <img [src]="goalData.imagePath" alt="{{ goalData.title }}" class="goal-image" />
+        <p>{{ goalData.description }}</p>
+        <button (click)="routeToGoal(goalData.goalNo)">Learn More</button>
+
+
+    </div> -->
+
+    <hr class="border-teal-500 border-8 my-10">
+
+    <div class="flex bg-gray-800 w-full flex-wrap justify-center rounded-xl">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden  ">
+            <img [src]="goalData.imagePath" alt="Goal Image" class="w-full   object-cover">
+        </div>
+        <div class="p-4">
+            <h3 class="font-bold text-lg"> {{ goalData.title }}</h3>
+            <p class="text-sm text-white mt-2">{{ goalData.description }}</p>
+            <a [href]="goalData.moreInfo" class="text-blue-500 hover:underline mt-4 inline-block">More</a>
+        </div>
+    </div>
+
+    <hr class="border-teal-500 border-8 my-10">
+
+
+    <span
+        class="text-transparent text-center text-4xl font-bold bg-clip-text bg-gradient-to-tr to-cyan-500 from-blue-600">
+        Challenges
+    </span>
+    <p class="my-3 mx-auto text-base font-medium">
+        No challenges available now
+    </p>
+
+
+
+
+
+
+</div>

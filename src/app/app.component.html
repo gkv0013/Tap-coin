@@ -58,6 +58,9 @@
   <div class="modal-content">
     <div class="modal-body bg-dark text-white">
       <div class="pagination-wrapper position-relative">
+        <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
         <button type="button" class="arrow-left" [disabled]="currentImageIndex === 0" (click)="previousImage()">
           <span>&#8249;</span>
         </button>
@@ -71,9 +74,9 @@
         <p class="text-center">Progress: {{coins[currentImageIndex].progress}}</p>
       </div>
     </div>
-    <div class="modal-footer bg-dark">
-      <button type="button" class="btn btn-outline-light" (click)="closeModal()">Close</button>
-    </div>
+    <!-- <div class="modal-footer bg-dark"> -->
+      <!-- <button type="button" class="btn btn-outline-light" (click)="closeModal()">Close</button> -->
+    <!-- </div> -->
   </div>
 </ng-template>
 
