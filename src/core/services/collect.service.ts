@@ -19,6 +19,8 @@ export class CollectService {
   private progressDecreaseIntervalId: any = null; // To store the progress decrease interval ID
   private progressDecreaseTimeoutId: any = null;
   public commonService = inject(CommonService);
+  private energyIncrement = 1;
+  private energyRegenIntervalTime = 1500;
   getButtonPressCount() {
     return this.buttonPressCount.asObservable();
   }
@@ -110,13 +112,18 @@ export class CollectService {
       this.timerIntervalId = null;
     }
   }
-
+  setEnergyRegenIntervalTime(time: number) {
+    this.energyRegenIntervalTime = time;
+  }
+  resetEnergyRegenIntervalTime() {
+    this.energyRegenIntervalTime = 1500;
+  }
   startEnergyRegen() {
     // Ensure only one energy regeneration process runs at a time
     if (this.energyRegenIntervalId !== null) return;
 
     this.energyRegenIntervalId = setInterval(() => {
-      const newValue = this.currentEnergy.value + 1;
+      const newValue = this.currentEnergy.value + this.energyIncrement;
 
       // If energy is already at max, stop regeneration
       if (newValue >= 1000) {
@@ -125,7 +132,13 @@ export class CollectService {
       } else {
         this.currentEnergy.next(newValue);
       }
-    }, 1500); // 1500 ms = 1.5 seconds
+    },  this.energyRegenIntervalTime); // 1500 ms = 1.5 seconds
+  }
+  setEnergyIncrement(value: number) {
+    this.energyIncrement = value;
+  }
+  resetEnergyIncrement() {
+    this.energyIncrement = 1;
   }
 
   stopEnergyRegen() {
@@ -155,6 +168,10 @@ export class CollectService {
       clearInterval(this.progressDecreaseIntervalId);
       this.progressDecreaseIntervalId = null;
     }
+  }
+  resetCurrentEnergy() {
+    this.currentEnergy.next(1000);
+    this.stopEnergyRegen(); 
   }
   resetProgressDecreaseAfterInactivity() {
     if (this.progressDecreaseTimeoutId !== null) {

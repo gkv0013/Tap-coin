@@ -33,26 +33,26 @@
 <section id="frens">
   <div class="task-card-container">
     <div class="container mx-auto px-4">
-      <div class="tab-header">
+      <div class="tab-header" [@tabHeaderAnimation]>
         <div id="tasks-tab" class="active" (click)="showTab('tasks')">Invite</div>
         <div id="challenges-tab" (click)="showTab('challenges')">Friends</div>
       </div>
       <div id="tasks-content" class="tab-content active">
         <div class="text-center">
-          <h2 class="text-xl font-bold">Earn more tokens</h2>
-          <p class="text-gray-400">Invite you friends and claim 20 NILA Coin</p>
+          <h2 class="text-xl font-bold">Earn more Credits</h2>
+          <p class="text-gray-400">Invite your friends and claim 20 Media Credits</p>
         </div>
-        <div class="mt-4">
+        <div class="mt-4" [@cardAnimation]="'enter'"  (@cardAnimation.done)="onCardAnimationDone()">
           <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
             <div class="flex items-center justify-between">
               <div class="flex items-center">
-                <img src="/image/telegram.png" alt="Telegram Icon" class="icon">
+                <img src="/image/telegram.png" alt="Telegram Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
                 <div class="task-info">
                   <div class="font-bold">Join my Telegram Bot</div>
                 </div>
               </div>
               <div class="task-buttons">
-                <button class="btn bg-gray-700 text-white" (click)="shareOnTelegram()">Invite</button>
+                <button class="btn bg-gray-700 text-white" (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"[@buttonAnimation]="'enter'">Invite</button>
               </div>
             </div>
           </div>
@@ -61,14 +61,14 @@
       <div id="challenges-content" class="tab-content">
 
         <div class="total-coins-earned">
-          <h3 class="text-lg font-bold">Total Coins Earned:</h3>
-          <p class="text-2xl text-yellow-500 font-bold">{{totalRewards}} NILA</p>
+          <h3 class="text-lg font-bold">Total Credits Earned:</h3>
+          <p class="text-2xl text-yellow-500 font-bold">{{totalRewards}} Media Credits</p>
         </div>
         <div class="text-center">
-          <p class="text-gray-400">Earn rewards of 20 NILA for every direct referrals</p>
+          <p class="text-gray-400">Earn rewards of 20 Media Credits for every direct referrals</p>
         </div>
         <div class="mt-4">
-          <div class="friends-card-container">
+          <div class="friends-card-container"  *ngIf="isChallengesTabActive"[@listAnimation]>
             <div *ngFor="let friend of friendsList" class="friend-card">
               <div class="friend-content">
                 <img [src]="getAvatarUrl(friend.name)" alt="{{ friend.name }}'s avatar" class="avatar">
@@ -78,7 +78,7 @@
 
                 <!-- Claim button on the right (even if button is hidden, container is kept) -->
                 <div class="claim-btn-container">
-                  {{friend.claimed ? friend.claimed : 0}} NILA
+                  {{friend.claimed ? friend.claimed : 0}} Credits
                 </div>
                 
                 

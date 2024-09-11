@@ -5,17 +5,17 @@
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m422-232 207-248H469l29-227-185 267h139l-30 208ZM320-80l40-280H160l360-520h80l-40 320h240L400-80h-80Zm151-390Z"/></svg>
           </div>
           <div class="resource-value">
-            <ng-container *ngIf="currentEnergy > 0; else showTimer">
+            <ng-container >
               {{ currentEnergy }}/1000
             </ng-container>
-            <ng-template #showTimer>
+            <!-- <ng-template #showTimer>
               {{ getFormattedTimeUTC(timeRemaining)}}
-            </ng-template>
+            </ng-template> -->
           </div>
         </div>
         
-        <div class="boost-container" (click)="routeToBoost()">
-          <div class="boost-icon">
+        <div class="boost-container" (click)="routeToBoost()" [ngClass]="{ 'shake': shouldShakeBoostIcons }">
+          <div class="boost-icon"  >
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m226-559 78 33q14-28 29-54t33-52l-56-11-84 84Zm142 83 114 113q42-16 90-49t90-75q70-70 109.5-155.5T806-800q-72-5-158 34.5T492-656q-42 42-75 90t-49 90Zm178-65q-23-23-23-56.5t23-56.5q23-23 57-23t57 23q23 23 23 56.5T660-541q-23 23-57 23t-57-23Zm19 321 84-84-11-56q-26 18-52 32.5T532-299l33 79Zm313-653q19 121-23.5 235.5T708-419l20 99q4 20-2 39t-20 33L538-80l-84-197-171-171-197-84 167-168q14-14 33.5-20t39.5-2l99 20q104-104 218-147t235-24ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-25 25-83.5 43T82-76q14-103 32-161.5t43-83.5Zm57 56q-10 10-20 36.5T180-175q27-4 53.5-13.5T270-208q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z"/></svg>
           </div>
           <div class="boost-text">Boost</div>
@@ -26,7 +26,7 @@
           <p class="glossy-blue">
             <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
             <span class="count">{{ buttonPressCount }}</span>
-            <span class="nila-text">NILA</span>
+            <span class="nila-text">Media Credits</span>
           </p>
           <div class="RadialProgress" role="progressbar" [ngStyle]="{'--progress-value': progressPercentage}" [attr.aria-valuenow]="progressPercentage" aria-valuemin="0" aria-valuemax="100">
             <div class="round-button" #roundButton (click)="onButtonClick($event)">
@@ -44,7 +44,7 @@
             <!-- <span class="value">{{100-newProgressCount}} taps left</span> -->
             <span class="max-text">{{100-newProgressCount}} taps left</span>
           </div>
-          <button class="claim-button" (click)="onCollectClick()" [ngClass]="{ 'shake': shouldShakeBoostIcons }" [disabled]="newProgressCount<100">Claim</button>
+          <button class="claim-button" (click)="onCollectClick()" [ngClass]="{ 'shake': shouldShakeClaimIcons }" [@buttonAnimation]="'enter'"[disabled]="newProgressCount<100">Claim</button>
         </div>
         
       </div>

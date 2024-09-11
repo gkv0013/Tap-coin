@@ -1,14 +1,45 @@
 import { Component } from '@angular/core';
+import { trigger, style, animate, transition } from '@angular/animations';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [],
   templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.css'
+  imports: [ NgIf],
+  styleUrls: ['./tasks.component.css'],
+  animations: [
+    trigger('cardAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(50px)' }), // Start with opacity 0 and slide up from below
+        animate('0.5s ease-out', style({ opacity: 1, transform: 'translateY(0)' })) // Animate to visible state and original position
+      ])
+    ]),
+  trigger('imageRotate', [
+      transition(':enter', [
+        style({ transform: 'rotate(0deg)', opacity: 0 }),
+        animate('1s ease-in-out', style({ transform: 'rotate(360deg)', opacity: 1 })) // Rotate 360 degrees and fade in
+      ])
+    ]),  
+      trigger('buttonAnimation', [
+      transition(':enter', [
+        style({ transform: 'scale(0)', opacity: 0 }), // Initial state (scaled down, invisible)
+        animate('0.5s ease-out', style({ transform: 'scale(1)', opacity: 1 })) // Final state (scaled up, visible)
+      ])
+    ])
+  ]
 })
 export class TasksComponent {
   activeTab: string = 'tasks'; // Set default active tab
+  isCardAnimationDone = false
+  ngAfterViewInit() {
+   
+  }
+
+  onCardAnimationDone() {
+    // This method is triggered after the card animation is complete
+    this.isCardAnimationDone = true;
+  }
 
   showTab(tab: string): void {
     this.activeTab = tab;

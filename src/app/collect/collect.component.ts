@@ -7,13 +7,21 @@
   import { Subscription } from 'rxjs';
   import { postDataInterface } from '../../core/interface/user';
   import { PostDataService } from '../../core/services/post-data.service';
-
+  import { trigger, style, animate, transition} from '@angular/animations';
   @Component({
     selector: 'app-collect',
     standalone: true,
     imports: [CommonModule],
     templateUrl: './collect.component.html',
-    styleUrls: ['./collect.component.css']
+    styleUrls: ['./collect.component.css'],
+    animations: [
+     trigger('buttonAnimation', [
+        transition(':enter', [
+          style({ transform: 'scale(0)', opacity: 0 }), // Initial state (scaled down, invisible)
+          animate('0.5s ease-out', style({ transform: 'scale(1)', opacity: 1 })) // Final state (scaled up, visible)
+        ])
+      ])
+    ]
   })
   export class CollectComponent implements AfterViewInit,OnDestroy,OnInit {
     nextLevel = 5000;
@@ -25,6 +33,7 @@
     currentEnergy = 1000; // Current energy value
     maxEnergy = 110; // Maximum energy value
     shouldShakeBoostIcons = false;
+    shouldShakeClaimIcons=false;
     timerDuration = 60; // Timer duration in seconds (1 minute)
     timeRemaining = 0; // Time remaining for the timer
     isTimerRunning = false;
@@ -140,19 +149,27 @@
         this.collectService.stopProgressDecrease(); // Stop the decrease timer
         this.collectService.resetProgressDecreaseAfterInactivity();
         this.createFallingCoin();
-        if (this.currentEnergy === 0 && !this.isTimerRunning) {
-          this.collectService.startTimer(this.telegramServices);
-        }
+        // if (this.currentEnergy === 0 && !this.isTimerRunning) {
+        //   this.collectService.startTimer(this.telegramServices);
+        // }
         setTimeout(() => {
           button.classList.remove('pulse');
         }, 1000);
-      } else if (this.currentEnergy === 0 && !this.isTimerRunning) {
-        this.collectService.startTimer(this.telegramServices);
-      } else {
+      // } else if (this.currentEnergy === 0 && !this.isTimerRunning) {
+      //   this.collectService.startTimer(this.telegramServices);
+      // 
+      } 
+      else if(this.currentEnergy < 1){
         this.shouldShakeBoostIcons = true;
         setTimeout(() => {
           this.shouldShakeBoostIcons = false;
         }, 500);
+      }
+        else {
+          this.shouldShakeClaimIcons = true;
+          setTimeout(() => {
+            this.shouldShakeClaimIcons = false;
+          }, 500);
       }
     }
     
