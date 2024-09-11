@@ -3,6 +3,7 @@ import { CollectService } from '../../core/services/collect.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 
 @Component({
   selector: 'app-goals',
@@ -15,7 +16,7 @@ export class GoalComponent implements OnInit {
   public commonService = inject(CommonService);
   public router = inject(Router);
   private route = inject(ActivatedRoute); // Inject ActivatedRoute
-
+  private  telegramServices = inject(TelegramWebappService);
   public currentGoalNo: string | null = null; // Store the user ID
   public goalData: any; // Variable to hold a single object
   public goalsData = [
@@ -167,12 +168,26 @@ export class GoalComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Get the user ID from the route parameters
     this.currentGoalNo = this.route.snapshot.paramMap.get('id');
-
-    // Find the goal with goalNo equal to userId and assign it to goalData
     this.goalData = this.goalsData.find(
       (goal) => goal.goalNo === Number(this.currentGoalNo)
     );
+    this.enableBackButton();
+  }
+  enableBackButton() {
+    this.telegramServices.backButton.show();  
+    if (Telegram.WebApp && Telegram.WebApp.BackButton) {
+      Telegram.WebApp.BackButton.onClick(() => {
+        console.log('Back button clicked');
+        this.handleBackNavigation();
+      });
+    }
+  }
+  handleBackNavigation() {
+    this.router.navigate(['/green']);
+    this.hideBackButton();
+  }
+  hideBackButton() {
+    this.telegramServices.backButton.hide();  
   }
 }
