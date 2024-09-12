@@ -28,7 +28,7 @@ export class BoostComponent {
   progress: number = 0;
   tapBooster: BoosterData ={    boostCost:0,totalUsed: 0,boostEffect:0,boostType: '',active: 0,balance:0} ;
   energyBooster: BoosterData ={    boostCost:0,totalUsed: 0,boostEffect:0,boostType: '',active: 0,balance:0} ;
-  
+  isProcessing :Boolean =false;
 
   
   
@@ -136,11 +136,12 @@ export class BoostComponent {
 
   //boost claim button
   claimBoost(type:string):void {
+    this.isProcessing=true;
     if (type=='dailyBoost'){
       this.collectService.getCurrentEnergy().subscribe(energy => this.currentEnergy = energy)
       if (this.pendingCount!=0 && this.currentEnergy!=1000)
         {
-          
+            
             const postData: Boost = {
               mode:1,
               telegramId: this.userInfo.telegramId,
@@ -154,9 +155,11 @@ export class BoostComponent {
                   this.fetchDailyBoost();
                 }
               }
+              this.isProcessing=false;
             },
             (error) => {
               console.error('Error saving data:', error);
+              this.isProcessing=false;
             }
           );  
         } 
@@ -179,10 +182,12 @@ export class BoostComponent {
                   
                   this.fetchTapBoost();
                 }
+                this.isProcessing=false;
               }
             },
             (error) => {
               console.error('Error saving data:', error);
+              this.isProcessing=false;
             }
         );  
       
@@ -205,10 +210,12 @@ export class BoostComponent {
                 }
               this.fetchEnergyBoost();
             }
+            this.isProcessing=false;
           }
         },
         (error) => {
           console.error('Error saving data:', error);
+          this.isProcessing=false;
         }
       );  
 
