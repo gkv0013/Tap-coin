@@ -34,3 +34,18 @@ export interface Friend {
   avatar: string;
   claimed: boolean; // Add the claimed property
 }
+
+export interface Boost {
+  mode:number;
+  telegramId: string;
+  boostType: string;
+}
+
+export interface BoosterData {
+  boostCost:number;
+  totalUsed: number;
+  boostEffect:number;
+  boostType: string;
+  active: number;
+  balance: number;
+}

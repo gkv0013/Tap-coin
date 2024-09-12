@@ -5,8 +5,9 @@
   import { CommonService } from '../common.service';
   import { CollectService } from '../../core/services/collect.service';
   import { Subscription } from 'rxjs';
-  import { postDataInterface } from '../../core/interface/user';
+  import { postDataInterface,Boost } from '../../core/interface/user';
   import { PostDataService } from '../../core/services/post-data.service';
+  import { BoostDataFetch } from '../../core/services/boost.service';
   import { trigger, style, animate, transition} from '@angular/animations';
   @Component({
     selector: 'app-collect',
@@ -101,10 +102,52 @@
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
     userInfo:any;
+
+    private boostDataFetch = inject(BoostDataFetch);
+
+    boosterEffectFetch() { 
+      const postDataMutipler: Boost = {
+            mode:0,
+            telegramId: this.userInfo.telegramId,
+            boostType: "coinMutipler"
+        };
+        const postDataEnergy: Boost = {
+          mode:0,
+          telegramId: this.userInfo.telegramId,
+          boostType: "energyMutiplier"
+      };
+        this.boostDataFetch.sendData('Boost',postDataMutipler).subscribe(
+          (response) => {
+            if(response.StatusCode==200){
+              if(response.Result){
+                this.collectService.setprofitPerTap(response.Result[0].boostEffectCurrent);
+              }
+            }
+          },
+          (error) => {
+            console.error('Error saving data:', error);
+          }
+        ); 
+        this.boostDataFetch.sendData('Boost',postDataEnergy).subscribe(
+          (response) => {
+            if(response.StatusCode==200){
+              if(response.Result){
+                this.collectService.setEnergyIncrement(response.Result[0].boostEffectCurrent);
+              }
+            }
+          },
+          (error) => {
+            console.error('Error saving data:', error);
+          }
+        ); 
+    }
+
+
     ngOnInit() {
     this.initSubscriptions();
-    this.collectService.startProgressDecrease()
+    this.collectService.startProgressDecrease();
     this.userInfo=this.commonService.getUserInfo();
+    this.boosterEffectFetch();
     }
     initSubscriptions(){
       this.subscriptions.push(
@@ -138,7 +181,7 @@
     
     onButtonClick(event: MouseEvent) {
       if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
-        this.newProgressCount++;
+        this.newProgressCount=this.newProgressCount+1;
         this.currentEnergy--; // Decrease energy on button click
         this.telegramServices.hapticFeedback.impactOccurred('medium');
         const button = this.roundButton.nativeElement;
@@ -174,8 +217,8 @@
     
     routeToBoost(){
       if (this.currentEnergy == 0) {
-        this.commonService.setActiveTab('pumps');
-        this.router.navigate(['/pumps']);
+        this.commonService.setActiveTab('boost');
+        this.router.navigate(['/boost']);
       }
     }
     get currentCoin() {
