@@ -7,7 +7,7 @@
       <div class="text-center">
         <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
 
-          <div (click)="claimBoost('dailyBoost')" [class.disabled]="progress < 2" [style.pointer-events]="progress < 2 ? 'none' : 'auto'" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+          <div (click)="claimBoost('dailyBoost')" [class.disabled]="isProcessing||progress < 2" [style.pointer-events]="progress < 2 ? 'none' : 'auto'" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
             
             <div class="icon-container  mr-4" >
               <img src="/image/daily-boost.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
@@ -37,7 +37,7 @@
       <div class="text-center">
         <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
 
-          <div (click)="claimBoost('coinMutipler')" [class.disabled]="tapBooster.balance < tapBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+          <div (click)="claimBoost('coinMutipler')" [class.disabled]="isProcessing || tapBooster.balance < tapBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
             
             <div class="icon-container  mr-4" >
               <img src="/image/tap.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
@@ -70,7 +70,7 @@
         <div class="text-center">
           <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
   
-            <div (click)="claimBoost('energyMutiplier')" [class.disabled]="energyBooster.balance < energyBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
+            <div (click)="claimBoost('energyMutiplier')" [class.disabled]="isProcessing || energyBooster.balance < energyBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
               
               <div class="icon-container  mr-4" >
                 <img src="/image/enegry.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
