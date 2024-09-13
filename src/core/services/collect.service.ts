@@ -13,7 +13,7 @@ export class CollectService {
   private timerDuration = new BehaviorSubject<number>(this.getRandomTimerDuration());
   private timeRemaining = new BehaviorSubject<number>(0);
   private isTimerRunning = new BehaviorSubject<boolean>(false);
-
+  private coinsettings:any;
   private timerIntervalId: any = null; // To store the interval ID
   private energyRegenIntervalId: any = null; // To store the energy regeneration interval ID
   private progressDecreaseIntervalId: any = null; // To store the progress decrease interval ID
@@ -34,7 +34,12 @@ export class CollectService {
   getNewProgressCount() {
     return this.newProgressCount.asObservable();
   }
-
+  setCoinsetting(setting: any): void {
+    this.coinsettings = setting;
+  }
+  getCoinsetting(): any {
+    return this.coinsettings;
+  }
   getMaxNewProgress() {
     return this.maxNewProgress.asObservable();
   }
