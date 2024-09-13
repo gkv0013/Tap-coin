@@ -148,11 +148,9 @@ export class AppComponent implements OnInit, OnDestroy {
       nextLevel: 5000,  // Example next level threshold
       achievements: ['First Tap', 'Invite 5 Friends'],  // Example achievements array
     };
-
     this.telegramServices.ready();
     this.telegramServices.setHeaderColor('#000000'); // Dark header color
     this.telegramServices.setBackgroundColor('#1a1a1a'); // Dark background color
-
     const telegramUser = this.telegramServices.initDataUnsafe?.user;
     if (telegramUser) {
       this.loadUserData(telegramUser);
@@ -162,48 +160,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     console.log(this.telegramServices.initDataUnsafe?.user);
     this.telegramServices.expand();
-    // this.router.events.subscribe((event) => {
-    //   if (event instanceof NavigationEnd) {
-    //     setTimeout(() => {
-    //       window.scrollTo(0, 0); // Force scroll position to reset
-    //     }, 0);
-    //   }
-    // });
-    // const viewportChangedSubscription = this.telegramServices
-    //   .onEvent('viewport_changed' as any)
-    //   .subscribe((params) => {
-    //     this.handleViewportChange(params);
-    //   });
-
-    // this.subscriptions.push(viewportChangedSubscription);
     this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
   }
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
-  handleViewportChange(params: any) {
-    const appContainer = this.el.nativeElement.querySelector(
-      'router-outlet'
-    ) as HTMLElement;
-
-    if (appContainer && params.height) {
-      // Adjust the height of the container based on the viewport height
-      appContainer.style.height = `${params.height}px`;
-    }
-
-    if (params.is_expanded) {
-      console.log('App is expanded to full height.');
-      // Further adjustments if needed
-    } else {
-      console.log('App is not expanded to full height.');
-      // Additional adjustments if needed
-    }
-
-    if (!params.is_state_stable) {
-      console.log('Viewport resizing is still in progress.');
-    }
-  }
-
   setActiveTab(tab: string): void {
     this.activeTab = tab;
     this.navigateTo(tab);
@@ -233,10 +194,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.postDataService.sendData('Login',postData).subscribe(
       (response) => {
         if(response.StatusCode==200){
-          this.commonService.setUserInfo(response.Result?.[0])
-          this.userInfo=response.Result?.[0];
+          this.commonService.setUserInfo(response.Result?.result?.[0])
+          this.userInfo=response.Result?.result?.[0];
           this.collectService.setButtonPressCount(this.userInfo?.totalCoins || 0);
-          
+          let coinsetting=JSON.parse(response.Result?.cointsettings?.[0]?.settingdata);
+          this.collectService.setCoinsetting(coinsetting)
+          this.coins= this.collectService.getCoinsetting();
           setTimeout(() => {
             this.isLoading = false;
             this.commonService.setActiveTab('collect');
