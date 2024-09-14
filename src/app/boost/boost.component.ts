@@ -1,288 +1,286 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import {
+  Component,
+  inject,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonService } from '../common.service';
 import { BoostDataFetch } from '../../core/services/boost.service';
 import { PostDataService } from '../../core/services/post-data.service';
-import { Boost, BoosterData,postDataInterface } from '../../core/interface/user';
+import {
+  Boost,
+  BoosterData,
+  postDataInterface,
+} from '../../core/interface/user';
 import { CollectService } from '../../core/services/collect.service';
+import { DialogService } from '../../core/components/dialog/dialog.service';
+import { Subscription } from 'rxjs';
+import confetti from 'canvas-confetti';
 @Component({
   selector: 'app-boost',
   standalone: true,
   imports: [],
   templateUrl: './boost.component.html',
-  styleUrl: './boost.component.css'
+  styleUrl: './boost.component.css',
 })
 export class BoostComponent {
-  userInfo:any;
+  userInfo: any;
+  @ViewChild('modalfullenergy') modalfullenergy!: TemplateRef<any>;
+  @ViewChild('modalmultitap') modalmultitap!: TemplateRef<any>;
+  @ViewChild('modalenergyboost') modalenergyboost!: TemplateRef<any>;
+  walletBalance: number = 0;
+  coins: any;
   public commonService = inject(CommonService);
-  private boostDataFetch = inject(BoostDataFetch);
+  private dialogService = inject(DialogService);
   private readonly collectService = inject(CollectService);
   private postDataService = inject(PostDataService);
-  pendingCount:number=0;
-  limit:number=0;
-  currentEnergy:number=0;
-  totalUsed:number=0;
-  totalDay: number = 0;
-  dayDifference: number = 0;
-  progress: number = 0;
-  tapBooster: BoosterData ={    boostCost:0,totalUsed: 0,boostEffect:0,boostType: '',active: 0,balance:0} ;
-  energyBooster: BoosterData ={    boostCost:0,totalUsed: 0,boostEffect:0,boostType: '',active: 0,balance:0} ;
-  isProcessing :Boolean =false;
-
-  
-  
-  constructor() { 
-    this.userInfo=this.commonService.getUserInfo();
- 
-    this.fetchDailyBoost();
-    this.fetchTapBoost();
-    this.fetchEnergyBoost();
-    
-    this.updateProgress();
-  }
-
-  //fetch Daily boost data
-  fetchDailyBoost():void{
-    const postData: Boost = {
-          mode:0,
-          telegramId: this.userInfo.telegramId,
-          boostType: "dailyBoost"
-      };
-      this.boostDataFetch.sendData('Boost',postData).subscribe(
-        (response) => {
-          if(response.StatusCode==200){
-            if(response.Result){
-              this.pendingCount = response.Result[0].pendingCount;
-              this.limit = response.Result[0].limit;
-              this.totalUsed = response.Result[0].totalUsed;
-              this.totalDay=response.Result[0].totalDay;
-              const lastReset = new Date(response.Result[0].lastReset);
-              const currentDate = new Date();
-
-              const timeDifference = currentDate.getTime() - lastReset.getTime();
-              this.dayDifference = Math.floor(timeDifference / (1000 * 3600 * 24));
-              if (this.dayDifference>=1)
-                {
-                  
-                  this.dayReset();
-                  this.fetchDailyBoost();
-                }
-              this.updateProgress();
-            }
-          }
-        },
-        (error) => {
-          console.error('Error saving data:', error);
-        }
-      );
-      
-  }
-
-    //fetch mutitap
-    fetchTapBoost():void{
-      const postData: Boost = {
-            mode:0,
-            telegramId: this.userInfo.telegramId,
-            boostType: "coinMutipler"
-        };
-        this.boostDataFetch.sendData('Boost',postData).subscribe(
-          (response) => {
-            if(response.StatusCode==200){
-              if(response.Result){
-                this.tapBooster.boostCost=response.Result[0].boostCost;
-                this.tapBooster.totalUsed=response.Result[0].totalUsed;
-                this.tapBooster.boostEffect=response.Result[0].boostEffect;
-                this.tapBooster.boostType=response.Result[0].boostType;
-                this.tapBooster.active=response.Result[0].active;
-                this.tapBooster.balance=response.Result[0].balance;
-                this.collectService.setprofitPerTap(response.Result[0].boostEffectCurrent);
-              }
-            }
-          },
-          (error) => {
-            console.error('Error saving data:', error);
-          }
-        );
-    }
-
-    fetchEnergyBoost():void{
-      const postData: Boost = {
-            mode:0,
-            telegramId: this.userInfo.telegramId,
-            boostType: "energyMutiplier"
-        };
-        this.boostDataFetch.sendData('Boost',postData).subscribe(
-          (response) => {
-            if(response.StatusCode==200){
-              if(response.Result){
-                this.energyBooster.boostCost=response.Result[0].boostCost;
-                this.energyBooster.totalUsed=response.Result[0].totalUsed;
-                this.energyBooster.boostEffect=response.Result[0].boostEffect;
-                this.energyBooster.boostType=response.Result[0].boostType;
-                this.energyBooster.active=response.Result[0].active;
-                this.energyBooster.balance=response.Result[0].balance;
-                this.collectService.setEnergyIncrement(response.Result[0].boostEffectCurrent);
-              }
-            }
-          },
-          (error) => {
-            console.error('Error saving data:', error);
-          }
-        );
-        
-    }
-
-
-  //boost claim button
-  claimBoost(type:string):void {
-    this.isProcessing=true;
-    if (type=='dailyBoost'){
-      this.collectService.getCurrentEnergy().subscribe(energy => this.currentEnergy = energy)
-      if (this.pendingCount!=0 && this.currentEnergy!=1000)
-        {
-            
-            const postData: Boost = {
-              mode:1,
-              telegramId: this.userInfo.telegramId,
-              boostType: "dailyBoost"
-          };
-          this.boostDataFetch.sendData('Boost',postData).subscribe(
-            (response) => {
-              if(response.StatusCode==200){
-                if(response.Result){
-                  this.collectService.resetCurrentEnergy();
-                  this.fetchDailyBoost();
-                }
-              }
-              this.isProcessing=false;
-            },
-            (error) => {
-              console.error('Error saving data:', error);
-              this.isProcessing=false;
-            }
-          );  
-        } 
-    }
-    if (type=='coinMutipler'){
-
-      const postData: Boost = {
-        mode:1,
-        telegramId: this.userInfo.telegramId,
-        boostType: "coinMutipler"
-        };
-        this.boostDataFetch.sendData('Boost',postData).subscribe(
-            (response) => {
-              if(response.StatusCode==200){
-                if(response.Result){
-                  if (this.tapBooster.balance > this.tapBooster.boostCost)
-                  {
-                    this.saveCoins(this.tapBooster.boostCost*-1);
-                  }
-                  
-                  this.fetchTapBoost();
-                }
-                this.isProcessing=false;
-              }
-            },
-            (error) => {
-              console.error('Error saving data:', error);
-              this.isProcessing=false;
-            }
-        );  
-      
-    }
-    if (type=='energyMutiplier'){
-
-      const postData: Boost = {
-            mode:1,
-            telegramId: this.userInfo.telegramId,
-            boostType: "energyMutiplier"
-        };
-      this.boostDataFetch.sendData('Boost',postData).subscribe(
-        (response) => {
-          if(response.StatusCode==200){
-            if(response.Result){
-
-              if (this.energyBooster.balance > this.energyBooster.boostCost)
-                {
-                  this.saveCoins(this.energyBooster.boostCost*-1);
-                }
-              this.fetchEnergyBoost();
-            }
-            this.isProcessing=false;
-          }
-        },
-        (error) => {
-          console.error('Error saving data:', error);
-          this.isProcessing=false;
-        }
-      );  
-
-
-    }
-    
-   
-  }
-
-    //daily reset function
-    dayReset():void {
-      const postData: Boost = {
-        mode:2,
-        telegramId: this.userInfo.telegramId,
-        boostType: "dailyBoost"
-    };
-    this.boostDataFetch.sendData('Boost',postData).subscribe(
-      (response) => {
-        if(response.StatusCode==200){
-          if(response.Result){
-            this.fetchDailyBoost();
-          }
-        }
-      },
-      (error) => {
-        console.error('Error saving data:', error);
-      }
+  private subscriptions: Subscription[] = [];
+  constructor() {}
+  ngOnInit() {
+    this.userInfo = this.commonService.getUserInfo();
+    this.coins = this.collectService.getCoinsetting();
+    this.subscriptions.push(
+      this.collectService
+        .getButtonPressCount()
+        .subscribe((count) => (this.walletBalance = count))
     );
-    
-    }
+  }
+  closeModal() {
+    this.dialogService.closeDialog();
+  }
+  fullEnergy() {
+    this.dialogService.openDialog({
+      title: '',
+      message: '',
+      type: '',
+      customClass: '',
+      customTemplate: this.modalfullenergy,
+      onConfirm: () => {},
+    });
+  }
+  getLevel(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.walletBalance >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.level : 0;
+  }
+  getfillenergycount(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.walletBalance >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.fullenergy : 0;
+  }
+  getEnergyBoostCost(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.walletBalance >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.energyboostcost : 0;
+  }
+  getEnergyBoost(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.walletBalance >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.energyboost : 0;
+  }
 
-    saveCoins(claim:number) {
+  getMultiTapCost(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.walletBalance >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.multitapcost : 0;
+  }
+  getmultitap(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.walletBalance >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.multitap : 1;
+  }
+  energyBoost() {
+    this.dialogService.openDialog({
+      title: '',
+      message: '',
+      type: '',
+      customClass: '',
+      customTemplate: this.modalenergyboost,
+      onConfirm: () => {},
+    });
+  }
+  multiTap() {
+    this.dialogService.openDialog({
+      title: '',
+      message: '',
+      type: '',
+      customClass: '',
+      customTemplate: this.modalmultitap,
+      onConfirm: () => {},
+    });
+  }
+  activateFullenergy() {
+    try {
       const postData: postDataInterface = {
-        Mode: 1, // Mode depending on your logic
-        CrudType: 0, // Example value
-        SaveData: {'collect':[{
-          mode:1,
-          id: this.userInfo.telegramId,
-          claim: claim,
-        }]},
+        Mode: 0,
+        CrudType: 0,
+        SaveData: {
+          activatefullenergy: [
+            {
+              mode: 0,
+              telegramId: this.userInfo.telegramId,
+              cost: 0,
+              boosttype: 'Energy Fill',
+              boosttypeid: 1,
+              time: new Date().toISOString().toString(),
+            },
+          ],
+        },
       };
-  
-      this.postDataService.sendData('Login',postData).subscribe(
+
+      this.postDataService.sendData('Boost', postData).subscribe(
         (response) => {
-          if(response.StatusCode==200){
-           if(response?.Result?.length>0){
-            let claim:number=response?.Result?.[0]?.totalCoins;
-            if(claim){
-              this.collectService.addButtonPressCount(claim);
+          if (response.StatusCode == 200) {
+            this.closeModal();
+            this.triggerConfetti();
+            if (response?.Result?.length > 0) {
+              let fillenergy: number = response?.Result?.[0]?.fillenergy;
+              if (fillenergy) {
+                const userData = this.commonService.getUserInfo();
+                userData.fillenergy = fillenergy;
+                this.commonService.setUserInfo(userData);
+                this.collectService.resetCurrentEnergy();
+              }
             }
-           }
+          } else {
+            this.closeModal();
           }
         },
         (error) => {
           console.error('Error saving data:', error);
+          this.closeModal();
         }
       );
+    } catch (error) {
+      console.log('activateFullenergy:', error);
+      this.closeModal();
     }
+  }
 
-    // Function to update the progress value
-    updateProgress(): void {
-      if (this.pendingCount==0)
-      {
-        this.progress = 0;
-      }
-      this.progress = Math.max(0, Math.min(100,  (100/ this.limit)*this.pendingCount  ));
+  activateMultiTap() {
+    try {
+      const postData: postDataInterface = {
+        Mode: 1,
+        CrudType: 0,
+        SaveData: {
+          activatemultitap: [
+            {
+              mode: 1,
+              telegramId: this.userInfo.telegramId,
+              cost: this.getMultiTapCost(),
+              boosttype: 'Multi Tap',
+              boosttypeid: 2,
+              time: new Date().toISOString().toString(),
+            },
+          ],
+        },
+      };
+
+      this.postDataService.sendData('Boost', postData).subscribe(
+        (response) => {
+          if (response.StatusCode == 200) {
+            this.closeModal();
+            this.triggerConfetti();
+            if (response?.Result?.length > 0) {
+              let claim: number = response?.Result?.[0]?.totalCoins;
+              if (claim >= 0) {
+                this.collectService.addButtonPressCount(claim);
+              }
+              let ismultitap = response?.Result?.[0]?.ismultitap;
+              if (ismultitap) {
+                const userData = this.commonService.getUserInfo();
+                userData.ismultitap = ismultitap;
+                this.commonService.setUserInfo(userData);
+                let multitap: number = this.getmultitap() ?? 1;
+                if (multitap > 0) {
+                  this.collectService.setProfitPerTap(multitap);
+                }
+              }
+            }
+          } else {
+            this.closeModal();
+          }
+        },
+        (error) => {
+          console.error('Error saving data:', error);
+          this.closeModal();
+        }
+      );
+    } catch (error) {
+      console.log('activateFullenergy:', error);
+      this.closeModal();
     }
+  }
 
+  activateEnergyBoost() {
+    try {
+      const postData: postDataInterface = {
+        Mode: 2,
+        CrudType: 0,
+        SaveData: {
+          activateenergyboost: [
+            {
+              mode: 2,
+              telegramId: this.userInfo.telegramId,
+              cost: this.getEnergyBoostCost(),
+              boosttype: 'Energy Boost',
+              boosttypeid: 3,
+              time: new Date().toISOString().toString(),
+            },
+          ],
+        },
+      };
+
+      this.postDataService.sendData('Boost', postData).subscribe(
+        (response) => {
+          if (response.StatusCode == 200) {
+            this.closeModal();
+            this.triggerConfetti();
+            if (response?.Result?.length > 0) {
+              let claim: number = response?.Result?.[0]?.totalCoins;
+              if (claim >= 0) {
+                this.collectService.addButtonPressCount(claim);
+              }
+              let isenergyboost = response?.Result?.[0]?.isenergyboost;
+              if (isenergyboost) {
+                const userData = this.commonService.getUserInfo();
+                userData.isenergyboost = isenergyboost;
+                this.commonService.setUserInfo(userData);
+                let energyBoost: number = this.getEnergyBoost() ?? 1;
+                if (energyBoost > 0) {
+                  this.collectService.setEnergyIncrement(energyBoost);
+                }
+              }
+            }
+          } else {
+            this.closeModal();
+          }
+        },
+        (error) => {
+          console.error('Error saving data:', error);
+          this.closeModal();
+        }
+      );
+    } catch (error) {
+      console.log('activateEnergyBoost:', error);
+      this.closeModal();
+    }
+  }
+
+  triggerConfetti() {
+    // Basic confetti burst
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }, // Controls the starting point
+    });
+  }
 }
-

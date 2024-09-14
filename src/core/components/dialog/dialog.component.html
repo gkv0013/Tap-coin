@@ -1,0 +1,16 @@
+<div class="dialog-container bg-fade" *ngIf="isOpen">
+    <div class="dialog-content" [ngClass]="customClass" *ngIf="!customTemplate">
+        <div class="dialog-title">{{ title }}</div>
+        <div class="dialog-message">{{ message }}</div>
+        <div class="dialog-buttons" *ngIf="!customTemplate">
+            <ng-container *ngIf="(type === 'confirm')">
+                <button class="btn btn-sm btn-outline-primary" (click)="onClickContinue()">continue</button>
+                <button class="btn btn-sm btn-danger" (click)="onClickCancel()">cancel</button>
+            </ng-container>
+
+        </div>
+    </div>
+    <ng-container *ngIf="customTemplate">
+        <ng-container *ngTemplateOutlet="customTemplate"></ng-container>
+    </ng-container>
+</div>

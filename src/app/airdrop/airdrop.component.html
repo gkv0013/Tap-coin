@@ -1,9 +1,9 @@
 <section id="airdrop">
   <div class="task-card-container">
     <div class="container mx-auto px-4">
-      <div class="text-center my-6">
+      <!-- <div class="text-center my-6">
         <button class="bg-blue-500 text-white py-2 px-4 rounded-full" [@buttonAnimation]="'enter'" (click)="connectToWallet()">Connect your wallet</button>
-      </div>
+      </div> -->
       <div class="bg-gray-800 rounded-lg shadow p-4 mb-6" [@cardAnimation]="'enter'" >
         <div class="text-center mb-4">
           <div class="text-2xl font-bold">Total Assets</div>
@@ -11,8 +11,8 @@
           <div class="text-gray-400"> {{walletBalance}} Media Credits</div>
         </div>
         <div class="button-container">
-          <button class="bg-gray-700 text-white py-2 px-4 rounded" [@buttonAnimation]="'enter'"(click)="connectToWallet()">Withdraw</button>
-          <button class="bg-gray-700 text-white py-2 px-4 rounded" [@buttonAnimation]="'enter'"(click)="connectToWallet()">Transfer</button>
+          <button class="bg-gray-700 text-white py-2 px-4 rounded" [@buttonAnimation]="'enter'"(click)="connectToWallet()">Convert</button>
+          <!-- <button class="bg-gray-700 text-white py-2 px-4 rounded" [@buttonAnimation]="'enter'"(click)="connectToWallet()">Transfer</button> -->
           <!-- <button class="bg-gray-700 text-white py-2 px-4 rounded">Convert</button> -->
         </div>
       </div>
