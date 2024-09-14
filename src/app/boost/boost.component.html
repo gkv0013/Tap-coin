@@ -1,112 +1,136 @@
 <section id="pump">
   <div class="task-card-container">
-
-    <div class="text-xl font-bold mt-2">Free Daily Boost</div>
-    <div class="container mx-auto px-4">
-      
-      <div class="text-center">
-        <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
-
-          <div (click)="claimBoost('dailyBoost')" [class.disabled]="isProcessing||progress < 2" [style.pointer-events]="progress < 2 ? 'none' : 'auto'" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
-            
-            <div class="icon-container  mr-4" >
-              <img src="/image/daily-boost.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
-            </div>
-            
-            <div class="text-center flex-grow">
-              <div class="text-lg font-bold">Energy Fill</div>
-              
-             <!-- Progress Bar Section -->
-
-          <div class="progress-container  mt-2">
-            <div class="progress-bar bg-blue-500 h-2" [style.width.%]="progress"></div>
-          </div>
-          <div class="text-xl font-bold mt-2">{{pendingCount}} Out of {{limit}} Left</div>
-
-          <!-- Single button to update progress -->
-         
-            </div>
-          </div>
-
-
-
-        </div>
+    <!-- Balance Section -->
+    <div class="balance-container">
+      <div class="balance-text">Your Balance</div>
+      <div class="balance-amount">
+        <img src="/image/Nila.jpeg" alt="Coin" class="coin-icon">
+        <span class="amount-text">{{walletBalance}}</span>
       </div>
-        <div class="text-xl font-bold mt-2">Boosters</div>
-        
-      <div class="text-center">
-        <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
+    </div>
 
-          <div (click)="claimBoost('coinMutipler')" [class.disabled]="isProcessing || tapBooster.balance < tapBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
-            
-            <div class="icon-container  mr-4" >
-              <img src="/image/tap.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
-            </div>
-            
-            <div class="text-center flex-grow">
-              <div class="text-lg font-bold">Muti Tap</div> 
-              
-             <!-- Progress Bar Section -->
-             <div class="text-xl font-bold mt-2"> x{{tapBooster.boostEffect}} </div>
-             <div class="text-xl font-bold mt-2" style="display: inline-block;" >
-               <span class="font-bold mt-2" style="float:center;">{{tapBooster.boostCost}}</span>
-             <img src="/image/Nila.png" alt="Coin Icon" class="coin-icon"  style="float:Left;"/>
-            
-          </div>
-       
-          <!-- Single button to update progress -->
-         
-            </div>
-          </div>
-
-          
-
-
-
+    <!-- Free daily boost section -->
+    <div class="boost-section">
+      <div class="boost-card full-energy">
+        <div class="boost-icon glossy-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#EAC452">
+            <path d="M660-80v-120H560l140-200v120h100L660-80Zm-340 0q-17 0-28.5-11.5T280-120v-640q0-17 11.5-28.5T320-800h80v-80h160v80h80q17 0 28.5 11.5T680-760v280q-21 0-41 3.5T600-466v-254H360v320h142q-29 32-45.5 72.5T440-240q0 46 16 87t45 73H320Z"/>
+          </svg>
         </div>
-
+        <div class="boost-details">
+          <div class="boost-title">Full Energy</div>
+          <div class="boost-availability">{{getfillenergycount()-this.userInfo.fillenergy}}/{{getfillenergycount()}} Available</div>
         </div>
+        <button class="boost-button" (click)="fullEnergy()"[disabled]="getfillenergycount() - this.userInfo.fillenergy <= 0">Start</button>
+      </div>
+    </div>
 
-        <div class="text-center">
-          <div class="flex  justify-center mb-4"> <!-- Flex container for row layout -->
-  
-            <div (click)="claimBoost('energyMutiplier')" [class.disabled]="isProcessing || energyBooster.balance < energyBooster.boostCost" class="boost-card bg-gray-800 rounded-lg shadow p-4 flex items-center w-full max-w-md">
-              
-              <div class="icon-container  mr-4" >
-                <img src="/image/enegry.png" alt="Boost Icon" class="h-20 w-20 mr-4" />
-              </div>
-              
-              <div class="text-center flex-grow">
-                <div class="text-lg font-bold">Energy Boost</div>
-                
-               <!-- Progress Bar Section  boostCost:number;
-  boostEnd: number;
-  totalUsed: number;
-  boostEffect:number;
-  boostType: string;
-  active: number;-->
-            <div class="text-xl font-bold mt-2"> x{{energyBooster.boostEffect}} </div>
-            <div class="text-xl font-bold mt-2" style="display: inline-block;" >
-              <span class="font-bold mt-2" style="float:center;">{{energyBooster.boostCost}}</span>
-            <img src="/image/Nila.png" alt="Coin Icon" class="coin-icon"  style="float:Left;"/>
-              
-            </div>
-         
-            <!-- Single button to update progress -->
-           
-              </div>
-            </div>
-  
-            
-  
-  
-  
-          </div>
-  
-          </div>
-        
-     
+    <!-- Boost Section -->
+    <div class="boost-section">
+      <div class="boost-card multi-tap">
+        <div class="boost-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#EAC452"><path d="M419-80q-28 0-52.5-12T325-126L107-403l19-20q20-21 48-25t52 11l74 45v-328q0-17 11.5-28.5T340-760q17 0 29 11.5t12 28.5v472l-97-60 104 133q6 7 14 11t17 4h221q33 0 56.5-23.5T720-240v-160q0-17-11.5-28.5T680-440H461v-80h219q50 0 85 35t35 85v160q0 66-47 113T640-80H419ZM167-620q-13-22-20-47.5t-7-52.5q0-83 58.5-141.5T340-920q83 0 141.5 58.5T540-720q0 27-7 52.5T513-620l-69-40q8-14 12-28.5t4-31.5q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 17 4 31.5t12 28.5l-69 40Zm335 280Z"/></svg>
+        </div>
+        <div class="boost-details">
+          <div class="boost-title">Multi Tap</div>
+          <div class="boost-level">1000 • lvl 2</div>
+        </div>
+        <button class="boost-button" [disabled]="walletBalance < getMultiTapCost() || this.userInfo.ismultitap >= 1" (click)="multiTap()">Start</button>
+      </div>
+
+      <div class="boost-card energy-limit">
+        <div class="boost-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#EAC452"><path d="m422-232 207-248H469l29-227-185 267h139l-30 208ZM320-80l40-280H160l360-520h80l-40 320h240L400-80h-80Zm151-390Z"/></svg>
+        </div>
+        <div class="boost-details">
+          <div class="boost-title">Energy Boost</div>
+          <div class="boost-level">1000 • lvl 2</div>
+        </div>
+        <button class="boost-button"   [disabled]="walletBalance < getEnergyBoostCost()|| this.userInfo.isenergyboost >= 1"  (click)="energyBoost()">Start</button>
+      </div>
     </div>
   </div>
 </section>
 
+<ng-template #modalfullenergy>
+  <div class="modal-content">
+    <div class="modal-body bg-dark text-white">
+        <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="level-container text-center" >
+          <div class="level-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#EAC452">
+              <path d="M660-80v-120H560l140-200v120h100L660-80Zm-340 0q-17 0-28.5-11.5T280-120v-640q0-17 11.5-28.5T320-800h80v-80h160v80h80q17 0 28.5 11.5T680-760v280q-21 0-41 3.5T600-466v-254H360v320h142q-29 32-45.5 72.5T440-240q0 46 16 87t45 73H320Z"/>
+            </svg>
+          </div>
+          <div class="level-info">
+            <div class="level-title">Level {{getLevel()}}</div>
+          </div>
+        </div>
+        <div class="boost-details mt-3">
+          <div class="boost-title">Full Energy</div>
+          <div class="boost-description">Boost your energy to the maximum and keep farming credit points</div>
+        </div>
+        <div class="boost-cost mt-4">
+          <button class="boost-button-modal mt-3" (click)="activateFullenergy()">Get</button>
+        </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalmultitap>
+  <div class="modal-content">
+    <div class="modal-body bg-dark text-white">
+        <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="level-container text-center" >
+          <div class="level-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#EAC452"><path d="M419-80q-28 0-52.5-12T325-126L107-403l19-20q20-21 48-25t52 11l74 45v-328q0-17 11.5-28.5T340-760q17 0 29 11.5t12 28.5v472l-97-60 104 133q6 7 14 11t17 4h221q33 0 56.5-23.5T720-240v-160q0-17-11.5-28.5T680-440H461v-80h219q50 0 85 35t35 85v160q0 66-47 113T640-80H419ZM167-620q-13-22-20-47.5t-7-52.5q0-83 58.5-141.5T340-920q83 0 141.5 58.5T540-720q0 27-7 52.5T513-620l-69-40q8-14 12-28.5t4-31.5q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 17 4 31.5t12 28.5l-69 40Zm335 280Z"/></svg>
+          </div>
+          <div class="level-info">
+            <div class="level-title">Level {{getLevel()}}</div>
+          </div>
+        </div>
+        <div class="boost-details mt-3">
+          <div class="boost-title">Multi Tap</div>
+          <div class="boost-description">Boost the number of points you receive per tap +1 point per tap</div>
+        </div>
+        <div class="boost-cost mt-4">
+          <div class="cost-container">
+            <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+            <span class="cost-text">{{getMultiTapCost()}}</span>
+          </div>
+          <button class="boost-button-modal mt-3" (click)="activateMultiTap()">Get</button>
+        </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalenergyboost>
+  <div class="modal-content">
+    <div class="modal-body bg-dark text-white">
+        <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="level-container text-center" >
+          <div class="level-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#EAC452"><path d="m422-232 207-248H469l29-227-185 267h139l-30 208ZM320-80l40-280H160l360-520h80l-40 320h240L400-80h-80Zm151-390Z"/></svg>
+          </div>
+          <div class="level-info">
+            <div class="level-title">Level {{getLevel()}}</div>
+          </div>
+        </div>
+        <div class="boost-details mt-3">
+          <div class="boost-title">Energy Boost</div>
+          <div class="boost-description">Boost the  speed of energy </div>
+        </div>
+        <div class="boost-cost mt-4">
+          <div class="cost-container">
+            <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+            <span class="cost-text">{{getEnergyBoostCost()}}</span>
+          </div>
+          <button class="boost-button-modal mt-3" (click)="activateEnergyBoost()">Get</button>
+        </div>
+    </div>
+  </div>
+</ng-template>

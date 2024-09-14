@@ -5,9 +5,8 @@
   import { CommonService } from '../common.service';
   import { CollectService } from '../../core/services/collect.service';
   import { Subscription } from 'rxjs';
-  import { postDataInterface,Boost } from '../../core/interface/user';
+  import { postDataInterface } from '../../core/interface/user';
   import { PostDataService } from '../../core/services/post-data.service';
-  import { BoostDataFetch } from '../../core/services/boost.service';
   import { trigger, style, animate, transition} from '@angular/animations';
   @Component({
     selector: 'app-collect',
@@ -38,57 +37,7 @@
     timerDuration = 60; // Timer duration in seconds (1 minute)
     timeRemaining = 0; // Time remaining for the timer
     isTimerRunning = false;
-    coins = [
-      {
-        image: '/image/newbie.jpeg',
-        title: 'Newbie',
-        description: 'Starting your journey.',
-        progress: 0,
-        color: 'linear-gradient(135deg, #a9a9a9, #dcdcdc)' // Newbie gradient
-      },
-      {
-        image: '/image/bronze.jpeg',
-        title: 'Bronze',
-        description: 'Your number of shares determines the league you enter.',
-        progress: 5000,
-        color: 'linear-gradient(135deg, #654321, #d7b89e)' // Bronze gradient
-      },
-      {
-        image: '/image/silver.jpeg',
-        title: 'Silver',
-        description: 'Your number of shares determines the league you enter.',
-        progress: 50000,
-        color: 'linear-gradient(135deg, #C0C0C0, #e5e5e5)' // Silver gradient
-      },
-      {
-        image: '/image/gold.jpeg',
-        title: 'Gold',
-        description: 'Your number of shares determines the league you enter.',
-        progress: 500000,
-        color: 'linear-gradient(135deg, #FFD700, #FFEB3B)' // Gold gradient
-      },
-      {
-        image: '/image/platina.jpeg',
-        title: 'Platina',
-        description: 'Your number of shares determines the league you enter.',
-        progress: 1000000,
-        color: 'linear-gradient(135deg, #E5E4E2, #d1d1d1)' // Platina gradient
-      },
-      {
-        image: '/image/diamond.jpeg',
-        title: 'Diamond',
-        description: 'Your number of shares determines the league you enter.',
-        progress: 2500000,
-        color: 'linear-gradient(135deg, #b9f2ff, #80e0ff)' // Diamond gradient
-      },
-      {
-        image: '/image/master.jpeg',
-        title: 'Master',
-        description: 'Your number of shares determines the league you enter.',
-        progress: 5000000,
-        color: 'linear-gradient(135deg, #4b0082, #6a0dad)' // Master gradient
-      }
-    ];
+    coins :any;
     
     @ViewChild('roundButton') roundButton!: ElementRef;
     @ViewChild('coinContainer') coinContainer!: ElementRef;
@@ -102,52 +51,15 @@
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
     userInfo:any;
-
-    private boostDataFetch = inject(BoostDataFetch);
-
-    boosterEffectFetch() { 
-      const postDataMutipler: Boost = {
-            mode:0,
-            telegramId: this.userInfo.telegramId,
-            boostType: "coinMutipler"
-        };
-        const postDataEnergy: Boost = {
-          mode:0,
-          telegramId: this.userInfo.telegramId,
-          boostType: "energyMutiplier"
-      };
-        this.boostDataFetch.sendData('Boost',postDataMutipler).subscribe(
-          (response) => {
-            if(response.StatusCode==200){
-              if(response.Result){
-                this.collectService.setprofitPerTap(response.Result[0].boostEffectCurrent);
-              }
-            }
-          },
-          (error) => {
-            console.error('Error saving data:', error);
-          }
-        ); 
-        this.boostDataFetch.sendData('Boost',postDataEnergy).subscribe(
-          (response) => {
-            if(response.StatusCode==200){
-              if(response.Result){
-                this.collectService.setEnergyIncrement(response.Result[0].boostEffectCurrent);
-              }
-            }
-          },
-          (error) => {
-            console.error('Error saving data:', error);
-          }
-        ); 
+    getBoostValue(): number {
+      const currentCoinTier = this.coins.find((coin:any) => this.buttonPressCount >= coin.progress);
+      return currentCoinTier ? currentCoinTier.boost : 0;
     }
-
-
     ngOnInit() {
     this.initSubscriptions();
+    this.coins=this.collectService.getCoinsetting();
     this.collectService.startProgressDecrease();
     this.userInfo=this.commonService.getUserInfo();
-    this.boosterEffectFetch();
     }
     initSubscriptions(){
       this.subscriptions.push(
@@ -156,6 +68,7 @@
         this.collectService.getMaxNewProgress().subscribe(max => this.maxNewProgress = max),
         this.collectService.getCurrentEnergy().subscribe(energy => this.currentEnergy = energy),
         this.collectService.getTimeRemaining().subscribe(time => this.timeRemaining = time),
+        this.collectService.getProfitPerTap().subscribe(tap => this.profitPerTap = tap),
         this.collectService.isTimerCurrentlyRunning().subscribe(running => {
           this.isTimerRunning = running;
           if (running) {
@@ -169,9 +82,7 @@
       this.initForegroundAnimation();
     }
     ngOnDestroy() {
-      // Save the current state to the service
       this.subscriptions.forEach(sub => sub.unsubscribe());
-    // this.collectService.clearTimer();
     }
     getFormattedTimeUTC(seconds: number): string {
       const date = new Date(0); // Epoch time
@@ -181,7 +92,7 @@
     
     onButtonClick(event: MouseEvent) {
       if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
-        this.newProgressCount=this.newProgressCount+1;
+        this.newProgressCount=this.newProgressCount+this.profitPerTap ;
         this.currentEnergy--; // Decrease energy on button click
         this.telegramServices.hapticFeedback.impactOccurred('medium');
         const button = this.roundButton.nativeElement;
@@ -191,15 +102,9 @@
         this.collectService.stopProgressDecrease(); // Stop the decrease timer
         this.collectService.resetProgressDecreaseAfterInactivity();
         this.createFallingCoin();
-        // if (this.currentEnergy === 0 && !this.isTimerRunning) {
-        //   this.collectService.startTimer(this.telegramServices);
-        // }
         setTimeout(() => {
           button.classList.remove('pulse');
         }, 1000);
-      // } else if (this.currentEnergy === 0 && !this.isTimerRunning) {
-      //   this.collectService.startTimer(this.telegramServices);
-      // 
       } 
       else if(this.currentEnergy < 1){
         this.shouldShakeBoostIcons = true;
@@ -216,15 +121,13 @@
     }
     
     routeToBoost(){
-      if (this.currentEnergy == 0) {
         this.commonService.setActiveTab('boost');
         this.router.navigate(['/boost']);
-      }
     }
     get currentCoin() {
-      return this.coins.find(coin => this.buttonPressCount < coin.progress) || this.coins[this.coins.length - 1];
+      return this.coins.find((coin:any) => this.buttonPressCount < coin.progress) || this.coins[this.coins.length - 1];
     }
-    
+
     get progressPercentage() {
       const currentCoin = this.currentCoin;
       const previousCoin = this.coins[this.coins.indexOf(currentCoin) - 1] || { progress: 0 }; 
@@ -264,14 +167,14 @@
         this.saveCoins(this.newProgressCount)
         this.collectService.resetNewProgressCount();
         this.collectService.startProgressDecrease();
-        this.newProgressCount = 0; // Reset new progress after collecting
+        this.newProgressCount = 0; 
         this.telegramServices.hapticFeedback.impactOccurred('medium');
       }
     }
     saveCoins(claim:number) {
       const postData: postDataInterface = {
-        Mode: 1, // Mode depending on your logic
-        CrudType: 0, // Example value
+        Mode: 1, 
+        CrudType: 0,
         SaveData: {'collect':[{
           mode:1,
           id: this.userInfo.telegramId,

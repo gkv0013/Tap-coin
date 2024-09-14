@@ -13,6 +13,7 @@ export class CollectService {
   private timerDuration = new BehaviorSubject<number>(this.getRandomTimerDuration());
   private timeRemaining = new BehaviorSubject<number>(0);
   private isTimerRunning = new BehaviorSubject<boolean>(false);
+  private profitPerTap = new BehaviorSubject<number>(1);
   private coinsettings:any;
   private timerIntervalId: any = null; // To store the interval ID
   private energyRegenIntervalId: any = null; // To store the energy regeneration interval ID
@@ -20,8 +21,15 @@ export class CollectService {
   private progressDecreaseTimeoutId: any = null;
   public commonService = inject(CommonService);
   private energyIncrement = 1;
-  private profitPerTap = 1;
+
   private energyRegenIntervalTime = 1500;
+    getProfitPerTap() {
+    return this.profitPerTap.asObservable();
+  }
+
+  setProfitPerTap(value: number) {
+    this.profitPerTap.next(value);
+  }
   getButtonPressCount() {
     return this.buttonPressCount.asObservable();
   }
@@ -57,9 +65,19 @@ export class CollectService {
   }
 
   incrementNewProgressCount() {
-    const newValue = (this.newProgressCount.value + this.profitPerTap) > this.maxNewProgress.getValue()? this.maxNewProgress.getValue(): (this.newProgressCount.value + this.profitPerTap);
+    const profitPerTapValue = this.profitPerTap.value; 
+    const newValue = this.newProgressCount.value + profitPerTapValue;
+    if(newValue>this.getclaimlimit()){
+      return;
+    }
     this.newProgressCount.next(newValue);
-    this.stopEnergyRegen(); // Stop regenerating energy when the button is clicked
+    this.stopEnergyRegen(); 
+  }
+  getclaimlimit(): number {
+    const currentCoinTier = this.coinsettings.find(
+      (coin: any) => this.buttonPressCount.value >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.claimlimit : 50;
   }
 
   decrementCurrentEnergy() {
@@ -147,12 +165,7 @@ export class CollectService {
     this.energyIncrement = 1;
   }
 
-  setprofitPerTap(value: number) {
-    this.profitPerTap = value;
-  }
-  resetprofitPerTap() {
-    this.profitPerTap = 1;
-  }
+
 
   stopEnergyRegen() {
     if (this.energyRegenIntervalId !== null) {

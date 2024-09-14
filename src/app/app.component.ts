@@ -59,57 +59,7 @@ export class AppComponent implements OnInit, OnDestroy {
   };
   currentImageIndex = 0;
 
-  coins = [
-    {
-      image: '/image/newbie.jpeg',
-      title: 'Newbie',
-      description: 'Just getting started, every step brings you closer.',
-      progress: 0,
-      color: 'linear-gradient(135deg, #a9a9a9, #dcdcdc)' // Newbie gradient
-    },
-    {
-      image: '/image/bronze.jpeg',
-      title: 'Bronze',
-      description: 'You’ve made your mark, the journey has begun.',
-      progress: 5000,
-      color: 'linear-gradient(135deg, #654321, #d7b89e)' // Bronze gradient
-    },
-    {
-      image: '/image/silver.jpeg',
-      title: 'Silver',
-      description: 'Shining brighter, your skills are advancing.',
-      progress: 50000,
-      color: 'linear-gradient(135deg, #C0C0C0, #e5e5e5)' // Silver gradient
-    },
-    {
-      image: '/image/gold.jpeg',
-      title: 'Gold',
-      description: 'You’re golden! Your progress is noteworthy.',
-      progress: 500000,
-      color: 'linear-gradient(135deg, #FFD700, #FFEB3B)' // Gold gradient
-    },
-    {
-      image: '/image/platina.jpeg',
-      title: 'Platina',
-      description: 'Rising above the rest, your achievements are exceptional.',
-      progress: 1000000,
-      color: 'linear-gradient(135deg, #E5E4E2, #d1d1d1)' // Platina gradient
-    },
-    {
-      image: '/image/diamond.jpeg',
-      title: 'Diamond',
-      description: 'A rare gem, your presence is as valuable as it gets.',
-      progress: 2500000,
-      color: 'linear-gradient(135deg, #b9f2ff, #80e0ff)' // Diamond gradient
-    },
-    {
-      image: '/image/master.jpeg',
-      title: 'Master',
-      description: 'Mastery achieved, you’re in a league of your own.',
-      progress: 5000000,
-      color: 'linear-gradient(135deg, #4b0082, #6a0dad)' // Master gradient
-    }
-  ];
+  coins :any;
   
   platformInfo: any;
   selectedButton: HTMLElement | null = null;
@@ -188,6 +138,7 @@ export class AppComponent implements OnInit, OnDestroy {
         friendsInvited: this.userData.friendsInvited,
         referralBonus: this.userData.referralBonus,
         dailyLoginStreak: this.userData.dailyLoginStreak,
+        time: new Date().toISOString()
       }],
     };
 
@@ -200,6 +151,20 @@ export class AppComponent implements OnInit, OnDestroy {
           let coinsetting=JSON.parse(response.Result?.cointsettings?.[0]?.settingdata);
           this.collectService.setCoinsetting(coinsetting)
           this.coins= this.collectService.getCoinsetting();
+          let isenergyboost = response?.Result?.result[0]?.isenergyboost;
+          if (isenergyboost) {
+            let energyBoost: number = this.getEnergyBoost() ?? 1;
+            if (energyBoost > 0) {
+              this.collectService.setEnergyIncrement(energyBoost);
+            }
+          }
+          let ismultitap = response?.Result?.result[0]?.ismultitap
+          if (ismultitap) {
+            let multitap: number = this.getmultitap() ?? 1;
+            if (multitap > 0) {
+              this.collectService.setProfitPerTap(multitap);
+            }
+          }
           setTimeout(() => {
             this.isLoading = false;
             this.commonService.setActiveTab('collect');
@@ -214,7 +179,18 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
   }
-
+  getEnergyBoost(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.buttonPressCount >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.energyboost : 0;
+  }
+  getmultitap(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.buttonPressCount >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.multitap : 1;
+  }
   getCurrentCoinTitle(totalCoins: number): string {
     const sortedCoins = [...this.coins].sort((a, b) => b.progress - a.progress);
     const coin = sortedCoins.find(coin => totalCoins >= coin.progress);

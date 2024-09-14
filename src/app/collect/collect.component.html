@@ -6,7 +6,7 @@
           </div>
           <div class="resource-value">
             <ng-container >
-              {{ currentEnergy }}/1000
+              {{ currentEnergy }}/{{ getBoostValue()}}
             </ng-container>
             <!-- <ng-template #showTimer>
               {{ getFormattedTimeUTC(timeRemaining)}}
