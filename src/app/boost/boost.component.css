@@ -295,16 +295,30 @@ button:disabled {
   border-radius: 15px;
   color: white;
   cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s ease;
 }
 
+.boost-button:hover {
+  background-color: #FFA700;
+}
+
+/* Disabled button styles */
 .boost-button:disabled {
   background-color: #3B3B3B;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* Boost Button Hover */
-.boost-button:hover {
-  background-color: #FFA700;
+/* Disable hover effect when the button is disabled */
+.boost-button:disabled:hover {
+  background-color: #3B3B3B;
+  transform: none;
+}
+
+/* Disable active effect when the button is disabled */
+.boost-button:disabled:active {
+  background-color: #3B3B3B;
+  transform: none;
 }
 .glossy-icon svg {
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); /* Bright outer glow */

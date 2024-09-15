@@ -8,6 +8,7 @@
   import { postDataInterface } from '../../core/interface/user';
   import { PostDataService } from '../../core/services/post-data.service';
   import { trigger, style, animate, transition} from '@angular/animations';
+  import confetti from 'canvas-confetti';
   @Component({
     selector: 'app-collect',
     standalone: true,
@@ -27,6 +28,7 @@
     nextLevel = 5000;
     profitPerTap = 1;
     profitPerHour = 0;
+    previousLevel: number = 0; // Initialize the current level to 0
     buttonPressCount = 0;
     newProgressCount = 0; // New variable for tracking progress
     maxNewProgress = 100;
@@ -80,7 +82,16 @@
     ngAfterViewInit(): void {
       this.initBackgroundAnimation();
       this.initForegroundAnimation();
+      this.previousLevel=this.getCurrentLevel();
     }
+    getCurrentLevel(): number {
+      // Assuming coins contain a property 'level' and 'progress'
+      const currentCoinTier = this.coins.find(
+        (coin: any) => this.buttonPressCount >= coin.progress
+      );
+      return currentCoinTier ? currentCoinTier.level : 0; // Return 0 if no level is found
+    }
+    
     ngOnDestroy() {
       this.subscriptions.forEach(sub => sub.unsubscribe());
     }
@@ -89,10 +100,16 @@
       date.setSeconds(seconds);
       return date.toISOString().substr(14, 5); // Get mm:ss part of the ISO string
     }
+    getclaimlimit(): number {
+      const currentCoinTier = this.coins.find(
+        (coin: any) => this.buttonPressCount >= coin.progress
+      );
+      return currentCoinTier ? currentCoinTier.claimlimit : 50;
+    }
     
     onButtonClick(event: MouseEvent) {
       if (this.newProgressCount < this.maxNewProgress && this.currentEnergy >= 1) {
-        this.newProgressCount=this.newProgressCount+this.profitPerTap ;
+        this.newProgressCount = Math.min(this.newProgressCount + this.profitPerTap, this.getclaimlimit());
         this.currentEnergy--; // Decrease energy on button click
         this.telegramServices.hapticFeedback.impactOccurred('medium');
         const button = this.roundButton.nativeElement;
@@ -119,6 +136,77 @@
           }, 500);
       }
     }
+    checkForLevelUp() {
+      const currentTier = this.getCurrentCoinTier();
+      const currentLevel = currentTier.level;
+    
+      // Check if user has leveled up
+      if (currentLevel > this.previousLevel) {
+        this.triggerConfetti();
+        this.previousLevel = currentLevel; // Update the previous level after confetti
+      }
+    }
+    onLevelUp(newLevel: number) {
+      console.log('Congratulations! You have reached level ' + newLevel);
+      this.triggerConfetti(); // Optionally, trigger confetti animation
+      // You can display a message or perform any other actions here
+    }
+    triggerConfetti() {
+      // Set the confetti duration (15 seconds)
+      const duration = 5 * 1000; // 15 seconds
+      const colors = ['#bb0000', '#ffffff']; // Custom colors
+    
+      const interval = setInterval(() => {
+        // Left side confetti
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+    
+        // Right side confetti
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+      }, 100); // Frequency of confetti bursts (every 100ms)
+    
+      // Stop the confetti after the duration has passed
+      setTimeout(() => {
+        clearInterval(interval); // Stop the interval after the duration
+      }, duration);
+    }
+    
+    getCurrentCoinTier(): any {
+      let currentTier = this.coins[0]; // Default to the first tier (Newbie)
+    
+      // Loop through the tiers and find where buttonPressCount falls
+      for (let i = 0; i < this.coins.length; i++) {
+        const coin = this.coins[i];
+        const nextCoin = this.coins[i + 1]; // Get the next tier for comparison
+    
+        if (nextCoin) {
+          // Check if the buttonPressCount is between this tier and the next
+          if (this.buttonPressCount >= coin.progress && this.buttonPressCount < nextCoin.progress) {
+            currentTier = coin;
+            break;
+          }
+        } else {
+          // If there is no next tier, we're at the last tier
+          if (this.buttonPressCount >= coin.progress) {
+            currentTier = coin;
+            break;
+          }
+        }
+      }
+    
+      return currentTier;
+    }
     
     routeToBoost(){
         this.commonService.setActiveTab('boost');
@@ -141,22 +229,27 @@
       const coin = this.renderer.createElement('div');
       this.renderer.addClass(coin, 'coin');
       this.renderer.addClass(coin, 'fall');
-
+    
+      // Add profitPerTap inside the coin
+      const profitPerTapText = this.renderer.createText(`+${this.profitPerTap}`);
+      this.renderer.appendChild(coin, profitPerTapText);
+    
       const buttonRect = this.roundButton.nativeElement.getBoundingClientRect();
       const containerRect = this.coinContainer.nativeElement.getBoundingClientRect();
       const top = buttonRect.top - containerRect.top;
       const left = buttonRect.left - containerRect.left + buttonRect.width / 2 - 10;
-
+    
       this.renderer.setStyle(coin, 'top', `${top}px`);
       this.renderer.setStyle(coin, 'left', `${left}px`);
-
+    
       const container = this.coinContainer.nativeElement;
       this.renderer.appendChild(container, coin);
-
+    
       setTimeout(() => {
         this.renderer.removeChild(container, coin);
       }, 1000);
     }
+    
 
     get newProgressPercentage() {
       return (this.newProgressCount / this.maxNewProgress) * 100;
@@ -168,6 +261,7 @@
         this.collectService.resetNewProgressCount();
         this.collectService.startProgressDecrease();
         this.newProgressCount = 0; 
+        this.checkForLevelUp();
         this.telegramServices.hapticFeedback.impactOccurred('medium');
       }
     }

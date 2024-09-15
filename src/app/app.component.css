@@ -332,3 +332,35 @@ section {
     opacity: 1; /* Fully visible */
   }
 }
+.non-mobile-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+  text-align: center;
+  background-color: #f5f5f5; /* Light background color */
+  color: #333; /* Darker text color */
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.non-mobile-message h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ff5252; /* Bright red color for the heading */
+}
+
+.non-mobile-message img {
+  max-width: 300px; /* Limit the image size */
+  width: 100%; /* Ensure image is responsive */
+  height: auto;
+  border-radius: 15px; /* Optional rounded corners for the image */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px; /* Space between image and text */
+}
+
+.non-mobile-message p {
+  font-size: 18px;
+  color: #666;
+}

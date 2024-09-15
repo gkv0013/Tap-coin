@@ -7,21 +7,20 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonService } from '../common.service';
-import { BoostDataFetch } from '../../core/services/boost.service';
 import { PostDataService } from '../../core/services/post-data.service';
 import {
-  Boost,
-  BoosterData,
   postDataInterface,
 } from '../../core/interface/user';
 import { CollectService } from '../../core/services/collect.service';
 import { DialogService } from '../../core/components/dialog/dialog.service';
 import { Subscription } from 'rxjs';
 import confetti from 'canvas-confetti';
+import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-boost',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './boost.component.html',
   styleUrl: './boost.component.css',
 })
@@ -34,18 +33,27 @@ export class BoostComponent {
   coins: any;
   public commonService = inject(CommonService);
   private dialogService = inject(DialogService);
+  private  telegramServices = inject(TelegramWebappService);
+  public router = inject(Router);
   private readonly collectService = inject(CollectService);
   private postDataService = inject(PostDataService);
   private subscriptions: Subscription[] = [];
+  isProcessingEnergyBoost = false;
+  isProcessingMultiTap=false;
+  currentCoinTier: any;
+  isProcessingFullenergy=false;
   constructor() {}
+  currentEnergy:number=0;
   ngOnInit() {
     this.userInfo = this.commonService.getUserInfo();
     this.coins = this.collectService.getCoinsetting();
     this.subscriptions.push(
       this.collectService
         .getButtonPressCount()
-        .subscribe((count) => (this.walletBalance = count))
+        .subscribe((count) => {this.walletBalance = count; this.currentCoinTier = this.getCurrentCoinTier();}),
+        this.collectService.getCurrentEnergy().subscribe(energy => this.currentEnergy = energy),
     );
+    this.enableBackButton();
   }
   closeModal() {
     this.dialogService.closeDialog();
@@ -60,42 +68,31 @@ export class BoostComponent {
       onConfirm: () => {},
     });
   }
+  getCurrentCoinTier() {
+    return this.coins.find((coin: any) => this.walletBalance >= coin.progress);
+  }
   getLevel(): number {
-    const currentCoinTier = this.coins.find(
-      (coin: any) => this.walletBalance >= coin.progress
-    );
-    return currentCoinTier ? currentCoinTier.level : 0;
+    return this.currentCoinTier ? this.currentCoinTier.level : 0;
   }
-  getfillenergycount(): number {
-    const currentCoinTier = this.coins.find(
-      (coin: any) => this.walletBalance >= coin.progress
-    );
-    return currentCoinTier ? currentCoinTier.fullenergy : 0;
+
+  getFillEnergyCount(): number {
+    return this.currentCoinTier ? this.currentCoinTier.fullenergy : 0;
   }
+
   getEnergyBoostCost(): number {
-    const currentCoinTier = this.coins.find(
-      (coin: any) => this.walletBalance >= coin.progress
-    );
-    return currentCoinTier ? currentCoinTier.energyboostcost : 0;
+    return this.currentCoinTier ? this.currentCoinTier.energyboostcost : 0;
   }
+
   getEnergyBoost(): number {
-    const currentCoinTier = this.coins.find(
-      (coin: any) => this.walletBalance >= coin.progress
-    );
-    return currentCoinTier ? currentCoinTier.energyboost : 0;
+    return this.currentCoinTier ? this.currentCoinTier.energyboost : 0;
   }
 
   getMultiTapCost(): number {
-    const currentCoinTier = this.coins.find(
-      (coin: any) => this.walletBalance >= coin.progress
-    );
-    return currentCoinTier ? currentCoinTier.multitapcost : 0;
+    return this.currentCoinTier ? this.currentCoinTier.multitapcost : 0;
   }
-  getmultitap(): number {
-    const currentCoinTier = this.coins.find(
-      (coin: any) => this.walletBalance >= coin.progress
-    );
-    return currentCoinTier ? currentCoinTier.multitap : 1;
+
+  getMultiTap(): number {
+    return this.currentCoinTier ? this.currentCoinTier.multitap : 1;
   }
   energyBoost() {
     this.dialogService.openDialog({
@@ -118,6 +115,8 @@ export class BoostComponent {
     });
   }
   activateFullenergy() {
+    if (this.isProcessingFullenergy) return;
+    this.isProcessingFullenergy = true;
     try {
       const postData: postDataInterface = {
         Mode: 0,
@@ -130,7 +129,7 @@ export class BoostComponent {
               cost: 0,
               boosttype: 'Energy Fill',
               boosttypeid: 1,
-              time: new Date().toISOString().toString(),
+              time: new Date().toISOString(),
             },
           ],
         },
@@ -139,6 +138,7 @@ export class BoostComponent {
       this.postDataService.sendData('Boost', postData).subscribe(
         (response) => {
           if (response.StatusCode == 200) {
+            this.isProcessingFullenergy = false;
             this.closeModal();
             this.triggerConfetti();
             if (response?.Result?.length > 0) {
@@ -151,21 +151,26 @@ export class BoostComponent {
               }
             }
           } else {
+            this.isProcessingFullenergy = false;
             this.closeModal();
           }
         },
         (error) => {
           console.error('Error saving data:', error);
           this.closeModal();
+          this.isProcessingFullenergy = false;
         }
       );
     } catch (error) {
       console.log('activateFullenergy:', error);
       this.closeModal();
+      this.isProcessingFullenergy = false;
     }
   }
 
   activateMultiTap() {
+    if (this.isProcessingMultiTap) return;
+    this.isProcessingMultiTap = true;
     try {
       const postData: postDataInterface = {
         Mode: 1,
@@ -178,7 +183,7 @@ export class BoostComponent {
               cost: this.getMultiTapCost(),
               boosttype: 'Multi Tap',
               boosttypeid: 2,
-              time: new Date().toISOString().toString(),
+              time: new Date().toISOString(),
             },
           ],
         },
@@ -187,6 +192,7 @@ export class BoostComponent {
       this.postDataService.sendData('Boost', postData).subscribe(
         (response) => {
           if (response.StatusCode == 200) {
+            this.isProcessingMultiTap = false;
             this.closeModal();
             this.triggerConfetti();
             if (response?.Result?.length > 0) {
@@ -199,28 +205,33 @@ export class BoostComponent {
                 const userData = this.commonService.getUserInfo();
                 userData.ismultitap = ismultitap;
                 this.commonService.setUserInfo(userData);
-                let multitap: number = this.getmultitap() ?? 1;
+                let multitap: number = this.getMultiTap() ?? 1;
                 if (multitap > 0) {
                   this.collectService.setProfitPerTap(multitap);
                 }
               }
             }
           } else {
+            this.isProcessingMultiTap = false;
             this.closeModal();
           }
         },
         (error) => {
           console.error('Error saving data:', error);
           this.closeModal();
+          this.isProcessingMultiTap = false;
         }
       );
     } catch (error) {
       console.log('activateFullenergy:', error);
       this.closeModal();
+      this.isProcessingMultiTap = false;
     }
   }
 
   activateEnergyBoost() {
+    if (this.isProcessingEnergyBoost) return;
+    this.isProcessingEnergyBoost = true;
     try {
       const postData: postDataInterface = {
         Mode: 2,
@@ -233,7 +244,7 @@ export class BoostComponent {
               cost: this.getEnergyBoostCost(),
               boosttype: 'Energy Boost',
               boosttypeid: 3,
-              time: new Date().toISOString().toString(),
+              time: new Date().toISOString(),
             },
           ],
         },
@@ -242,6 +253,7 @@ export class BoostComponent {
       this.postDataService.sendData('Boost', postData).subscribe(
         (response) => {
           if (response.StatusCode == 200) {
+            this.isProcessingEnergyBoost = false;
             this.closeModal();
             this.triggerConfetti();
             if (response?.Result?.length > 0) {
@@ -261,17 +273,20 @@ export class BoostComponent {
               }
             }
           } else {
+            this.isProcessingEnergyBoost = false;
             this.closeModal();
           }
         },
         (error) => {
           console.error('Error saving data:', error);
           this.closeModal();
+          this.isProcessingEnergyBoost = false;
         }
       );
     } catch (error) {
       console.log('activateEnergyBoost:', error);
       this.closeModal();
+      this.isProcessingEnergyBoost = false;
     }
   }
 
@@ -282,5 +297,22 @@ export class BoostComponent {
       spread: 70,
       origin: { y: 0.6 }, // Controls the starting point
     });
+  }
+  enableBackButton() {
+    this.telegramServices.backButton.show();  
+    if (Telegram.WebApp && Telegram.WebApp.BackButton) {
+      Telegram.WebApp.BackButton.onClick(() => {
+        console.log('Back button clicked');
+        this.handleBackNavigation();
+      });
+    }
+  }
+  handleBackNavigation() {
+    this.commonService.setActiveTab('collect');
+    this.router.navigate(['/collect']);
+    this.hideBackButton();
+  }
+  hideBackButton() {
+    this.telegramServices.backButton.hide();  
   }
 }

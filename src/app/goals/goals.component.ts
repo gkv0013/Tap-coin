@@ -2,13 +2,13 @@ import { CommonService } from '../common.service';
 import { CollectService } from '../../core/services/collect.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+import { Router, ActivatedRoute, RouterModule } from '@angular/router'; // Import ActivatedRoute
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './goals.component.html',
   styleUrls: ['./goals.component.css'],
 })
@@ -185,9 +185,13 @@ export class GoalComponent implements OnInit {
   }
   handleBackNavigation() {
     this.router.navigate(['/green']);
+    this.commonService.setActiveTab('green');
     this.hideBackButton();
   }
   hideBackButton() {
     this.telegramServices.backButton.hide();  
+  }
+  showMoreInfo(goalData:any) {
+    this.router.navigate(['/more-info'], { queryParams: {  id: goalData.goalNo,url: this.goalData.moreInfo } });
   }
 }

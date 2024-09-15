@@ -21,7 +21,7 @@
               </div>
               <div class="task-buttons">
                 <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()" *ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Perform</button>
-                <button class="btn bg-gray-700 text-white"  *ngIf="isCardAnimationDone"[@buttonAnimation]="'enter'">Verify</button>
+                <button class="btn bg-gray-700 text-white"  (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"[@buttonAnimation]="'enter'">Verify</button>
               </div>
             </div>
           </div>
@@ -34,8 +34,8 @@
                 </div>
               </div>
               <div class="task-buttons">
-                <button class="btn bg-gray-700 text-white" *ngIf="isCardAnimationDone"  [@buttonAnimation]="'enter'">Perform</button>
-                <button class="btn bg-gray-700 text-white"  *ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Verify</button>
+                <button class="btn bg-gray-700 text-white" (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"  [@buttonAnimation]="'enter'">Perform</button>
+                <button class="btn bg-gray-700 text-white"  (click)="shareOnTelegram()"*ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Verify</button>
               </div>
             </div>
           </div>

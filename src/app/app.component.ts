@@ -61,11 +61,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   coins :any;
   
-  platformInfo: any;
+  platformInfo: string = '';
   selectedButton: HTMLElement | null = null;
   activeTab: string = 'collect';
   progressValue: number = 25;
   buttonPressCount = 0;
+  isMobilePlatform: boolean = false
   constructor() {}
   private el = inject(ElementRef);
   private postDataService = inject(PostDataService);
@@ -77,14 +78,20 @@ export class AppComponent implements OnInit, OnDestroy {
   private collectService = inject(CollectService);
   private subscriptions: Subscription[] = [];
   ngOnInit() {
+    this.platformInfo = this.telegramServices.platform;
+    this.isMobilePlatform = this.platformInfo === 'mobile' || this.platformInfo === 'android' || this.platformInfo === 'ios';
+    if (!this.isMobilePlatform) {
+      // If not mobile, show message and prevent further initialization
+      return;
+    }
     this.commonService.activeTab$.subscribe(tab => {
       this.activeTab = tab;
     });
     this.userData = {
-      id: '12',  // Example user ID
-      username: 'Dinkann',  // Example username
-      firstname: 'John',  // Example first name
-      lastname: 'Doe',  // Example last name
+      id: '1918120254',  // Example user ID
+      username: 'albatrosszz',  // Example username
+      firstname: 'Manu',  // Example first name
+      lastname: 'Krishna',  // Example last name
       createdAt: new Date(),  // Example account creation date
       lastLogin: new Date(),  // Example last login date (current date and time)
       profitPerTap: 0,  // Example profit per tap

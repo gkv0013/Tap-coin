@@ -29,7 +29,8 @@
                 <div class="p-4">
                     <h3 class="font-bold text-lg"> {{ goalData.title }}</h3>
                     <p class="text-sm text-white mt-2">{{ goalData.description }}</p>
-                    <a [href]="goalData.moreInfo" class="text-blue-500 hover:underline mt-4 inline-block">More</a>
+                    <span  class="text-blue-500 hover:underline mt-4 inline-block"(click)="showMoreInfo(goalData)">More</span>
+
                 </div>
             </div>
         </div>

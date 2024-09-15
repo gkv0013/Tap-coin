@@ -1,86 +1,110 @@
+<div *ngIf="isMobilePlatform; else nonMobileMessage">
+  <div *ngIf="isLoading; else content">
+    <app-loading></app-loading>
+  </div>
+  <ng-template #content>
+    <div class="header">
 
-
-<div *ngIf="isLoading; else content">
-  <app-loading></app-loading>
-</div>
-<ng-template #content>
-<div class="header">
-
-    <div class="user-info">
-      <div class="user-details">
-        <img [src]="getAvatarUrl(userInfo?.firstName)" alt="{{ userInfo?.firstName }}'s avatar" class="avatar">
-        <div class="name-id-container">
-          <h1>{{userInfo?.firstName}}</h1>
-          <p class="user-id">{{buttonPressCount}} <span class="nila-text">Media Credits</span></p>
+      <div class="user-info">
+        <div class="user-details">
+          <img [src]="getAvatarUrl(userInfo?.firstName)" alt="{{ userInfo?.firstName }}'s avatar" class="avatar">
+          <div class="name-id-container">
+            <h1>{{userInfo?.firstName}}</h1>
+            <p class="user-id">{{buttonPressCount}} <span class="nila-text">Media Credits</span></p>
+          </div>
         </div>
       </div>
-    </div>
-  
-  <div class="coin-indicator">
-    <span class="badge futuristic-badge" (click)="openModal(paginationModal)" [ngClass]="getCoinClass(userInfo.totalCoins)">
-      {{ getCurrentCoinTitle(userInfo.totalCoins) }}
-    </span>
-  </div>
-  
-</div>
-<router-outlet></router-outlet>
-<nav class="navbar">
-  <button (click)="showSection('collect', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'collect'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" >
-      <path path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M434-211h91v-41q49-10 81.5-44.5t32.5-86.35q0-48.61-28.5-84.88Q582-504 522-524q-60-22-78.5-37.16-18.5-15.16-18.5-36.57Q425-610 438.78-619q13.79-9 32.22-9 27.47 0 48.74 14Q541-600 547-573l81-34q-13-43-38.5-67.5T525-708.11V-749h-90v42.36q-49 12.64-74.5 43.93-25.5 31.28-25.5 71.15Q335-542 369.5-506T482-444q32 10 50 25.39t18 35.48q0 20-15 35.07Q520-333 487.56-333q-32.43 0-56-22Q408-377 402-417l-84 34q9 52 43.5 86t72.5 43.17V-211Zm46 161q-88.64 0-167.48-33.02-78.84-33.02-137.66-91.84-58.82-58.82-91.84-137.66T50-480q0-89.9 33.08-167.96 33.08-78.07 92.16-137.03 59.08-58.96 137.66-91.98Q391.48-910 480-910q89.89 0 167.99 33.01 78.1 33.01 137.05 91.95 58.94 58.95 91.95 137.08Q910-569.83 910-479.92q0 88.92-33.03 167.26-33.02 78.34-91.98 137.42-58.96 59.08-137.03 92.16Q569.9-50 480-50Z"/>
-    </svg>
-    <span>Earn</span>
-  </button>
-  <button (click)="showSection('green', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'green'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M456-39q-37 0-71.5-6T317-64q1-133 61-250t157-209q-118 61-200 166T209-126q-5-5-11-10l-12-10q-53-53-81.5-120T76-405q0-76 30.5-143.5T190-669q92-92 239.5-120.5T833-791q27 252-.5 400.5T714-150q-54 54-120 82.5T456-39Z"/></svg>
-    <span>Goals</span>
-  </button>
-  <button (click)="showSection('friends', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'friends'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M-14-86v-159q0-46.3 23.88-84.45Q33.77-367.6 72-387q67-34 137.23-51 70.22-17 142.77-17 74.12 0 144.56 17T632-388q39.23 19.25 62.62 57.12Q718-293 718-245.05V-86H-14Zm829 0v-166q0-47-23.5-96T719-444q45 8 86 22t79 34q41.84 21.77 65.92 58.69Q974-292.38 974-249v163H815ZM352-500q-78.55 0-133.27-54.72Q164-609.45 164-687q0-78.55 54.73-133.28Q273.45-875 352-875q77.55 0 132.77 54.72Q540-765.55 540-687q0 77.55-55.23 132.28Q429.55-500 352-500Zm481-187.01q0 76.56-55.17 131.79Q722.66-500 646.16-500 632-500 613-503q-19-3-36-9 30-37 45-81.7t15-93.15q0-48.45-15-93.8Q607-826 577-863q17-7 34-9.5t34.53-2.5q76.76 0 132.11 55.22Q833-764.57 833-687.01Z"/></svg>
-    <span>Refer</span>
-  </button>
-  <button (click)="showSection('tasks', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'tasks'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z"/></svg>
-    <span>Tasks</span>
-  </button>
 
-  <button (click)="showSection('boost', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'boost'}" class="nav-icon">
+      <div class="coin-indicator">
+        <span class="badge futuristic-badge" (click)="openModal(paginationModal)"
+          [ngClass]="getCoinClass(userInfo.totalCoins)">
+          {{ getCurrentCoinTitle(userInfo.totalCoins) }}
+        </span>
+      </div>
+
+    </div>
+    <router-outlet></router-outlet>
+    <nav class="navbar">
+      <button (click)="showSection('collect', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'collect'}"
+        class="nav-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999">
+          <path path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M434-211h91v-41q49-10 81.5-44.5t32.5-86.35q0-48.61-28.5-84.88Q582-504 522-524q-60-22-78.5-37.16-18.5-15.16-18.5-36.57Q425-610 438.78-619q13.79-9 32.22-9 27.47 0 48.74 14Q541-600 547-573l81-34q-13-43-38.5-67.5T525-708.11V-749h-90v42.36q-49 12.64-74.5 43.93-25.5 31.28-25.5 71.15Q335-542 369.5-506T482-444q32 10 50 25.39t18 35.48q0 20-15 35.07Q520-333 487.56-333q-32.43 0-56-22Q408-377 402-417l-84 34q9 52 43.5 86t72.5 43.17V-211Zm46 161q-88.64 0-167.48-33.02-78.84-33.02-137.66-91.84-58.82-58.82-91.84-137.66T50-480q0-89.9 33.08-167.96 33.08-78.07 92.16-137.03 59.08-58.96 137.66-91.98Q391.48-910 480-910q89.89 0 167.99 33.01 78.1 33.01 137.05 91.95 58.94 58.95 91.95 137.08Q910-569.83 910-479.92q0 88.92-33.03 167.26-33.02 78.34-91.98 137.42-58.96 59.08-137.03 92.16Q569.9-50 480-50Z" />
+        </svg>
+        <span>Earn</span>
+      </button>
+      <button (click)="showSection('green', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'green'}"
+        class="nav-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999">
+          <path
+            d="M456-39q-37 0-71.5-6T317-64q1-133 61-250t157-209q-118 61-200 166T209-126q-5-5-11-10l-12-10q-53-53-81.5-120T76-405q0-76 30.5-143.5T190-669q92-92 239.5-120.5T833-791q27 252-.5 400.5T714-150q-54 54-120 82.5T456-39Z" />
+        </svg>
+        <span>Goals</span>
+      </button>
+      <button (click)="showSection('friends', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'friends'}"
+        class="nav-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999">
+          <path
+            d="M-14-86v-159q0-46.3 23.88-84.45Q33.77-367.6 72-387q67-34 137.23-51 70.22-17 142.77-17 74.12 0 144.56 17T632-388q39.23 19.25 62.62 57.12Q718-293 718-245.05V-86H-14Zm829 0v-166q0-47-23.5-96T719-444q45 8 86 22t79 34q41.84 21.77 65.92 58.69Q974-292.38 974-249v163H815ZM352-500q-78.55 0-133.27-54.72Q164-609.45 164-687q0-78.55 54.73-133.28Q273.45-875 352-875q77.55 0 132.77 54.72Q540-765.55 540-687q0 77.55-55.23 132.28Q429.55-500 352-500Zm481-187.01q0 76.56-55.17 131.79Q722.66-500 646.16-500 632-500 613-503q-19-3-36-9 30-37 45-81.7t15-93.15q0-48.45-15-93.8Q607-826 577-863q17-7 34-9.5t34.53-2.5q76.76 0 132.11 55.22Q833-764.57 833-687.01Z" />
+        </svg>
+        <span>Refer</span>
+      </button>
+      <button (click)="showSection('tasks', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'tasks'}"
+        class="nav-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999">
+          <path
+            d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z" />
+        </svg>
+        <span>Tasks</span>
+      </button>
+
+      <!-- <button (click)="showSection('boost', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'boost'}" class="nav-icon">
     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="m33-569 187-189q24-24 57-33.5t67-3.5l60 12q-60 72-99 136.5T223-488L33-569Zm270 106q45-99 94-173t105-130q85-85 206-128t237-30q13 115-29.5 236.5T788-482q-54 55-129.5 105T484-282L303-463Zm323-142q20 20 49 20t49-20q20-20 20-48.5T724-702q-20-20-49-20t-49 20q-20 20-20 48.5t20 48.5ZM590-12l-82-190q94-44 158.5-83T803-384l12 61q6 34-3.5 66.5T778-200L590-12ZM109-304q46-46 110.5-46T330-304q46 45 46 110T330-83q-35 34-114.5 58T17 8q10-119 34-198.5T109-304Z"/></svg>
     <span>Boost</span>
-  </button>
+  </button> -->
 
-  <button (click)="showSection('airdrop', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'airdrop'}" class="nav-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999" ><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760H520q-71 0-115.5 44.5T360-600v240q0 71 44.5 115.5T520-200h320q0 33-23.5 56.5T760-120H200Zm320-160q-33 0-56.5-23.5T440-360v-240q0-33 23.5-56.5T520-680h280q33 0 56.5 23.5T880-600v240q0 33-23.5 56.5T800-280H520Zm120-140q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Z"/></svg>
-    <span>Wallet</span>
-  </button>
-</nav>
-<ng-template #paginationModal let-modal>
-  <div class="modal-content">
-    <div class="modal-body bg-dark text-white">
-      <div class="pagination-wrapper position-relative">
-        <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <button type="button" class="arrow-left" [disabled]="currentImageIndex === 0" (click)="previousImage()">
-          <span>&#8249;</span>
-        </button>
-        <!-- Use coins array to display content dynamically -->
-        <img [src]="coins[currentImageIndex].image" class="img-fluid rounded-circle mx-auto d-block" alt="{{coins[currentImageIndex].title}} Image">
-        <button type="button" class="arrow-right" [disabled]="currentImageIndex === coins.length - 1" (click)="nextImage()">
-          <span>&#8250;</span>
-        </button>
-        <h5 class="text-center mt-3">{{coins[currentImageIndex].title}}</h5>
-        <p class="text-center">{{coins[currentImageIndex].description}}</p>
-        <p class="text-center">Progress: {{coins[currentImageIndex].progress}}</p>
+      <button (click)="showSection('airdrop', $event.target)" [ngClass]="{'nav-icon-selected': activeTab === 'airdrop'}"
+        class="nav-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#999999">
+          <path
+            d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760H520q-71 0-115.5 44.5T360-600v240q0 71 44.5 115.5T520-200h320q0 33-23.5 56.5T760-120H200Zm320-160q-33 0-56.5-23.5T440-360v-240q0-33 23.5-56.5T520-680h280q33 0 56.5 23.5T880-600v240q0 33-23.5 56.5T800-280H520Zm120-140q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Z" />
+        </svg>
+        <span>Wallet</span>
+      </button>
+    </nav>
+    <ng-template #paginationModal let-modal>
+      <div class="modal-content">
+        <div class="modal-body bg-dark text-white">
+          <div class="pagination-wrapper position-relative">
+            <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <button type="button" class="arrow-left" [disabled]="currentImageIndex === 0" (click)="previousImage()">
+              <span>&#8249;</span>
+            </button>
+            <!-- Use coins array to display content dynamically -->
+            <img [src]="coins[currentImageIndex].image" class="img-fluid rounded-circle mx-auto d-block"
+              alt="{{coins[currentImageIndex].title}} Image">
+            <button type="button" class="arrow-right" [disabled]="currentImageIndex === coins.length - 1"
+              (click)="nextImage()">
+              <span>&#8250;</span>
+            </button>
+            <h5 class="text-center mt-3">{{coins[currentImageIndex].title}}</h5>
+            <p class="text-center">{{coins[currentImageIndex].description}}</p>
+            <p class="text-center">Progress: {{coins[currentImageIndex].progress}}</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-    <!-- <div class="modal-footer bg-dark"> -->
+      <!-- <div class="modal-footer bg-dark"> -->
       <!-- <button type="button" class="btn btn-outline-light" (click)="closeModal()">Close</button> -->
-    <!-- </div> -->
+      <!-- </div> -->
+    </ng-template>
+
+  </ng-template>
+</div>
+<ng-template #nonMobileMessage>
+  <div class="non-mobile-message">
+    <h2>Please use the mobile version of Telegram to access this app.</h2>
+    <!-- <img src="path-to-your-image.jpg" alt="Mobile Only Image" class="mobile-only-image"> -->
+  </div>
 </ng-template>
-
-</ng-template>
-
-
-

@@ -19,9 +19,16 @@
         </div>
         <div class="boost-details">
           <div class="boost-title">Full Energy</div>
-          <div class="boost-availability">{{getfillenergycount()-this.userInfo.fillenergy}}/{{getfillenergycount()}} Available</div>
+          <div class="boost-availability">{{getFillEnergyCount()-this.userInfo.fillenergy}}/{{getFillEnergyCount()}} Available</div>
         </div>
-        <button class="boost-button" (click)="fullEnergy()"[disabled]="getfillenergycount() - this.userInfo.fillenergy <= 0">Start</button>
+        <button 
+        class="boost-button" 
+        (click)="fullEnergy()" 
+        [disabled]="getFillEnergyCount() - this.userInfo.fillenergy <= 0 || currentEnergy>0 || isProcessingFullenergy"
+        [ngClass]="{'disabled': getFillEnergyCount() - this.userInfo.fillenergy <= 100 || isProcessingFullenergy}">
+        Start
+      </button>
+      
       </div>
     </div>
 
@@ -33,9 +40,9 @@
         </div>
         <div class="boost-details">
           <div class="boost-title">Multi Tap</div>
-          <div class="boost-level">1000 • lvl 2</div>
+          <div class="boost-level">{{getMultiTapCost()}} • level {{getLevel()}}</div>
         </div>
-        <button class="boost-button" [disabled]="walletBalance < getMultiTapCost() || this.userInfo.ismultitap >= 1" (click)="multiTap()">Start</button>
+        <button class="boost-button"   [ngClass]="{'disabled': walletBalance < getMultiTapCost() || this.userInfo.ismultitap >= 1 || isProcessingMultiTap}"[disabled]="walletBalance < getMultiTapCost() || this.userInfo.ismultitap >= 1 || isProcessingMultiTap" (click)="multiTap()">Start</button>
       </div>
 
       <div class="boost-card energy-limit">
@@ -44,9 +51,9 @@
         </div>
         <div class="boost-details">
           <div class="boost-title">Energy Boost</div>
-          <div class="boost-level">1000 • lvl 2</div>
+          <div class="boost-level">{{getEnergyBoostCost()}} • level {{getLevel()}}</div>
         </div>
-        <button class="boost-button"   [disabled]="walletBalance < getEnergyBoostCost()|| this.userInfo.isenergyboost >= 1"  (click)="energyBoost()">Start</button>
+        <button class="boost-button"     [ngClass]="{'disabled': walletBalance < getEnergyBoostCost()|| this.userInfo.isenergyboost >= 1 || isProcessingEnergyBoost}"[disabled]="walletBalance < getEnergyBoostCost()|| this.userInfo.isenergyboost >= 1 || isProcessingEnergyBoost"  (click)="energyBoost()">Start</button>
       </div>
     </div>
   </div>
