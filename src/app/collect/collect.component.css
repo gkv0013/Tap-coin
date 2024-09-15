@@ -8,14 +8,22 @@ section#collect {
   }
   
   .coin {
-    width: 20px;
-    height: 20px;
+    width: 35px;
+    height: 35px;
     background-color: gold;
     border-radius: 50%;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
+    color: white; /* Text color for profitPerTap */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Make the text stand out */
+    font-size: 1.6rem;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 223, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
   
   .fall {
@@ -24,11 +32,11 @@ section#collect {
   
   @keyframes fall {
     0% {
-      top: 0;
+      top: 330px;
       opacity: 1;
     }
     100% {
-      top: 300px;
+      top:calc(100vh - 77px);
       opacity: 0;
     }
   }
@@ -89,18 +97,29 @@ section#collect {
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
     display: inline-flex;
   }
+  
   .glossy-blue img {
     margin-right: 10px; /* Space between image and text */
   }
   
   .glossy-blue .count {
     color: #ffffff; /* White color for the buttonPressCount */
+    margin-right: 10px; /* Space between count and Media Credits text */
   }
+  
   .glossy-blue .nila-text {
     background: linear-gradient(145deg, #3b82f6, #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-left: 10px;
+    text-align: left; /* Align text to the left */
+    line-height: 1; /* Controls the spacing between lines */
+    font-size: 1rem; /* Adjust font size if needed */
+  }
+  .nila-text {
+    font-size: 1rem;
+    width: 80px; /* Match width of buttonPressCount */
+    text-align: center;
   }
   .round-button {
     width: 173px;

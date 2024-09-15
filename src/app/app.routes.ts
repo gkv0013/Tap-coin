@@ -6,6 +6,7 @@ import { BoostComponent } from './boost/boost.component';
 import { AirdropComponent } from './airdrop/airdrop.component';
 import { GreenComponent } from './green/green.component';
 import { GoalComponent } from './goals/goals.component';
+import { MoreInfoComponent } from './more-info/more-info.component';
 
 // export const routes: Routes = [
 //     { path: '', redirectTo: '/collect', pathMatch: 'full' },
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'boost', component: BoostComponent },
   { path: 'airdrop', component: AirdropComponent },
   { path: 'green', component: GreenComponent },
+  { path: 'more-info', component: MoreInfoComponent,},
   { path: 'goals/:id', component: GoalComponent },
 ];

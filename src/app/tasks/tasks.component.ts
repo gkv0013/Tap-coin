@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { NgIf } from '@angular/common';
+import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 
 @Component({
   selector: 'app-tasks',
@@ -32,6 +33,7 @@ import { NgIf } from '@angular/common';
 export class TasksComponent {
   activeTab: string = 'tasks'; // Set default active tab
   isCardAnimationDone = false
+  private readonly telegramServices = inject(TelegramWebappService);
   ngAfterViewInit() {
    
   }
@@ -72,10 +74,16 @@ export class TasksComponent {
     }
   }
   shareOnTelegram() {
-    const urlToShare = encodeURIComponent('https://yourapp.com/referral?user=123'); // Replace with your actual URL
-    const textToShare = encodeURIComponent('Join our app and earn rewards!'); // Optional text
+    // const urlToShare = encodeURIComponent('https://yourapp.com/referral?user=123'); // Replace with your actual URL
+    // const textToShare = encodeURIComponent('Join our app and earn rewards!'); // Optional text
 
-    const telegramShareUrl = `https://t.me/share/url?url=${urlToShare}&text=${textToShare}`;
-    window.open(telegramShareUrl, '_blank');
+    // const telegramShareUrl = `https://t.me/share/url?url=${urlToShare}&text=${textToShare}`;
+    // window.open(telegramShareUrl, '_blank');
+    this.telegramServices.hapticFeedback.impactOccurred('medium');
+    this.telegramServices
+      .showPopup({ message: 'Comming Soon' })
+      .subscribe((airdrop) => {
+        console.log(airdrop);
+      });
   }
 }

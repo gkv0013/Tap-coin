@@ -1,0 +1,11 @@
+
+  
+  .iframe-container iframe {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    height: calc(100vh - 45px);
+    padding-top: 60px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
+  

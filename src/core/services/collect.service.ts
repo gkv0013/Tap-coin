@@ -66,10 +66,7 @@ export class CollectService {
 
   incrementNewProgressCount() {
     const profitPerTapValue = this.profitPerTap.value; 
-    const newValue = this.newProgressCount.value + profitPerTapValue;
-    if(newValue>this.getclaimlimit()){
-      return;
-    }
+    const newValue = Math.min(this.newProgressCount.value  + profitPerTapValue, this.getclaimlimit());
     this.newProgressCount.next(newValue);
     this.stopEnergyRegen(); 
   }
@@ -81,7 +78,7 @@ export class CollectService {
   }
 
   decrementCurrentEnergy() {
-    const newValue = this.currentEnergy.value - 1;
+    const newValue =Math.max( this.currentEnergy.value - this.profitPerTap.value, 0); 
     this.currentEnergy.next(newValue);
     this.startEnergyRegen(); // Start regenerating energy after a click
   }
@@ -122,7 +119,7 @@ export class CollectService {
       if (newTimeRemaining <= 0) {
         clearInterval(this.timerIntervalId);
         this.timerIntervalId = null;
-        this.currentEnergy.next(1000); // Reset energy to 1000
+        this.currentEnergy.next(1000); 
         this.isTimerRunning.next(false);
         telegramServices.hapticFeedback.impactOccurred('medium');
         this.startEnergyRegen(); // Start energy regeneration after the timer completes
@@ -180,7 +177,7 @@ export class CollectService {
 
     this.progressDecreaseIntervalId = setInterval(() => {
       if (this.newProgressCount.value > 0) {
-        const newValue = this.newProgressCount.value - 1;
+        const newValue = Math.max(this.newProgressCount.value - 1, 0); 
         this.newProgressCount.next(newValue);
       } else {
         clearInterval(this.progressDecreaseIntervalId);
