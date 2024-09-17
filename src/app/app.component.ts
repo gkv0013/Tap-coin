@@ -6,11 +6,12 @@ import { CommonService } from './common.service';
 import { postDataInterface, UserData } from '../core/interface/user';
 import { Subscription } from 'rxjs';
 import { PostDataService } from '../core/services/post-data.service';
-import { ModalService } from '../core/services/modal.service';
-//import { BsModalService, BsModalRef,ModalModule } from 'ngx-bootstrap/modal';
+
 import { BsModalService, BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { CollectService } from '../core/services/collect.service';
 import { LoadingComponent } from './loading/loading.component';
+import { environment } from '../environment/environment';
+import { DayCheckerService } from '../core/services/day-checker.service';
 //import { UserService } from '../core/services/user.service';
 declare global {
   interface Window {
@@ -33,6 +34,7 @@ interface InitUserData {
 })
 export class AppComponent implements OnInit, OnDestroy {
   bsModalRef?: BsModalRef;
+  private isProduction = environment.production; 
   title = 'Nila';
   isCollectSection: boolean = false;
   currentCoinIndex = 0;
@@ -68,6 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
   buttonPressCount = 0;
   isMobilePlatform: boolean = false
   constructor() {}
+  private subscriptions: Subscription[] = [];
   private el = inject(ElementRef);
   private postDataService = inject(PostDataService);
   private modalService = inject(BsModalService);
@@ -76,14 +79,19 @@ export class AppComponent implements OnInit, OnDestroy {
   public router = inject(Router);
   public commonService = inject(CommonService);
   private collectService = inject(CollectService);
-  private subscriptions: Subscription[] = [];
+  private  dayCheckerService = inject(DayCheckerService);
+
   ngOnInit() {
-    this.platformInfo = this.telegramServices.platform;
-    this.isMobilePlatform = this.platformInfo === 'mobile' || this.platformInfo === 'android' || this.platformInfo === 'ios';
-    if (!this.isMobilePlatform) {
-      // If not mobile, show message and prevent further initialization
-      return;
+    if(this.isProduction){
+      this.platformInfo = this.telegramServices.platform;
+      this.isMobilePlatform = this.platformInfo === 'mobile' || this.platformInfo === 'android' || this.platformInfo === 'ios';
+      if (!this.isMobilePlatform) {
+        return;
+      } 
+    }else{
+      this.isMobilePlatform =true;
     }
+
     this.commonService.activeTab$.subscribe(tab => {
       this.activeTab = tab;
     });
