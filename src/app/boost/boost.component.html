@@ -24,8 +24,8 @@
         <button 
         class="boost-button" 
         (click)="fullEnergy()" 
-        [disabled]="getFillEnergyCount() - this.userInfo.fillenergy <= 0 || currentEnergy>0 || isProcessingFullenergy"
-        [ngClass]="{'disabled': getFillEnergyCount() - this.userInfo.fillenergy <= 100 || isProcessingFullenergy}">
+        [disabled]="getFillEnergyCount() - this.userInfo.fillenergy <= 0 || currentEnergy>100 || isProcessingFullenergy"
+        [ngClass]="{'disabled': getFillEnergyCount() - this.userInfo.fillenergy <= 0 ||currentEnergy>100 || isProcessingFullenergy}">
         Start
       </button>
       

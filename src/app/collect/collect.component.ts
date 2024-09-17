@@ -62,6 +62,7 @@
     this.coins=this.collectService.getCoinsetting();
     this.collectService.startProgressDecrease();
     this.userInfo=this.commonService.getUserInfo();
+    this.previousLevel=this.getCurrentLevel();
     }
     initSubscriptions(){
       this.subscriptions.push(
@@ -82,15 +83,20 @@
     ngAfterViewInit(): void {
       this.initBackgroundAnimation();
       this.initForegroundAnimation();
-      this.previousLevel=this.getCurrentLevel();
+   
     }
     getCurrentLevel(): number {
-      // Assuming coins contain a property 'level' and 'progress'
-      const currentCoinTier = this.coins.find(
+      // Sort coins by progress in descending order so that higher levels are checked first
+      const sortedCoins = [...this.coins].sort((a, b) => b.progress - a.progress);
+      
+      // Find the highest coin tier where buttonPressCount >= progress
+      const currentCoinTier = sortedCoins.find(
         (coin: any) => this.buttonPressCount >= coin.progress
       );
+      
       return currentCoinTier ? currentCoinTier.level : 0; // Return 0 if no level is found
     }
+    
     
     ngOnDestroy() {
       this.subscriptions.forEach(sub => sub.unsubscribe());
