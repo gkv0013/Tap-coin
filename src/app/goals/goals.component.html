@@ -1,9 +1,9 @@
-<div class="sm:max-w-sm flex-col items-center mt-16 mb-24 mx-3">
+<div class="max-w-sm  flex-col items-center mt-16 mb-24 mx-auto ">
 
 
 
     <!--  uses radio buttons -->
-    <section class="flex flex-row flex-wrap my-8">
+    <section class="flex flex-row flex-wrap my-8 sm:mx-auto">
 
         <input id="tab-one" type="radio" name="tabs" class="peer/tab-one opacity-0 absolute" checked />
         <label for="tab-one"
@@ -29,7 +29,8 @@
                 <div class="p-4">
                     <h3 class="font-bold text-lg"> {{ goalData.title }}</h3>
                     <p class="text-sm text-white mt-2">{{ goalData.description }}</p>
-                    <span  class="text-blue-500 hover:underline mt-4 inline-block"(click)="showMoreInfo(goalData)">More</span>
+                    <span class="text-blue-500 hover:underline mt-4 inline-block"
+                        (click)="showMoreInfo(goalData)">More</span>
 
                 </div>
             </div>
