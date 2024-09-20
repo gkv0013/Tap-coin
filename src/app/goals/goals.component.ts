@@ -8,7 +8,7 @@ import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './goals.component.html',
   styleUrls: ['./goals.component.css'],
 })
@@ -16,7 +16,7 @@ export class GoalComponent implements OnInit {
   public commonService = inject(CommonService);
   public router = inject(Router);
   private route = inject(ActivatedRoute); // Inject ActivatedRoute
-  private  telegramServices = inject(TelegramWebappService);
+  private telegramServices = inject(TelegramWebappService);
   public currentGoalNo: string | null = null; // Store the user ID
   public goalData: any; // Variable to hold a single object
   public goalsData = [
@@ -166,6 +166,15 @@ export class GoalComponent implements OnInit {
         'https://www.globalgoals.org/goals/17-partnerships-for-the-goals/',
     },
   ];
+  isOverviewSelected: boolean = true;
+
+  selectTab(tab: string) {
+    if (tab === 'overview') {
+      this.isOverviewSelected = true;
+    } else {
+      this.isOverviewSelected = false;
+    }
+  }
 
   ngOnInit(): void {
     this.currentGoalNo = this.route.snapshot.paramMap.get('id');
@@ -175,7 +184,7 @@ export class GoalComponent implements OnInit {
     this.enableBackButton();
   }
   enableBackButton() {
-    this.telegramServices.backButton.show();  
+    this.telegramServices.backButton.show();
     if (Telegram.WebApp && Telegram.WebApp.BackButton) {
       Telegram.WebApp.BackButton.onClick(() => {
         console.log('Back button clicked');
@@ -189,9 +198,11 @@ export class GoalComponent implements OnInit {
     this.hideBackButton();
   }
   hideBackButton() {
-    this.telegramServices.backButton.hide();  
+    this.telegramServices.backButton.hide();
   }
-  showMoreInfo(goalData:any) {
-    this.router.navigate(['/more-info'], { queryParams: {  id: goalData.goalNo,url: this.goalData.moreInfo } });
+  showMoreInfo(goalData: any) {
+    this.router.navigate(['/more-info'], {
+      queryParams: { id: goalData.goalNo, url: this.goalData.moreInfo },
+    });
   }
 }

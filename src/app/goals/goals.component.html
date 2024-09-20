@@ -1,46 +1,35 @@
-<div class="max-w-sm  flex-col items-center mt-16 mb-24 mx-auto ">
-
-
-
-    <!--  uses radio buttons -->
+<div class="max-w-sm flex-col items-center mt-16 mb-24 mx-auto">
+    <!-- Tabs section -->
     <section class="flex flex-row flex-wrap my-8 sm:mx-auto">
-
-        <input id="tab-one" type="radio" name="tabs" class="peer/tab-one opacity-0 absolute" checked />
-        <label for="tab-one"
-            class="bg-slate-900 border-1  border-sky-100 hover:bg-red-900 peer-checked/tab-one:bg-slate-500 cursor-default p-4  rounded-tl-lg block w-1/2">
+        <!-- Tab labels -->
+        <label (click)="selectTab('overview')" [ngClass]="{'bg-slate-800': isOverviewSelected}"
+            class="border-1 border-sky-100 hover:bg-slate-500 cursor-default text-center p-4 rounded-tl-lg block w-1/2 ">
             Overview
         </label>
 
-        <input id="tab-two" type="radio" name="tabs" class="peer/tab-two opacity-0 absolute" />
-        <label for="tab-two"
-            class="bg-slate-900 hover:bg-red-900 border-sky-100 border peer-checked/tab-two:bg-slate-500 cursor-default p-4 rounded-tr-lg block w-1/2">
+        <label (click)="selectTab('challenges')" [ngClass]="{'bg-slate-800': !isOverviewSelected}"
+            class="bg-slate-900  border-sky-100 border text-center cursor-default p-4 rounded-tr-lg block w-1/2 hover:bg-slate-400 ">
             Challenges
         </label>
 
-
-
-        <div class="basis-full h-0"></div>
-
-        <div class=" hidden peer-checked/tab-one:block py-4 w-full">
+        <!-- Tab content for Overview -->
+        <div *ngIf="isOverviewSelected" class="py-4 w-full">
             <div class="flex bg-gray-800 w-full flex-wrap justify-center rounded-xl">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden  ">
-                    <img [src]="goalData.imagePath" alt="Goal Image" class="w-full   object-cover">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img [src]="goalData.imagePath" alt="Goal Image" class="w-full object-cover" />
                 </div>
                 <div class="p-4">
-                    <h3 class="font-bold text-lg"> {{ goalData.title }}</h3>
+                    <h3 class="font-bold text-lg">{{ goalData.title }}</h3>
                     <p class="text-sm text-white mt-2">{{ goalData.description }}</p>
-                    <span class="text-blue-500 hover:underline mt-4 inline-block"
-                        (click)="showMoreInfo(goalData)">More</span>
-
+                    <span class="text-blue-500 hover:underline mt-4 inline-block" (click)="showMoreInfo(goalData)">
+                        More
+                    </span>
                 </div>
             </div>
         </div>
 
-
-
-
-
-        <div class=" hidden peer-checked/tab-two:block py-4 w-full">
+        <!-- Tab content for Challenges -->
+        <div *ngIf="!isOverviewSelected" class="py-4 w-full">
             <p
                 class="text-transparent text-center text-4xl font-bold bg-clip-text bg-gradient-to-tr to-cyan-500 from-blue-600 mx-auto">
                 Challenges
@@ -49,39 +38,5 @@
                 No challenges available now
             </p>
         </div>
-
-
     </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
