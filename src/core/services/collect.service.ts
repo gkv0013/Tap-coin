@@ -39,6 +39,16 @@ export class CollectService {
   private getRandomTimerDuration(): number {
     return Math.floor(Math.random() * (120 - 40 + 1)) + 40;
   }
+  setCurrentEnergy(value: number) {
+    this.currentEnergy.next(value); // Update BehaviorSubject
+    localStorage.setItem('currentEnergy', value.toString()); // Save to localStorage
+  }
+  
+  setNewProgressCount(value: number) {
+    this.newProgressCount.next(value); // Update BehaviorSubject
+    localStorage.setItem('newProgressCount', value.toString()); // Save to localStorage
+  }
+  
   getNewProgressCount() {
     return this.newProgressCount.asObservable();
   }
@@ -68,6 +78,7 @@ export class CollectService {
     const profitPerTapValue = this.profitPerTap.value; 
     const newValue = Math.min(this.newProgressCount.value  + profitPerTapValue, this.getclaimlimit());
     this.newProgressCount.next(newValue);
+    localStorage.setItem('newProgressCount', newValue.toString());
     this.stopEnergyRegen(); 
   }
   getclaimlimit(): number {
@@ -80,6 +91,7 @@ export class CollectService {
   decrementCurrentEnergy() {
     const newValue =Math.max( this.currentEnergy.value - this.profitPerTap.value, 0); 
     this.currentEnergy.next(newValue);
+    localStorage.setItem('currentEnergy', newValue.toString());
     this.startEnergyRegen(); // Start regenerating energy after a click
   }
 
@@ -93,6 +105,7 @@ export class CollectService {
 
   resetNewProgressCount() {
     this.newProgressCount.next(0);
+    localStorage.setItem('newProgressCount', '0');
     this.stopProgressDecrease(); // Stop the progress decrease interval
   this.startProgressDecrease(); // Restart the decrease interval after reset
   }
@@ -120,6 +133,7 @@ export class CollectService {
         clearInterval(this.timerIntervalId);
         this.timerIntervalId = null;
         this.currentEnergy.next(1000); 
+        localStorage.setItem('currentEnergy', '1000');
         this.isTimerRunning.next(false);
         telegramServices.hapticFeedback.impactOccurred('medium');
         this.startEnergyRegen(); // Start energy regeneration after the timer completes
@@ -149,9 +163,11 @@ export class CollectService {
       // If energy is already at max, stop regeneration
       if (newValue >= 1000) {
         this.currentEnergy.next(1000);
+        localStorage.setItem('currentEnergy', '1000');
         this.stopEnergyRegen();
       } else {
         this.currentEnergy.next(newValue);
+        localStorage.setItem('currentEnergy', newValue.toString());
       }
     },  this.energyRegenIntervalTime); // 1500 ms = 1.5 seconds
   }
@@ -179,6 +195,7 @@ export class CollectService {
       if (this.newProgressCount.value > 0) {
         const newValue = Math.max(this.newProgressCount.value - 1, 0); 
         this.newProgressCount.next(newValue);
+        localStorage.setItem('newProgressCount', newValue.toString());
       } else {
         clearInterval(this.progressDecreaseIntervalId);
         this.progressDecreaseIntervalId = null; // Clear the interval when progress reaches 0
@@ -194,6 +211,7 @@ export class CollectService {
   }
   resetCurrentEnergy() {
     this.currentEnergy.next(1000);
+    localStorage.setItem('currentEnergy', '1000');
     this.stopEnergyRegen(); 
   }
   resetProgressDecreaseAfterInactivity() {

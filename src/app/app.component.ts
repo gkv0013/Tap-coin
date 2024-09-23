@@ -160,6 +160,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.postDataService.sendData('Login',postData).subscribe(
       (response) => {
         if(response.StatusCode==200){
+          const newProgressCount = localStorage.getItem('newProgressCount');
+          const currentEnergy = localStorage.getItem('currentEnergy');
+          if(currentEnergy){
+            this.collectService.setCurrentEnergy(Number(currentEnergy));
+            this.collectService.startEnergyRegen();
+          }
+          if(newProgressCount){
+            this.collectService.setNewProgressCount(Number(newProgressCount));
+          }
           this.commonService.setUserInfo(response.Result?.result?.[0])
           this.userInfo=response.Result?.result?.[0];
           this.collectService.setButtonPressCount(this.userInfo?.totalCoins || 0);
