@@ -127,6 +127,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telegramServices.expand();
     this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
   }
+  ngAfterViewInit() {
+    try {
+        this.telegramServices.expand();
+    } catch (error) {
+      console.error('Failed to expand the WebApp:', error);
+    }
+  }
+  
   ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }

@@ -28,8 +28,8 @@
             <span class="count">{{ buttonPressCount }}</span>
             <span class="nila-text">Media Credits</span>
           </p>
-          <div class="RadialProgress" role="progressbar" [ngStyle]="{'--progress-value': progressPercentage}" [attr.aria-valuenow]="progressPercentage" aria-valuemin="0" aria-valuemax="100">
-            <div class="round-button" #roundButton (click)="onButtonClick($event)">
+          <div class="RadialProgress" role="progressbar" [ngStyle]="{'--progress-value': progressPercentage}" [attr.aria-valuenow]="progressPercentage" aria-valuemin="0" aria-valuemax="100" (click)="onButtonClick($event)">
+            <div class="round-button" #roundButton >
               <img src="/image/Nila.jpeg" alt="Hexagon Image" width="173" height="173">
             </div>
           </div>

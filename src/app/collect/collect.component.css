@@ -54,8 +54,8 @@ section#collect {
     --hue: 220;
     --holesize: 65%;
     --track-bg: hsl(233 34% 92%);
-    block-size: 50vmin;
-    inline-size: 50vmin;
+    block-size: 75vmin;
+    inline-size: 75vmin;
     min-inline-size: 100px;
     min-block-size: 100px;
     display: grid;
@@ -122,8 +122,8 @@ section#collect {
     text-align: center;
   }
   .round-button {
-    width: 173px;
-    height: 173px;
+    width: 273px;
+    height: 273px;
     background: linear-gradient(145deg, #3b82f6, #8b5cf6);
     border-radius: 50%;
     display: flex;
@@ -152,8 +152,8 @@ section#collect {
   }
   
   .round-button img {
-    width: 173px;
-    height: 173px;
+    width: 273px;
+    height: 273px;
     border-radius: 50%;
   }
   
