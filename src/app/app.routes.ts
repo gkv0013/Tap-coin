@@ -7,6 +7,7 @@ import { AirdropComponent } from './airdrop/airdrop.component';
 import { GreenComponent } from './green/green.component';
 import { GoalComponent } from './goals/goals.component';
 import { MoreInfoComponent } from './more-info/more-info.component';
+import { LogsComponent } from './logs/logs.component';
 
 // export const routes: Routes = [
 //     { path: '', redirectTo: '/collect', pathMatch: 'full' },
@@ -20,6 +21,7 @@ import { MoreInfoComponent } from './more-info/more-info.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/collect', pathMatch: 'full' },
+  { path: 'logs', component: LogsComponent },
   { path: 'collect', component: CollectComponent },
   { path: 'tasks', component: TasksComponent },
   { path: 'friends', component: FriendsComponent },

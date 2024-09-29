@@ -1,0 +1,25 @@
+<section id="logs">
+    <div class="log-card-container">
+        <table id="log-table">
+            <thead>
+                <tr>
+                    <th>Boost Type</th>
+                    <th>Cost</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let log of logs">
+                    <td>{{ log.boosttype }}</td>
+                    <td [ngClass]="{
+                            'positive-cost': log.cost > 0, 
+                            'negative-cost': log.cost < 0
+                        }">
+                        {{ log.cost }}
+                    </td>
+                    <td>{{ log.time | date: 'medium' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -5,6 +5,7 @@ import { CommonService } from '../common.service';
 import { PostDataService } from '../../core/services/post-data.service';
 import { CollectService } from '../../core/services/collect.service';
 import { trigger, style, animate, transition} from '@angular/animations';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-airdrop',
   standalone: true,
@@ -30,6 +31,7 @@ export class AirdropComponent {
   private readonly telegramServices = inject(TelegramWebappService);
   private postDataService = inject(PostDataService);
   private readonly collectService = inject(CollectService);
+  public router = inject(Router);
   userInfo:any;
   walletBalance:number=0;
   ngOnInit() {
@@ -43,6 +45,9 @@ export class AirdropComponent {
         .subscribe((airdrop) => {
           console.log(airdrop);
         });
+    }
+    getBoostLog(){
+        this.router.navigate(['/logs']);
     }
     getCoins() {
       const postData: postDataInterface = {
