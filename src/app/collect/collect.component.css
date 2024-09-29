@@ -152,9 +152,10 @@ section#collect {
   }
   
   .round-button img {
-    width: 273px;
-    height: 273px;
+    width: 305px;
+    height: 305px;
     border-radius: 50%;
+    max-width: 110%;
   }
   
   .glossy-card {
