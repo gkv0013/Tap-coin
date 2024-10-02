@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router'; // Import ActivatedRoute
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
-
+declare var Telegram: any;
 @Component({
   selector: 'app-goals',
   standalone: true,

@@ -4,7 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { CommonService } from '../common.service';
-
+declare var Telegram: any;
 @Component({
   selector: 'app-more-info',
   standalone: true,

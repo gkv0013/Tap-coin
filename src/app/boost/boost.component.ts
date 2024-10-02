@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 import confetti from 'canvas-confetti';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { Router } from '@angular/router';
-import { DayCheckerService } from '../../core/services/day-checker.service';
+declare var Telegram: any;
 @Component({
   selector: 'app-boost',
   standalone: true,

@@ -5,7 +5,7 @@ import { CommonService } from '../common.service';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+declare var Telegram: any;
 @Component({
   selector: 'app-logs',
   standalone: true,

@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^18.2.6",
     "@angular/common": "^18.2.3",
     "@angular/compiler": "^18.2.3",
     "@angular/core": "^18.2.3",
@@ -21,8 +22,10 @@
     "bootstrap": "^5.3.3",
     "canvas-confetti": "^1.9.3",
     "crypto-js": "^4.2.0",
+    "lru-cache": "^11.0.1",
     "luxon": "^3.5.0",
     "ngx-bootstrap": "^18.0.2",
+    "ngx-joyride": "^2.5.0",
     "rxjs": "~7.8.0",
     "telegram": "^2.23.2",
     "tslib": "^2.3.0",
