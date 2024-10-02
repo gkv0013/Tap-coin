@@ -40,7 +40,7 @@
         </div>
         <div class="boost-details">
           <div class="boost-title">Multi Tap</div>
-          <div class="boost-level">{{getMultiTapCost()}} • level {{getLevel()}}</div>
+          <div class="boost-level">-{{getMultiTapCost()}} • level {{getLevel()}}</div>
         </div>
         <button class="boost-button"   [ngClass]="{'disabled': walletBalance < getMultiTapCost() || this.userInfo.ismultitap >= 1 || isProcessingMultiTap}"[disabled]="walletBalance < getMultiTapCost() || this.userInfo.ismultitap >= 1 || isProcessingMultiTap" (click)="multiTap()">Start</button>
       </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="boost-details">
           <div class="boost-title">Energy Boost</div>
-          <div class="boost-level">{{getEnergyBoostCost()}} • level {{getLevel()}}</div>
+          <div class="boost-level">-{{getEnergyBoostCost()}} • level {{getLevel()}}</div>
         </div>
         <button class="boost-button"     [ngClass]="{'disabled': walletBalance < getEnergyBoostCost()|| this.userInfo.isenergyboost >= 1 || isProcessingEnergyBoost}"[disabled]="walletBalance < getEnergyBoostCost()|| this.userInfo.isenergyboost >= 1 || isProcessingEnergyBoost"  (click)="energyBoost()">Start</button>
       </div>
@@ -106,7 +106,7 @@
         <div class="boost-cost mt-4">
           <div class="cost-container">
             <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
-            <span class="cost-text">{{getMultiTapCost()}}</span>
+            <span class="cost-text">-{{getMultiTapCost()}}</span>
           </div>
           <button class="boost-button-modal mt-3" (click)="activateMultiTap()">Get</button>
         </div>
@@ -134,7 +134,7 @@
         <div class="boost-cost mt-4">
           <div class="cost-container">
             <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
-            <span class="cost-text">{{getEnergyBoostCost()}}</span>
+            <span class="cost-text">-{{getEnergyBoostCost()}}</span>
           </div>
           <button class="boost-button-modal mt-3" (click)="activateEnergyBoost()">Get</button>
         </div>

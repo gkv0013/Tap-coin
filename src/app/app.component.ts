@@ -11,7 +11,6 @@ import { BsModalService, BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { CollectService } from '../core/services/collect.service';
 import { LoadingComponent } from './loading/loading.component';
 import { environment } from '../environment/environment';
-import { DayCheckerService } from '../core/services/day-checker.service';
 //import { UserService } from '../core/services/user.service';
 declare global {
   interface Window {
@@ -79,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public router = inject(Router);
   public commonService = inject(CommonService);
   private collectService = inject(CollectService);
-  private  dayCheckerService = inject(DayCheckerService);
+
 
   ngOnInit() {
     if(this.isProduction){
