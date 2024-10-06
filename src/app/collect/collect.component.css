@@ -132,6 +132,13 @@ section#collect {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
     transition: transform 0.1s;
     z-index: 3;
+    -webkit-touch-callout: none;  /* Disable the callout menu for iOS Safari */
+    -webkit-user-select: none;    /* Disable text/image selection for Safari */
+    -khtml-user-select: none;     /* Disable text/image selection for Konqueror */
+    -moz-user-select: none;       /* Disable text/image selection for Firefox */
+    -ms-user-select: none;        /* Disable text/image selection for IE/Edge */
+    user-select: none;            /* Disable text/image selection for modern browsers */
+    pointer-events: none;  
   }
   
   .round-button:active {
@@ -381,16 +388,16 @@ section#collect {
 
   @media (max-width: 575px) {
     section#collect {
-      padding-top: 130px; /* Extra padding to ensure content isn't hidden */
- 
+      padding-top: 125px; /* Extra padding to ensure content isn't hidden */
+      height: calc(100vh - 33px);
     }
     .RadialProgress-container {
   
       margin-top: 10px;
     }
     .progress-container {
-      margin-top:25px;
-      margin-bottom: 25px;
+      margin-top:10px;
+      margin-bottom: 0px;
       text-align: center;
     }
     .claim-container {
@@ -404,3 +411,4 @@ section#collect {
 
     }
   }
+  
