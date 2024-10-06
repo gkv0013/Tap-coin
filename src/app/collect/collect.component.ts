@@ -9,6 +9,7 @@
   import { PostDataService } from '../../core/services/post-data.service';
   import { trigger, style, animate, transition} from '@angular/animations';
   import confetti from 'canvas-confetti';
+import { HopscotchService } from '../../core/services/hopscotch.service';
   @Component({
     selector: 'app-collect',
     standalone: true,
@@ -50,6 +51,7 @@
     private readonly renderer = inject(Renderer2);
     public commonService = inject(CommonService);
     private readonly collectService = inject(CollectService);
+    public hopscotchService = inject(HopscotchService);
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
     userInfo:any;
@@ -83,7 +85,47 @@
     ngAfterViewInit(): void {
       this.initBackgroundAnimation();
       this.initForegroundAnimation();
-   
+      this.startTour();
+    }
+
+    startTour(){
+      const steps = [
+        {
+          target: this.roundButton.nativeElement,
+          title: '🎯 Press here',
+          content: '<strong>Click here</strong> to earn media credits and start your journey to success!',
+          placement: 'bottom',
+          arrowOffset: 'center',
+          delay: 500,
+          zindex: 9999,
+          showCTAButton: true,
+          ctaLabel: 'Got it!'
+        },
+        {
+          target: document.getElementById('boost-container'),
+          title: '⚡ Boost your energy',
+          content: 'Click here to <em>boost</em> your energy levels and stay in the game!',
+          placement: 'left',
+          arrowOffset: 'top-right',
+          zindex: 9999,
+          showCTAButton: true,
+          ctaLabel: 'Let’s go!',
+          onNext: () => {
+            const userData=this.commonService.getUserInfo();
+            userData.isNewUser=0;
+            this.commonService.setUserInfo(userData);
+          },
+        }
+      ];
+  
+      // Create the tour
+     if(this.userInfo.isNewUser==1){
+      setTimeout(() => {
+        const tour = this.hopscotchService.defineTour(steps);
+        
+        this.hopscotchService.startTour(tour);
+      }, 3000);
+     }
     }
     getCurrentLevel(): number {
       // Sort coins by progress in descending order so that higher levels are checked first
