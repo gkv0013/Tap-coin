@@ -21,9 +21,12 @@ export class GoalComponent implements OnInit {
   private telegramServices = inject(TelegramWebappService);
   private dialogService = inject(DialogService);
   @ViewChild('modalyoutube') modalyoutube!: TemplateRef<any>;
+  @ViewChild('modalarticle') modalarticle!: TemplateRef<any>;
   public currentGoalNo: string | null = null; // Store the user ID
   public selectedGoalData: any; // Variable to hold a single object
   public selectedYoutubeVideo:any;
+  public selectedArticle:any;
+  public articleData:any;
   public goalsData: Goal[] = [];
   public youtubeVideos: any[] = [];
   isOverviewSelected: boolean = true;
@@ -44,6 +47,7 @@ export class GoalComponent implements OnInit {
       (goal) => goal?.goalno === Number(this.currentGoalNo)
     );
     this.parseYoutubeData();
+    this.parseArticleData();
     this.enableBackButton();
   }
   enableBackButton() {
@@ -83,6 +87,15 @@ export class GoalComponent implements OnInit {
       }
     }
   }
+  parseArticleData(): void {
+    if (this.selectedGoalData.youtube) {
+      try {
+        this.articleData = JSON.parse(this.selectedGoalData.article);
+      } catch (error) {
+        console.error('Error parsing article data:', error);
+      }
+    }
+  }
   modalYoutube(modalYoutube:any) {
     this.selectedYoutubeVideo=modalYoutube;
     this.dialogService.openDialog({
@@ -93,5 +106,26 @@ export class GoalComponent implements OnInit {
       customTemplate: this.modalyoutube,
       onConfirm: () => {},
     });
+  }
+  modalArticle(modalArticle:any) {
+    this.selectedArticle=modalArticle;
+    this.dialogService.openDialog({
+      title: '',
+      message: '',
+      type: '',
+      customClass: '',
+      customTemplate: this.modalarticle,
+      onConfirm: () => {},
+    });
+  }
+  watchVideo(): void {
+    if (this.selectedYoutubeVideo) {
+      window.open(this.selectedYoutubeVideo.video, '_blank');
+    }
+  }
+  ReadArticle(){
+    if (this.selectedArticle) {
+      window.open(this.selectedArticle.url, '_blank');
+    }
   }
 }

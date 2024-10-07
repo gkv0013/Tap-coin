@@ -70,6 +70,7 @@ section#goals {
   .youtube-section {
     margin-bottom: 20px;
   }
+  
   .youtube-card {
     display: flex;
     justify-content: space-between;
@@ -304,4 +305,7 @@ section#goals {
       transform: translate(-50%, 0); /* End at the desired position */
       opacity: 1; /* Fully visible */
     }
+  }
+  .article-section {
+    margin-bottom: 20px;
   }
