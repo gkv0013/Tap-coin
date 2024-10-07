@@ -49,3 +49,15 @@ export interface BoosterData {
   active: number;
   balance: number;
 }
+export interface Goal {
+  goalno: number;
+  title: string;
+  description: string;
+  imagepath: string;
+  moreInfo: string;
+  isdisabled?: number;
+  youtube?: any;
+  sponsor?: any;
+  article?: any;
+  bannerimagepath:string;
+}

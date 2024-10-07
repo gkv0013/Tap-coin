@@ -126,7 +126,7 @@ export class FriendsComponent {
         if(response.StatusCode==200){
           if(response.Result){
             this.friendsList=response.Result?.friends??[];
-            this.totalRewards = response?.Result?.Totalrewards[0]?.total_referral_reward ??0
+            this.totalRewards = response?.Result?.Totalrewards?.[0]?.total_referral_reward ??0
           }
         }
       },
