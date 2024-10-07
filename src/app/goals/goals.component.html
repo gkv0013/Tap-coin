@@ -1,8 +1,7 @@
 <div class="max-w-sm flex-col items-center mt-16 mb-24 mx-auto">
-    <!-- Tabs section -->
-    <section class="flex flex-row flex-wrap my-8 sm:mx-auto">
-        <!-- Tab labels -->
-        <label (click)="selectTab('overview')" [ngClass]="{'bg-slate-800': isOverviewSelected}"
+    <section class="goals flex flex-row flex-wrap my-8 sm:mx-auto">
+        <div class="goals-card-container">
+            <!-- <label (click)="selectTab('overview')" [ngClass]="{'bg-slate-800': isOverviewSelected}"
             class="border-1 border-sky-100 hover:bg-slate-500 cursor-default text-center p-4 rounded-tl-lg block w-1/2 ">
             Overview
         </label>
@@ -10,33 +9,84 @@
         <label (click)="selectTab('challenges')" [ngClass]="{'bg-slate-800': !isOverviewSelected}"
             class="bg-slate-900  border-sky-100 border text-center cursor-default p-4 rounded-tr-lg block w-1/2 hover:bg-slate-400 ">
             Challenges
-        </label>
-
-        <!-- Tab content for Overview -->
-        <div *ngIf="isOverviewSelected" class="py-4 w-full">
-            <div class="flex bg-gray-800 w-full flex-wrap justify-center rounded-xl">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img [src]="goalData.bannerimagepath" alt="Goal Image" class="w-full object-cover" />
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-lg">{{ goalData.title }}</h3>
-                    <p class="text-sm text-white mt-2">{{ goalData.description }}</p>
-                    <span class="text-blue-500 hover:underline mt-4 inline-block" (click)="showMoreInfo(goalData)">
-                        More
-                    </span>
+        </label> -->
+            <div class="tab-header">
+                <div id="tasks-tab" [ngClass]="{ 'active': activeTab === 'overview' }" (click)="selectTab('overview')">
+                    Overview</div>
+                <div id="challenges-tab" [ngClass]="{ 'active': activeTab === 'challenges' }"
+                    (click)="selectTab('challenges')">Challenges</div>
+            </div>
+            <div *ngIf="isOverviewSelected" class="py-4 w-full">
+                <div class="flex bg-gray-800 w-full flex-wrap justify-center rounded-xl">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                        <img [src]="selectedGoalData.bannerimagepath" alt="Goal Image" class="w-full object-cover" />
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg">{{ selectedGoalData.title }}</h3>
+                        <p class="text-sm text-white mt-2">{{ selectedGoalData.description }}</p>
+                        <span class="text-blue-500 hover:underline mt-4 inline-block"
+                            (click)="showMoreInfo(selectedGoalData)">
+                            More
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Tab content for Challenges -->
-        <div *ngIf="!isOverviewSelected" class="py-4 w-full">
-            <p
-                class="text-transparent text-center text-4xl font-bold bg-clip-text bg-gradient-to-tr to-cyan-500 from-blue-600 mx-auto">
-                Challenges
-            </p>
-            <p class="my-3 mx-auto text-base font-medium">
-                No challenges available now
-            </p>
+            <div *ngIf="!isOverviewSelected" class="py-4 w-full">
+                <div class="youtube-section" *ngIf="youtubeVideos.length > 0">
+                    <div class="font-bold text-lg mb-4">Wave plus Youtube</div>
+                    <div *ngFor="let video of youtubeVideos" class="youtube-card multi-tap">
+                        <div class="youtube-icon">
+                            <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                        </div>
+                        <div class="youtube-details">
+                            <div class="youtube-title ellipsis">{{ video.title }}</div>
+                            <div class="youtube-level"></div>
+                        </div>
+                        <button class="youtube-button"(click)="modalYoutube(video)">Watch</button>
+                    </div>
+                </div>
+                <!-- <div class="youtube-section" *ngIf="youtubeVideos.length > 0">
+                    <div class="font-bold text-lg mb-4">Wave plus Articles</div>
+                    <div *ngFor="let video of youtubeVideos" class="youtube-card multi-tap">
+                        <div class="youtube-icon">
+                            <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                        </div>
+                        <div class="youtube-details">
+                            <div class="youtube-title ellipsis">{{ video.title }}</div>
+                            <div class="youtube-level"></div>
+                        </div>
+                        <button class="youtube-button"(click)="modalYoutube(video)">Watch</button>
+                    </div>
+                </div> -->
+            </div>
         </div>
     </section>
 </div>
+<ng-template #modalyoutube>
+    <div class="modal-content">
+        <div class="modal-body bg-dark text-white">
+            <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="level-container text-center">
+                <div class="level-icon">
+                    <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Watch YouTube Videos </div>
+                </div>
+            </div>
+            <div class="boost-details mt-3">
+                <div class="boost-title">{{selectedYoutubeVideo.title}}</div>
+                <div class="boost-description">{{selectedYoutubeVideo.description}} </div>
+            </div>
+            <div class="boost-cost mt-4">
+                <div class="cost-container">
+                    <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+                    <span class="cost-text">+{{selectedYoutubeVideo.coins}}</span>
+                </div>
+                <button class="boost-button-modal mt-3">Watch</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
