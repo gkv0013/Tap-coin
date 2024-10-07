@@ -44,20 +44,20 @@
                         </div>
                         <button class="youtube-button"(click)="modalYoutube(video)">Watch</button>
                     </div>
-                </div>
-                <!-- <div class="youtube-section" *ngIf="youtubeVideos.length > 0">
+                </div>  
+                <div class="article-section" *ngIf="articleData.length > 0">
                     <div class="font-bold text-lg mb-4">Wave plus Articles</div>
-                    <div *ngFor="let video of youtubeVideos" class="youtube-card multi-tap">
+                    <div *ngFor="let article of articleData" class="youtube-card multi-tap">
                         <div class="youtube-icon">
-                            <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                            <img src="/image/paper.png" alt="YouTube Icon" class="icon">
                         </div>
                         <div class="youtube-details">
-                            <div class="youtube-title ellipsis">{{ video.title }}</div>
+                            <div class="youtube-title ellipsis">{{ article.title }}</div>
                             <div class="youtube-level"></div>
                         </div>
-                        <button class="youtube-button"(click)="modalYoutube(video)">Watch</button>
+                        <button class="youtube-button"(click)="modalArticle(article)">Read</button>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </section>
@@ -85,7 +85,35 @@
                     <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
                     <span class="cost-text">+{{selectedYoutubeVideo.coins}}</span>
                 </div>
-                <button class="boost-button-modal mt-3">Watch</button>
+                <button class="boost-button-modal mt-3"(click)="watchVideo()">Watch</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #modalarticle>
+    <div class="modal-content">
+        <div class="modal-body bg-dark text-white">
+            <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="level-container text-center">
+                <div class="level-icon">
+                    <img src="/image/paper.png" alt="YouTube Icon" class="icon">
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Read Articles </div>
+                </div>
+            </div>
+            <div class="boost-details mt-3">
+                <div class="boost-title">{{selectedArticle.title}}</div>
+                <div class="boost-description">{{selectedArticle.description}} </div>
+            </div>
+            <div class="boost-cost mt-4">
+                <div class="cost-container">
+                    <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+                    <span class="cost-text">+{{selectedArticle.coins}}</span>
+                </div>
+                <button class="boost-button-modal mt-3"(click)="ReadArticle()">Read</button>
             </div>
         </div>
     </div>
