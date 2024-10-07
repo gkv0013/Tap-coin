@@ -3,18 +3,21 @@ import { BehaviorSubject } from 'rxjs';
 import { CommonService } from '../../app/common.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CollectService {
   private buttonPressCount = new BehaviorSubject<number>(0);
   private newProgressCount = new BehaviorSubject<number>(0);
   private maxNewProgress = new BehaviorSubject<number>(100);
   private currentEnergy = new BehaviorSubject<number>(1000);
-  private timerDuration = new BehaviorSubject<number>(this.getRandomTimerDuration());
+  private timerDuration = new BehaviorSubject<number>(
+    this.getRandomTimerDuration()
+  );
   private timeRemaining = new BehaviorSubject<number>(0);
   private isTimerRunning = new BehaviorSubject<boolean>(false);
   private profitPerTap = new BehaviorSubject<number>(1);
-  private coinsettings:any;
+  private coinsettings: any;
+
   private timerIntervalId: any = null; // To store the interval ID
   private energyRegenIntervalId: any = null; // To store the energy regeneration interval ID
   private progressDecreaseIntervalId: any = null; // To store the progress decrease interval ID
@@ -23,7 +26,7 @@ export class CollectService {
   private energyIncrement = 1;
 
   private energyRegenIntervalTime = 1500;
-    getProfitPerTap() {
+  getProfitPerTap() {
     return this.profitPerTap.asObservable();
   }
 
@@ -43,12 +46,12 @@ export class CollectService {
     this.currentEnergy.next(value); // Update BehaviorSubject
     localStorage.setItem('currentEnergy', value.toString()); // Save to localStorage
   }
-  
+
   setNewProgressCount(value: number) {
     this.newProgressCount.next(value); // Update BehaviorSubject
     localStorage.setItem('newProgressCount', value.toString()); // Save to localStorage
   }
-  
+
   getNewProgressCount() {
     return this.newProgressCount.asObservable();
   }
@@ -58,6 +61,7 @@ export class CollectService {
   getCoinsetting(): any {
     return this.coinsettings;
   }
+
   getMaxNewProgress() {
     return this.maxNewProgress.asObservable();
   }
@@ -75,11 +79,14 @@ export class CollectService {
   }
 
   incrementNewProgressCount() {
-    const profitPerTapValue = this.profitPerTap.value; 
-    const newValue = Math.min(this.newProgressCount.value  + profitPerTapValue, this.getclaimlimit());
+    const profitPerTapValue = this.profitPerTap.value;
+    const newValue = Math.min(
+      this.newProgressCount.value + profitPerTapValue,
+      this.getclaimlimit()
+    );
     this.newProgressCount.next(newValue);
     localStorage.setItem('newProgressCount', newValue.toString());
-    this.stopEnergyRegen(); 
+    this.stopEnergyRegen();
   }
   getclaimlimit(): number {
     const currentCoinTier = this.coinsettings.find(
@@ -89,25 +96,27 @@ export class CollectService {
   }
 
   decrementCurrentEnergy() {
-    const newValue =Math.max( this.currentEnergy.value - this.profitPerTap.value, 0); 
+    const newValue = Math.max(
+      this.currentEnergy.value - this.profitPerTap.value,
+      0
+    );
     this.currentEnergy.next(newValue);
     localStorage.setItem('currentEnergy', newValue.toString());
     this.startEnergyRegen(); // Start regenerating energy after a click
   }
 
   addButtonPressCount(count: number) {
-    const userData=this.commonService.getUserInfo();
-    userData.totalCoins=count;
+    const userData = this.commonService.getUserInfo();
+    userData.totalCoins = count;
     this.commonService.setUserInfo(userData);
     this.buttonPressCount.next(count);
-    
   }
 
   resetNewProgressCount() {
     this.newProgressCount.next(0);
     localStorage.setItem('newProgressCount', '0');
     this.stopProgressDecrease(); // Stop the progress decrease interval
-  this.startProgressDecrease(); // Restart the decrease interval after reset
+    this.startProgressDecrease(); // Restart the decrease interval after reset
   }
 
   startTimer(telegramServices: any) {
@@ -132,7 +141,7 @@ export class CollectService {
       if (newTimeRemaining <= 0) {
         clearInterval(this.timerIntervalId);
         this.timerIntervalId = null;
-        this.currentEnergy.next(1000); 
+        this.currentEnergy.next(1000);
         localStorage.setItem('currentEnergy', '1000');
         this.isTimerRunning.next(false);
         telegramServices.hapticFeedback.impactOccurred('medium');
@@ -169,7 +178,7 @@ export class CollectService {
         this.currentEnergy.next(newValue);
         localStorage.setItem('currentEnergy', newValue.toString());
       }
-    },  this.energyRegenIntervalTime); // 1500 ms = 1.5 seconds
+    }, this.energyRegenIntervalTime); // 1500 ms = 1.5 seconds
   }
   setEnergyIncrement(value: number) {
     this.energyIncrement = value;
@@ -177,8 +186,6 @@ export class CollectService {
   resetEnergyIncrement() {
     this.energyIncrement = 1;
   }
-
-
 
   stopEnergyRegen() {
     if (this.energyRegenIntervalId !== null) {
@@ -193,7 +200,7 @@ export class CollectService {
 
     this.progressDecreaseIntervalId = setInterval(() => {
       if (this.newProgressCount.value > 0) {
-        const newValue = Math.max(this.newProgressCount.value - 1, 0); 
+        const newValue = Math.max(this.newProgressCount.value - 1, 0);
         this.newProgressCount.next(newValue);
         localStorage.setItem('newProgressCount', newValue.toString());
       } else {
@@ -212,7 +219,7 @@ export class CollectService {
   resetCurrentEnergy() {
     this.currentEnergy.next(1000);
     localStorage.setItem('currentEnergy', '1000');
-    this.stopEnergyRegen(); 
+    this.stopEnergyRegen();
   }
   resetProgressDecreaseAfterInactivity() {
     if (this.progressDecreaseTimeoutId !== null) {

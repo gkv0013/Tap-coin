@@ -99,7 +99,12 @@ import { HopscotchService } from '../../core/services/hopscotch.service';
           delay: 500,
           zindex: 9999,
           showCTAButton: true,
-          ctaLabel: 'Got it!'
+          ctaLabel: 'Got it!',
+          onNext: () => {
+            const userData=this.commonService.getUserInfo();
+            userData.isNewUser=0;
+            this.commonService.setUserInfo(userData);
+          },
         },
         {
           target: document.getElementById('boost-container'),
