@@ -12,31 +12,154 @@
             Challenges
         </label>
 
-        <!-- Tab content for Overview -->
-        <div *ngIf="isOverviewSelected" class="py-4 w-full">
-            <div class="flex bg-gray-800 w-full flex-wrap justify-center rounded-xl">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img [src]="goalData.imagePath" alt="Goal Image" class="w-full object-cover" />
-                </div>
-                <div class="p-4">
-                    <h3 class="font-bold text-lg">{{ goalData.title }}</h3>
-                    <p class="text-sm text-white mt-2">{{ goalData.description }}</p>
-                    <span class="text-blue-500 hover:underline mt-4 inline-block" (click)="showMoreInfo(goalData)">
-                        More
-                    </span>
+                        <div class="goal-info">
+                            <h3 class="goal-title">{{ selectedGoalData.title }}</h3>
+                            <p class="goal-description">{{ selectedGoalData.description }}</p>
+                            <span class="more-link" (click)="showMoreInfo(selectedGoalData)">More</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Tab content for Challenges -->
-        <div *ngIf="!isOverviewSelected" class="py-4 w-full">
-            <p
-                class="text-transparent text-center text-4xl font-bold bg-clip-text bg-gradient-to-tr to-cyan-500 from-blue-600 mx-auto">
-                Challenges
-            </p>
-            <p class="my-3 mx-auto text-base font-medium">
-                No challenges available now
-            </p>
+            <div *ngIf="!isOverviewSelected" class="py-4 w-full">
+                <div class="youtube-section" *ngIf="youtubeVideos.length > 0">
+                    <div class="font-bold text-lg mb-4">Watch Youtube videos</div>
+                    <div *ngFor="let video of youtubeVideos" class="youtube-card multi-tap">
+                        <div class="youtube-icon">
+                            <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                        </div>
+                        <div class="youtube-details">
+                            <div class="youtube-title ellipsis">{{ video.title }}</div>
+                            <div class="youtube-level"></div>
+                        </div>
+                        <button class="youtube-button" (click)="modalYoutube(video)">Watch</button>
+                    </div>
+                </div>
+                <div class="article-section" *ngIf="articleData.length > 0">
+                    <div class="font-bold text-lg mb-4">Read Articles</div>
+                    <div *ngFor="let article of articleData" class="youtube-card multi-tap">
+                        <div class="youtube-icon">
+                            <img src="/image/paper.png" alt="YouTube Icon" class="icon">
+                        </div>
+                        <div class="youtube-details">
+                            <div class="youtube-title ellipsis">{{ article.title }}</div>
+                            <div class="youtube-level"></div>
+                        </div>
+                        <button class="youtube-button" (click)="modalArticle(article)">Read</button>
+                    </div>
+                </div>
+                <div class="earn-section">
+                    <div class="font-bold text-lg mb-4">Earn more credits</div>
+                    <div class="earn-tiles">
+                        <div class="earn-tile-container">
+                            <div class="earn-tile" (click)="routes('collect')">
+                                <img src="/image/tap.jpeg" alt="Earn Image 1" class="earn-image" />
+                            </div>
+                            <div class="tile-title">Earn</div>
+                        </div>
+                        <div class="earn-tile-container">
+                            <div class="earn-tile" (click)="routes('friends')">
+                                <img src="/image/refer.jpeg" alt="Earn Image 2" class="earn-image" />
+                            </div>
+                            <div class="tile-title">Refer</div>
+                        </div>
+                        <div class="earn-tile-container">
+                            <div class="earn-tile"(click)="routes('tasks')">
+                                <img src="/image/joinchannel.jpeg" alt="Earn Image 3" class="earn-image" />
+                            </div>
+                            <div class="tile-title">Join Channel</div>
+                        </div>
+                        <div class="earn-tile-container">
+                            <div class="earn-tile"(click)="routes('tasks')">
+                                <img src="/image/subscribe.jpeg" alt="Earn Image 4" class="earn-image" />
+                            </div>
+                            <div class="tile-title">Subscribe</div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
         </div>
     </section>
 </div>
+<ng-template #modalyoutube>
+    <div class="modal-content">
+        <div class="modal-body bg-dark text-white">
+            <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="level-container text-center">
+                <div class="level-icon">
+                    <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Watch YouTube Videos </div>
+                </div>
+            </div>
+            <div class="boost-details mt-3">
+                <div class="boost-title">{{selectedYoutubeVideo.title}}</div>
+                <div class="boost-description">{{selectedYoutubeVideo.description}} </div>
+            </div>
+            <div class="boost-cost mt-4">
+                <div class="cost-container">
+                    <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+                    <span class="cost-text">+{{selectedYoutubeVideo.coins}}</span>
+                </div>
+                <button class="boost-button-modal mt-3" (click)="watchVideo()">Watch</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #modalarticle>
+    <div class="modal-content">
+        <div class="modal-body bg-dark text-white">
+            <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="level-container text-center">
+                <div class="level-icon">
+                    <img src="/image/paper.png" alt="YouTube Icon" class="icon">
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Read Articles </div>
+                </div>
+            </div>
+            <div class="boost-details mt-3">
+                <div class="boost-title">{{selectedArticle.title}}</div>
+                <div class="boost-description">{{selectedArticle.description}} </div>
+            </div>
+            <div class="boost-cost mt-4">
+                <div class="cost-container">
+                    <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+                    <span class="cost-text">+{{selectedArticle.coins}}</span>
+                </div>
+                <button class="boost-button-modal mt-3" (click)="ReadArticle()">Read</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #modalsponsors>
+    <div class="modal-content">
+        <div class="modal-body bg-dark text-white">
+            <button type="button" class="close-btn position-absolute" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="level-container text-center">
+                <div class="level-icon">
+                    <img src="/image/sponsor.png" alt="YouTube Icon" class="icon">
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Sponsors</div>
+                </div>
+            </div>
+            <div class="boost-details mt-3">
+                <div class="boost-title">{{selectedSponsors.name}}</div>
+                <div class="boost-description">{{selectedSponsors.description}} </div>
+            </div>
+            <div class="boost-cost mt-4">
+                <button class="boost-button-modal mt-3" (click)="sponsorsMore()">More</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

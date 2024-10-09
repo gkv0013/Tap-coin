@@ -178,6 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }
           this.commonService.setUserInfo(response.Result?.result?.[0])
           this.userInfo=response.Result?.result?.[0];
+          this.commonService.setGoalData(response.Result?.goalsdata ?? [])
           this.collectService.setButtonPressCount(this.userInfo?.totalCoins || 0);
           let coinsetting=JSON.parse(response.Result?.cointsettings?.[0]?.settingdata);
           this.collectService.setCoinsetting(coinsetting)
@@ -198,8 +199,10 @@ export class AppComponent implements OnInit, OnDestroy {
           }
           setTimeout(() => {
             this.isLoading = false;
-            this.commonService.setActiveTab('collect');
-            this.router.navigate(['/collect'])
+            // this.commonService.setActiveTab('collect');
+            // this.router.navigate(['/collect'])
+            this.commonService.setActiveTab('green');
+            this.router.navigate(['/green'])
           }, 1000);
           
         }

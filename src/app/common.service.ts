@@ -9,6 +9,7 @@ import { postDataInterface } from '../core/interface/user';
 export class CommonService {
   private userInfo: any;
   private data:any; 
+  private goalsdata: any;
   private activeTabSubject = new BehaviorSubject<string>('collect');
   constructor() { }
   private postDataService = inject(PostDataService);
@@ -25,7 +26,12 @@ export class CommonService {
   getUserData(): any {
     return this.data;
   }
-
+  setGoalData(goalsdata: any): void {
+    this.goalsdata = goalsdata;
+  }
+  getGoalData(): any {
+    return this.goalsdata;
+  }
   activeTab$ = this.activeTabSubject.asObservable();
 
   setActiveTab(tab: string): void {

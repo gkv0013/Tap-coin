@@ -1,6 +1,6 @@
   import { CommonModule } from '@angular/common';
   import { Component, ElementRef, AfterViewInit, Renderer2, ViewChild, inject, OnDestroy, OnInit } from '@angular/core';
-  import { Router } from '@angular/router';
+  import { ActivatedRoute, Router } from '@angular/router';
   import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
   import { CommonService } from '../common.service';
   import { CollectService } from '../../core/services/collect.service';
@@ -9,6 +9,7 @@
   import { PostDataService } from '../../core/services/post-data.service';
   import { trigger, style, animate, transition} from '@angular/animations';
   import confetti from 'canvas-confetti';
+import { HopscotchService } from '../../core/services/hopscotch.service';
   @Component({
     selector: 'app-collect',
     standalone: true,
@@ -49,20 +50,47 @@
     private readonly telegramServices = inject(TelegramWebappService);
     private readonly renderer = inject(Renderer2);
     public commonService = inject(CommonService);
+    private route=inject(ActivatedRoute) 
     private readonly collectService = inject(CollectService);
+    public hopscotchService = inject(HopscotchService);
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
+    source:string='';
     userInfo:any;
     getBoostValue(): number {
       const currentCoinTier = this.coins.find((coin:any) => this.buttonPressCount >= coin.progress);
       return currentCoinTier ? currentCoinTier.boost : 0;
     }
     ngOnInit() {
+      this.route.queryParams.subscribe(params => {
+        const source = params['source'];
+        if (source) {
+          this.source = source;
+          this.enableBackButton();
+        }
+      });
     this.initSubscriptions();
     this.coins=this.collectService.getCoinsetting();
     this.collectService.startProgressDecrease();
     this.userInfo=this.commonService.getUserInfo();
     this.previousLevel=this.getCurrentLevel();
+    }
+    enableBackButton() {
+      this.telegramServices.backButton.show();  
+      if (Telegram.WebApp && Telegram.WebApp.BackButton) {
+        Telegram.WebApp.BackButton.onClick(() => {
+          console.log('Back button clicked');
+          this.handleBackNavigation();
+        });
+      }
+    }
+    handleBackNavigation() {
+      this.commonService.setActiveTab(this.source);
+      this.router.navigate([`/${this.source}`]);
+      this.hideBackButton();
+    }
+    hideBackButton() {
+      this.telegramServices.backButton.hide();  
     }
     initSubscriptions(){
       this.subscriptions.push(
@@ -83,7 +111,52 @@
     ngAfterViewInit(): void {
       this.initBackgroundAnimation();
       this.initForegroundAnimation();
-   
+      this.startTour();
+    }
+
+    startTour(){
+      const steps = [
+        {
+          target: this.roundButton.nativeElement,
+          title: '🎯 Press here',
+          content: '<strong>Click here</strong> to earn media credits and start your journey to success!',
+          placement: 'bottom',
+          arrowOffset: 'center',
+          delay: 500,
+          zindex: 9999,
+          showCTAButton: true,
+          ctaLabel: 'Got it!',
+          onNext: () => {
+            const userData=this.commonService.getUserInfo();
+            userData.isNewUser=0;
+            this.commonService.setUserInfo(userData);
+          },
+        },
+        {
+          target: document.getElementById('boost-container'),
+          title: '⚡ Boost your energy',
+          content: 'Click here to <em>boost</em> your energy levels and stay in the game!',
+          placement: 'left',
+          arrowOffset: 'top-right',
+          zindex: 9999,
+          showCTAButton: true,
+          ctaLabel: 'Let’s go!',
+          onNext: () => {
+            const userData=this.commonService.getUserInfo();
+            userData.isNewUser=0;
+            this.commonService.setUserInfo(userData);
+          },
+        }
+      ];
+  
+      // Create the tour
+     if(this.userInfo.isNewUser==1){
+      setTimeout(() => {
+        const tour = this.hopscotchService.defineTour(steps);
+        
+        this.hopscotchService.startTour(tour);
+      }, 3000);
+     }
     }
     getCurrentLevel(): number {
       // Sort coins by progress in descending order so that higher levels are checked first

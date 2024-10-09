@@ -1,0 +1,54 @@
+section#faq {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
+  .faq-card-container {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    display: block;
+    background-color: #1a1a1a; /* Dark background color */
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 90px);
+    bottom:0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .faq-item {
+    background: #333;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 15px;
+    cursor: pointer;
+  }
+  
+  .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+  }
+  
+  .faq-question h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .faq-question span {
+    font-size: 1.5rem;
+    color: #ffb800; /* Highlight color for the toggle symbol */
+  }
+  
+  .faq-answer {
+    padding: 10px 0;
+    color: #bbbbbb;
+  }
