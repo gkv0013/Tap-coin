@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { CommonService } from '../common.service';
 import { Friend, postDataInterface } from '../../core/interface/user';
@@ -7,6 +7,7 @@ import { PostDataService } from '../../core/services/post-data.service';
 import { CollectService } from '../../core/services/collect.service';
 import { trigger, style, animate, transition ,query,stagger} from '@angular/animations';
 import { NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-friends',
@@ -61,14 +62,18 @@ import { NgIf } from '@angular/common';
     ])
   ]
 })
-export class FriendsComponent {
+export class FriendsComponent implements OnInit {
   userInfo:any;
   isCardAnimationDone = false
   isChallengesTabActive=false;
   totalRewards:number=0;
+  source:string='';
   constructor() {}
   public commonService = inject(CommonService);
   private postDataService = inject(PostDataService);
+  private route=inject(ActivatedRoute) 
+  public router = inject(Router);
+  private readonly telegramServices = inject(TelegramWebappService);
   activeTab: string = 'tasks'; // Set default active tab
   friendsList:Friend[]= [];
   onCardAnimationDone() {
@@ -140,6 +145,30 @@ export class FriendsComponent {
   }
   ngOnInit() {
     this.userInfo=this.commonService.getUserInfo();
+    this.route.queryParams.subscribe(params => {
+      const source = params['source'];
+      if (source) {
+        this.source = source;
+        this.enableBackButton();
+      }
+    });
+    }
+    enableBackButton() {
+      this.telegramServices.backButton.show();  
+      if (Telegram.WebApp && Telegram.WebApp.BackButton) {
+        Telegram.WebApp.BackButton.onClick(() => {
+          console.log('Back button clicked');
+          this.handleBackNavigation();
+        });
+      }
+    }
+    handleBackNavigation() {
+      this.commonService.setActiveTab(this.source);
+      this.router.navigate([`/${this.source}`]);
+      this.hideBackButton();
+    }
+    hideBackButton() {
+      this.telegramServices.backButton.hide();  
     }
   shareOnTelegram() {
     // Generate the bot join link with a referral code

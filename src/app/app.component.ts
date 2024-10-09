@@ -199,8 +199,10 @@ export class AppComponent implements OnInit, OnDestroy {
           }
           setTimeout(() => {
             this.isLoading = false;
-            this.commonService.setActiveTab('collect');
-            this.router.navigate(['/collect'])
+            // this.commonService.setActiveTab('collect');
+            // this.router.navigate(['/collect'])
+            this.commonService.setActiveTab('green');
+            this.router.navigate(['/green'])
           }, 1000);
           
         }

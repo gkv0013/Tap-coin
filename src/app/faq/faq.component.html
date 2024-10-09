@@ -1,0 +1,16 @@
+<section class="faq">
+    <div class="faq-card-container">
+      <div class="faq-item" *ngFor="let item of faqData; let i = index">
+        <div class="faq-question" (click)="toggleFaq(i)">
+          <h3>{{ item.question }}</h3>
+          <span [ngClass]="{ 'active': activeFaq === i }">
+            {{ activeFaq === i ? '▲' : '▼' }}
+          </span>
+        </div>
+        <div class="faq-answer" *ngIf="activeFaq === i">
+          <p>{{ item.answer }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+      

@@ -1,12 +1,14 @@
 import { CommonService } from '../common.service';
-import { CollectService } from '../../core/services/collect.service';
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router'; // Import ActivatedRoute
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
 import { Goal } from '../../core/interface/user';
 import { DialogService } from '../../core/components/dialog/dialog.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 declare var Telegram: any;
+import * as FastAverageColor from 'fast-average-color';
+
 @Component({
   selector: 'app-goals',
   standalone: true,
@@ -18,17 +20,22 @@ export class GoalComponent implements OnInit {
   public commonService = inject(CommonService);
   public router = inject(Router);
   private route = inject(ActivatedRoute);
+  bsModalRef?: BsModalRef;
   private telegramServices = inject(TelegramWebappService);
   private dialogService = inject(DialogService);
   @ViewChild('modalyoutube') modalyoutube!: TemplateRef<any>;
   @ViewChild('modalarticle') modalarticle!: TemplateRef<any>;
+  @ViewChild('modalsponsors') modalsponsors!: TemplateRef<any>;
+  @ViewChild('bannerImage') bannerImageElement!: ElementRef;
   public currentGoalNo: string | null = null; // Store the user ID
   public selectedGoalData: any; // Variable to hold a single object
   public selectedYoutubeVideo:any;
+  public selectedSponsors:any;
   public selectedArticle:any;
   public articleData:any;
   public goalsData: Goal[] = [];
   public youtubeVideos: any[] = [];
+  public sponsorsData: any[] = [];
   isOverviewSelected: boolean = true;
   activeTab: string = 'overview';
   selectTab(tab: string) {
@@ -39,6 +46,7 @@ export class GoalComponent implements OnInit {
       this.isOverviewSelected = false;
     }
   }
+  neonColor: string = 'rgba(0, 0, 0, 0)'; // Transparent color
 
   ngOnInit(): void {
     this.goalsData=this.commonService.getGoalData() ?? [];
@@ -48,13 +56,28 @@ export class GoalComponent implements OnInit {
     );
     this.parseYoutubeData();
     this.parseArticleData();
+    this.parseSponserData();
     this.enableBackButton();
   }
+  ngAfterViewInit(): void {
+    const fac = new FastAverageColor.FastAverageColor();
+    const imageElement = this.bannerImageElement.nativeElement;
+
+    imageElement.onload = () => {
+        const color = fac.getColor(imageElement);
+        this.neonColor = color.hex; // Set the neon color based on the dominant color of the image
+    };
+}
+getNeonOutline(color: string): string {
+  return `3px solid ${color}`;
+}
+
   enableBackButton() {
     this.telegramServices.backButton.show();
     if (Telegram.WebApp && Telegram.WebApp.BackButton) {
       Telegram.WebApp.BackButton.onClick(() => {
         console.log('Back button clicked');
+        this.closeModal(); 
         this.handleBackNavigation();
       });
     }
@@ -87,6 +110,15 @@ export class GoalComponent implements OnInit {
       }
     }
   }
+  parseSponserData():void{
+    if (this.selectedGoalData.sponsor) {
+      try {
+        this.sponsorsData = JSON.parse(this.selectedGoalData.sponsor);
+      } catch (error) {
+        console.error('Error parsing sponsor data:', error);
+      }
+    }
+  }
   parseArticleData(): void {
     if (this.selectedGoalData.youtube) {
       try {
@@ -98,6 +130,9 @@ export class GoalComponent implements OnInit {
   }
   modalYoutube(modalYoutube:any) {
     this.selectedYoutubeVideo=modalYoutube;
+    if (this.bsModalRef) {
+      this.bsModalRef.hide();
+    }
     this.dialogService.openDialog({
       title: '',
       message: '',
@@ -106,6 +141,25 @@ export class GoalComponent implements OnInit {
       customTemplate: this.modalyoutube,
       onConfirm: () => {},
     });
+  }
+  modalSponsors(modalSponsors:any) {
+    this.selectedSponsors=modalSponsors;
+    if (this.bsModalRef) {
+      this.bsModalRef.hide();
+    }
+    this.dialogService.openDialog({
+      title: '',
+      message: '',
+      type: '',
+      customClass: '',
+      customTemplate: this.modalsponsors,
+      onConfirm: () => {},
+    });
+  }
+  sponsorsMore(){
+    if (this.selectedSponsors) {
+      window.open(this.selectedSponsors.website, '_blank');
+    }
   }
   modalArticle(modalArticle:any) {
     this.selectedArticle=modalArticle;
@@ -123,6 +177,10 @@ export class GoalComponent implements OnInit {
       window.open(this.selectedYoutubeVideo.video, '_blank');
     }
   }
+  routes(routePath: string): void {
+    this.commonService.setActiveTab(routePath);
+    this.router.navigate([`/${routePath}`], { queryParams: { source: `/goals/${this.currentGoalNo}`} });
+  }  
   ReadArticle(){
     if (this.selectedArticle) {
       window.open(this.selectedArticle.url, '_blank');
