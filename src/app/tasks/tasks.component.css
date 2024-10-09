@@ -1,0 +1,222 @@
+section#task-card {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 110px; /* Extra padding to ensure content isn't hidden */
+    padding-bottom: 20px;
+  }
+  
+  .tab-header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .tab-header div {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4a5568;
+    border-radius: 5px;
+    margin: 5px 0;
+    flex: 1 1 45%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tab-header div:hover {
+    background-color: #2d3748;
+  }
+  
+  .tab-header .active {
+    background-color: #2d3748;
+    color: #f7fafc;
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  #tasks-content h2, 
+  #challenges-content h2 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+  }
+  
+  #tasks-content p, 
+  #challenges-content p {
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+  }
+  
+  .bg-gray-800 {
+    background-color: #2d3748;
+  }
+  
+  .text-gray-400 {
+    color: #cbd5e0;
+  }
+  
+  .shadow {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rounded-lg {
+    border-radius: 12px;
+  }
+  
+  .font-bold {
+    font-weight: bold;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .flex {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .justify-between {
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  
+  .mt-4 {
+    margin-top: 16px;
+  }
+  
+  .mb-4 {
+    margin-bottom: 16px;
+  }
+  
+  .w-10 {
+    width: 2.5rem;
+  }
+  
+  .h-10 {
+    height: 2.5rem;
+  }
+  
+  .mr-4 {
+    margin-right: 1rem;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  .bg-gray-700 {
+    background-color: #4a5568;
+  }
+  
+  .bg-yellow-500 {
+    background-color: #ecc94b;
+  }
+  
+  .text-white {
+    color: #ffffff;
+  }
+  
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .rounded {
+    border-radius: 0.25rem;
+  }
+  
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  .task-card-container {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    display: block;
+    background-color: #1a1a1a; /* Dark background color */
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -6px 15px rgb(245 170 1 / 80%);
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 90px);
+    bottom: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.task-info {
+    flex-grow: 1; /* Make task information take up available space */
+}
+
+.task-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.875rem;
+    text-align: center;
+    width: auto;
+    white-space: nowrap; /* Ensure the button doesn't wrap text */
+}
+/* Extra small devices (phones, 0px to 575px) */
+@media (max-width: 575px) {
+  .task-card-container {
+    max-height: calc(100vh - 151px); /* Adjust as per small devices */
+  }
+}
+
+/* Small devices (tablets, 576px to 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .task-card-container {
+    max-height: calc(100vh - 80px); /* Adjust as per small tablets */
+  }
+}
+
+/* Medium devices (small laptops, 768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .task-card-container {
+    max-height: calc(100vh - 90px); /* Adjust as per medium devices */
+  }
+}
+
+/* Large devices (desktops, 992px and above) */
+@media (min-width: 992px) {
+  .task-card-container {
+    max-height: calc(100vh - 100px); /* Adjust as per large devices */
+  }
+}

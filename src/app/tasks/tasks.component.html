@@ -1,77 +1,81 @@
 <section id="task-card">
-  <div class="min-h-screen bg-black text-white p-4">
-
-
-    <!-- Earn more points -->
-    <div class="text-center mt-24 mb-10">
-      <h2 class="text-xl font-bold">Earn more Credits</h2>
-      <p class="text-gray-400">Perform tasks to earn more Media Credits and level up real quick!</p>
-    </div>
-
-    <!-- Task List -->
-    <div class="space-y-4" [@cardAnimation]="'enter'" (@cardAnimation.done)="onCardAnimationDone()">
-      <!-- Task Item -->
-
-      <div
-        class="relative p-0.5 rounded-lg bg-gradient-to-r from-sky-500 via-red-500 to-blue-500 shadow-[0_0_20px_5px_rgba(179,86,214,0.6)]">
-        <div class="bg-black rounded-lg p-4 flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <!-- Icon or Avatar -->
-            <div class="bg-sky-500 w-12 h-12 rounded-full  sshadow-[0_0_15px_3px_rgba(255,0,0,0.8)]">
-              <img src="/image/telegram.png" alt="YouTube Icon" class="icon" *ngIf="isCardAnimationDone"
-                [@imageRotate]="'enter'">
-            </div>
-            <div>
-              <!-- Task Title -->
-              <h3 class="text-lg text-white">Join TG Channel </h3>
-              <!-- Points Info -->
-              <p class="text-sm text-gray-400">+250</p>
+  <div class="task-card-container">
+    <div class="container mx-auto px-4">
+      <div class="tab-header">
+        <!-- <div id="tasks-tab" class="active" (click)="showTab('tasks')">Tasks</div> -->
+        <!-- <div id="challenges-tab" (click)="showTab('challenges')">Challenges</div> -->
+      </div>
+      <div id="tasks-content" class="tab-content active">
+        <div class="text-center">
+          <h2 class="text-xl font-bold">Earn more Credits</h2>
+          <p class="text-gray-400">Perform tasks to earn more Media Credits and level up real quick!</p>
+        </div>
+        <div class="mt-4">
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4"   [@cardAnimation]="'enter'"  (@cardAnimation.done)="onCardAnimationDone()">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <img src="/image/telegram.png" alt="Telegram Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
+                <div class="task-info">
+                  <div class="font-bold">Join my Telegram Channel</div>
+                </div>
+              </div>
+              <div class="task-buttons">
+                <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()" *ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Perform</button>
+                <button class="btn bg-gray-700 text-white"  (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"[@buttonAnimation]="'enter'">Verify</button>
+              </div>
             </div>
           </div>
-          <!-- Ghost Button -->
-          <button (click)="shareOnTelegram()"
-            class="border border-blue-500  px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300 text-white shadow-[0_0_10px_2px_rgba(255,255,255,0.8)]">
-            Join
-          </button>
-        </div>
-      </div>
-
-      <div
-        class="relative p-0.5 rounded-lg bg-gradient-to-r from-red-500 via-blue-500 to-red-500 shadow-[0_0_20px_5px_rgba(179,86,214,0.6)]">
-        <div class="bg-black rounded-lg p-4 flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <!-- Icon or Avatar -->
-            <div class="bg-red-500 w-12 h-12 rounded-full  shadow-[0_0_15px_3px_rgba(255,0,0,0.8)]">
-              <img src="/image/youtube.png" alt="YouTube Icon" class="icon" *ngIf="isCardAnimationDone"
-                [@imageRotate]="'enter'">
-            </div>
-            <div>
-              <!-- Task Title -->
-              <h3 class="text-lg text-white">Subscribe </h3>
-              <!-- Points Info -->
-              <p class="text-sm text-gray-400">+250</p>
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4"  [@cardAnimation]="'enter'">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <img src="/image/youtube.png" alt="YouTube Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
+                <div class="task-info">
+                  <div class="font-bold">Subscribe to my YouTube</div>
+                </div>
+              </div>
+              <div class="task-buttons">
+                <button class="btn bg-gray-700 text-white" (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"  [@buttonAnimation]="'enter'">Perform</button>
+                <button class="btn bg-gray-700 text-white"  (click)="shareOnTelegram()"*ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Verify</button>
+              </div>
             </div>
           </div>
-          <!-- Ghost Button -->
-          <button (click)="shareOnTelegram()"
-            class="border border-blue-500  px-4 py-2 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300 text-white shadow-[0_0_10px_2px_rgba(255,255,255,0.8)]">
-            Subscribe
-          </button>
         </div>
       </div>
-
-
-
-
-
-
-
-
-      <!-- Add more task items similarly -->
+      <div id="challenges-content" class="tab-content">
+        <div class="text-center">
+          <h2 class="text-xl font-bold">Milestone rewards</h2>
+          <p class="text-gray-400">Complete specific milestones to unlock huge rewards and bonuses!</p>
+        </div>
+        <div class="mt-4">
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-bold">Bronze</div>
+                <div class="text-gray-400">50 000</div>
+              </div>
+              <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+            </div>
+          </div>
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-bold">Silver</div>
+                <div class="text-gray-400">100 000</div>
+              </div>
+              <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+            </div>
+          </div>
+          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-bold">Gold</div>
+                <div class="text-gray-400">250 000</div>
+              </div>
+              <button class="bg-gray-700 text-white py-2 px-4 rounded">Claim</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
   </div>
-
-
-
 </section>
