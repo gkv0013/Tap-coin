@@ -1,28 +1,16 @@
 <div class="max-w-sm flex-col items-center mt-16 mb-24 mx-auto">
-    <section class="goals flex flex-row flex-wrap my-8 sm:mx-auto">
-        <div class="goals-card-container">
-            <div class="tab-header">
-                <div id="tasks-tab" [ngClass]="{ 'active': activeTab === 'overview' }" (click)="selectTab('overview')">
-                    Overview</div>
-                <div id="challenges-tab" [ngClass]="{ 'active': activeTab === 'challenges' }"
-                    (click)="selectTab('challenges')">Challenges</div>
-            </div>
-            <div *ngIf="isOverviewSelected" class="py-4 w-full">
-                <div class="flex bg-gray-800 w-full flex-wrap justify-center rounded-xl">
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <img #bannerImage [src]="selectedGoalData.bannerimagepath" alt="Goal Image"
-                            class="w-full object-cover" />
-                    </div>
-                    <div class="p-4">
-                        <span *ngIf="sponsorsData.length > 0">
-                            <div class="ppcont" *ngFor="let sponsor of sponsorsData"
-                                [ngStyle]="{'outline': getNeonOutline(neonColor)}">
-                                <h5 class="ftr">OUR SPONSOR</h5>
-                                <h2>{{sponsor.name}}</h2>
-                                <h5 class="description">{{sponsor.description}}</h5>
-                                <span class="more-link" (click)="modalSponsors(sponsor)">More</span>
-                            </div>
-                        </span>
+    <!-- Tabs section -->
+    <section class="flex flex-row flex-wrap my-8 sm:mx-auto">
+        <!-- Tab labels -->
+        <label (click)="selectTab('overview')" [ngClass]="{'bg-slate-400': isOverviewSelected}"
+            class="border-1 border-sky-100 hover:bg-slate-500 cursor-default text-center p-4 rounded-tl-lg block w-1/2 ">
+            Overview
+        </label>
+
+        <label (click)="selectTab('challenges')" [ngClass]="{'bg-slate-400': !isOverviewSelected}"
+            class="bg-slate-900  border-sky-100 border text-center cursor-default p-4 rounded-tr-lg block w-1/2 hover:bg-slate-400 ">
+            Challenges
+        </label>
 
                         <div class="goal-info">
                             <h3 class="goal-title">{{ selectedGoalData.title }}</h3>
