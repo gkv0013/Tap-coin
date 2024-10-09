@@ -202,7 +202,7 @@ section#goals {
   }
   .close-btn {
     top: 10px;
-    right: 10px;
+    right: 20px;
     background: transparent;
     border: none;
     font-size: 1.5rem;
@@ -309,3 +309,152 @@ section#goals {
   .article-section {
     margin-bottom: 20px;
   }
+  .ppcont {
+    position: relative;
+    width: 90%; /* Make sure it adjusts to the parent container width */
+    max-width: 370px; /* Optional: Set a maximum width to limit expansion */
+    margin: 15px auto;
+    background: linear-gradient(135deg, #0d0d0d, #1a1a1a); /* Dark background to enhance the neon effect */
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ppcont:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.6), 0 0 70px rgba(0, 255, 255, 0.4); /* Enhanced neon glow on hover */
+}
+.ppcont_art {
+    height: 90px;
+    width: 90px;
+    float: right;
+    margin: 0 0 10px 10px;
+    background: linear-gradient(135deg, #111, #222);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.8), 0 0 25px rgba(255, 0, 255, 0.6), 0 0 35px rgba(255, 0, 255, 0.4); /* Vibrant glow for a neon effect */
+}
+
+.ppcont .ftr{text-transform:uppercase;font-size:9px;letter-spacing:1px;background:limegreen;width:86px;text-align:center;padding:4px;border-radius:2px;color:#fff}
+
+.ppcont h5 {
+    margin: 0;
+    color: #BBBBBB;
+    font-size: 0.9rem;
+}
+
+.ppcont h2 {
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    color: #00FFFF; /* Neon cyan color */
+    font-size: 1.3rem;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5); /* Strong neon glow text effect */
+}
+
+.pp {
+    height: 50px;
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+    margin: 12px 0;
+    border: 2px solid rgba(0, 255, 255, 0.3); /* Neon border for a high-tech feel */
+    border-radius: 10px;
+    background: rgba(0, 255, 255, 0.05); /* Subtle neon-like background */
+}
+.ppcont .description {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* Ensure the description does not exceed the container width */
+    color: #BBBBBB;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+.ppcont .more-link{
+    color: #00BFFF; /* Bright color to indicate a clickable link */
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline-block; 
+    padding: 0px;
+}
+.goal-info {
+    width: 90%; /* Ensures the content fits within the parent container */
+    max-width: 100%; /* Allows flexibility in smaller screen sizes */
+    margin: 10px auto; /* Center aligns within the container */
+    color: #FFFFFF; /* Ensures readability against the background */
+}
+
+.goal-title {
+    font-weight: bold;
+    font-size: 1.25rem; /* Slightly larger for prominence */
+    padding: 5px;
+    color: #f7fafc; /* Light color for contrast */
+}
+
+.goal-description {
+    font-size: 0.9rem; /* Slightly smaller text for the description */
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds ellipsis for overflowing text */
+    padding: 10px;
+}
+
+.more-link {
+    color: #00BFFF; /* Bright color to indicate a clickable link */
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px;
+    text-decoration: underline;
+    display: inline-block; /* Allows proper margin control */
+}
+
+.more-link:hover {
+    color: #007ACC; /* Darker color on hover to indicate interaction */
+}
+.earn-section {
+    margin-bottom: 20px; /* Adds space below the section */
+}
+
+.earn-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates a 2x2 grid layout */
+    gap: 15px; /* Spacing between the tiles */
+    margin-top: 10px;
+}
+
+.earn-tile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Center-align the title */
+}
+
+.earn-tile {
+    width: 100%;
+    aspect-ratio: 1; /* Ensures the tile remains a square */
+    overflow: hidden;
+    border-radius: 15px; /* Rounded edges for the tile */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.earn-tile:hover {
+    transform: translateY(-5px); /* Hover effect to lift the tile */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Slightly enhanced shadow on hover */
+}
+
+.earn-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire tile area */
+    object-position: center; /* Centers the image within the tile */
+}
+
+.tile-title {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #FFFFFF; /* Ensures readability against the background */
+    text-align: center; /* Center-align the text below each tile */
+}

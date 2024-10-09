@@ -8,6 +8,7 @@ import { GreenComponent } from './green/green.component';
 import { GoalComponent } from './goals/goals.component';
 import { MoreInfoComponent } from './more-info/more-info.component';
 import { LogsComponent } from './logs/logs.component';
+import { FaqComponent } from './faq/faq.component';
 
 // export const routes: Routes = [
 //     { path: '', redirectTo: '/collect', pathMatch: 'full' },
@@ -29,6 +30,7 @@ export const routes: Routes = [
   { path: 'green', component: GreenComponent },
   { path: 'more-info', component: MoreInfoComponent,},
   { path: 'goals/:id', component: GoalComponent },
+  { path: 'faq', component: FaqComponent },
 ];
 
 // export const routes: Routes = [

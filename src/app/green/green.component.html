@@ -13,7 +13,7 @@
     </h1>
 
     <div class="flex flex-wrap justify-center sm:max-w-lg mx-auto overflow-visible">
-        <div *ngFor="let goal of goalsData" class="m-3" (click)="routeToGoal(goal.goalno)" [ngClass]="{ 'opacity-50 pointer-events-none cursor-not-allowed': goal.isdisabled }">
+        <div *ngFor="let goal of goalsData" class="m-3" (click)="routeToGoal(goal.goalno)" [ngClass]="{ 'opacity-20 pointer-events-none cursor-not-allowed': goal.isdisabled }">
           <img
             [src]="goal.imagepath"
             [alt]="'Goal ' + goal.goalno"

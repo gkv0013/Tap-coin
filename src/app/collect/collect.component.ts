@@ -1,6 +1,6 @@
   import { CommonModule } from '@angular/common';
   import { Component, ElementRef, AfterViewInit, Renderer2, ViewChild, inject, OnDestroy, OnInit } from '@angular/core';
-  import { Router } from '@angular/router';
+  import { ActivatedRoute, Router } from '@angular/router';
   import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
   import { CommonService } from '../common.service';
   import { CollectService } from '../../core/services/collect.service';
@@ -50,21 +50,47 @@ import { HopscotchService } from '../../core/services/hopscotch.service';
     private readonly telegramServices = inject(TelegramWebappService);
     private readonly renderer = inject(Renderer2);
     public commonService = inject(CommonService);
+    private route=inject(ActivatedRoute) 
     private readonly collectService = inject(CollectService);
     public hopscotchService = inject(HopscotchService);
     private subscriptions: Subscription[] = [];
     private postDataService = inject(PostDataService);
+    source:string='';
     userInfo:any;
     getBoostValue(): number {
       const currentCoinTier = this.coins.find((coin:any) => this.buttonPressCount >= coin.progress);
       return currentCoinTier ? currentCoinTier.boost : 0;
     }
     ngOnInit() {
+      this.route.queryParams.subscribe(params => {
+        const source = params['source'];
+        if (source) {
+          this.source = source;
+          this.enableBackButton();
+        }
+      });
     this.initSubscriptions();
     this.coins=this.collectService.getCoinsetting();
     this.collectService.startProgressDecrease();
     this.userInfo=this.commonService.getUserInfo();
     this.previousLevel=this.getCurrentLevel();
+    }
+    enableBackButton() {
+      this.telegramServices.backButton.show();  
+      if (Telegram.WebApp && Telegram.WebApp.BackButton) {
+        Telegram.WebApp.BackButton.onClick(() => {
+          console.log('Back button clicked');
+          this.handleBackNavigation();
+        });
+      }
+    }
+    handleBackNavigation() {
+      this.commonService.setActiveTab(this.source);
+      this.router.navigate([`/${this.source}`]);
+      this.hideBackButton();
+    }
+    hideBackButton() {
+      this.telegramServices.backButton.hide();  
     }
     initSubscriptions(){
       this.subscriptions.push(
