@@ -8,6 +8,7 @@ import { CollectService } from '../../core/services/collect.service';
 import { trigger, style, animate, transition ,query,stagger} from '@angular/animations';
 import { NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-friends',
@@ -68,11 +69,15 @@ export class FriendsComponent implements OnInit {
   isChallengesTabActive=false;
   totalRewards:number=0;
   source:string='';
+  coins :any;
+  buttonPressCount = 0;
+  private subscriptions: Subscription[] = [];
   constructor() {}
   public commonService = inject(CommonService);
   private postDataService = inject(PostDataService);
   private route=inject(ActivatedRoute) 
   public router = inject(Router);
+  private collectService = inject(CollectService);
   private readonly telegramServices = inject(TelegramWebappService);
   activeTab: string = 'tasks'; // Set default active tab
   friendsList:Friend[]= [];
@@ -145,6 +150,8 @@ export class FriendsComponent implements OnInit {
   }
   ngOnInit() {
     this.userInfo=this.commonService.getUserInfo();
+    this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
+    this.coins= this.collectService.getCoinsetting();
     this.route.queryParams.subscribe(params => {
       const source = params['source'];
       if (source) {
@@ -180,5 +187,11 @@ export class FriendsComponent implements OnInit {
     
     // Open the share URL in a new tab
     window.open(telegramShareUrl, '_blank');
+  }
+  getReferalPoints(): number {
+    const currentCoinTier = this.coins.find(
+      (coin: any) => this.buttonPressCount >= coin.progress
+    );
+    return currentCoinTier ? currentCoinTier.referralpoint : 0;
   }
 }
