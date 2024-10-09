@@ -40,7 +40,7 @@
       <div id="tasks-content" class="tab-content active">
         <div class="text-center">
           <h2 class="text-xl font-bold">Earn more Credits</h2>
-          <p class="text-gray-400">Invite your friends and claim 20 Media Credits</p>
+          <p class="text-gray-400">Invite your friends and claim {{getReferalPoints()}} Media Credits</p>
         </div>
         <div class="mt-4" [@cardAnimation]="'enter'"  (@cardAnimation.done)="onCardAnimationDone()">
           <div class="bg-gray-800 rounded-lg shadow p-4 mb-4">
@@ -65,7 +65,7 @@
           <p class="text-2xl text-yellow-500 font-bold">{{totalRewards}} Media Credits</p>
         </div>
         <div class="text-center">
-          <p class="text-gray-400">Earn rewards of 20 Media Credits for every direct referrals</p>
+          <p class="text-gray-400">Earn rewards of {{getReferalPoints()}} Media Credits for every direct referrals</p>
         </div>
         <div class="mt-4">
           <div class="friends-card-container"  *ngIf="isChallengesTabActive"[@listAnimation]>
