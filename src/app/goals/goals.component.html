@@ -35,7 +35,7 @@
             <div *ngIf="!isOverviewSelected" class="py-4 w-full">
                 <div class="youtube-section" *ngIf="youtubeVideos.length > 0">
                     <div class="font-bold text-lg mb-4">Watch Youtube videos</div>
-                    <div *ngFor="let video of youtubeVideos" class="youtube-card multi-tap">
+                    <div *ngFor="let video of youtubeVideos" class="youtube-card multi-tap youtube-outline">
                         <div class="youtube-icon">
                             <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
                         </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="article-section" *ngIf="articleData.length > 0">
                     <div class="font-bold text-lg mb-4">Read Articles</div>
-                    <div *ngFor="let article of articleData" class="youtube-card multi-tap">
+                    <div *ngFor="let article of articleData" class="youtube-card multi-tap article-outline">
                         <div class="youtube-icon">
                             <img src="/image/paper.png" alt="YouTube Icon" class="icon">
                         </div>
@@ -170,7 +170,11 @@
                 <div class="boost-description">{{selectedSponsors.description}} </div>
             </div>
             <div class="boost-cost mt-4">
-                <button class="boost-button-modal mt-3" (click)="sponsorsMore()">More</button>
+                <div class="cost-container">
+                    <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
+                    <span class="cost-text">+{{selectedSponsors.coins}}</span>
+                </div>
+                <button class="boost-button-modal mt-3" (click)="sponsorsMore()">Visit website</button>
             </div>
         </div>
     </div>

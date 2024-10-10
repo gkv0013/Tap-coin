@@ -62,9 +62,21 @@
     font-size: 0.875rem;
   }
 
-  .bg-gray-800 {
-    background-color: #2d3748;
-  }
+/* Card styling for each Join Wave+ Bot */
+.bg-gray-800 {
+  background-color: #2d3748; /* Dark background color */
+  border-radius: 12px; /* Rounded corners */
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 1rem; /* Space between cards */
+  border: 2px solid #039be5; /* Gold border for outline */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
+}
+
+.bg-gray-800:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
 
   .text-gray-400 {
     color: #cbd5e0;
@@ -88,10 +100,6 @@
 .text-center .p{
   margin-bottom: 0px!important;
 }
-  .flex {
-    display: flex;
-    flex-direction: column;
-  }
 
   .items-center {
     align-items: center;
@@ -152,10 +160,7 @@
     border-radius: 0.25rem;
   }
 
-  button {
-    width: 100%;
-    margin-top: 10px;
-  }
+ 
 
   button:hover {
     opacity: 0.8;
@@ -184,25 +189,18 @@
     height: 40px;
     margin-right: 10px;
   }
-
-  .task-info {
-    flex-grow: 1; /* Make task information take up available space */
+  .telegram-icon {
+    margin-right: 16px; /* Adjust spacing as needed for better alignment */
   }
+
+
 
   .task-buttons {
     display: flex;
     gap: 10px; /* Space between buttons */
   }
 
-  .btn {
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 0.875rem;
-    text-align: center;
-    width: auto;
-    white-space: nowrap; /* Ensure the button doesn't wrap text */
-  }
+
   
   /* Extra small devices (phones, 0px to 575px) */
   @media (max-width: 575px) {
@@ -239,6 +237,58 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   margin-bottom: 9px; /* Space between cards */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
+}
+/* Styling the "Join Wave+ Bot" card with a distinct outline */
+.card-join-wave-bot {
+  display: flex; /* Use Flexbox for layout */
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Space items across the row */
+  background-color: #2d3748; /* Existing background color */
+  border: 2px solid #039be5; /* Bright blue outline */
+  border-radius: 12px; /* Rounded corners */
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 1rem; /* Space between cards */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animation */
+}
+
+/* Ensure items stay in a single row */
+.flex {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
+  align-items: center;
+  justify-content: flex-start; /* Align items to the left */
+  width: 100%; /* Ensure full width of the card */
+}
+
+/* Icon styling */
+.icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+/* Task info styling */
+.task-info {
+  flex-shrink: 0; /* Prevents shrinking to fit the row */
+}
+
+/* Button styling */
+.btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: #4a5568;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.875rem;
+  text-align: center;
+  white-space: nowrap; /* Prevents text from wrapping */
+  margin-left: 10px; /* Space between text and button */
+  flex-shrink: 0; /* Prevents button from shrinking */
+}
+
+.btn:hover {
+  background-color: #2d3748;
 }
 
 .friend-card:hover {

@@ -11,7 +11,7 @@ body{
   position: relative;
   background: url('/image/background.png') no-repeat center center fixed;
   background-size: contain;
-  background-color: dimgrey;
+  background-color: #353D4D;
 }
 .wrapper{
     width:200px;

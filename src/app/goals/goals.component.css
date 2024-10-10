@@ -341,7 +341,12 @@ section#goals {
     color: #BBBBBB;
     font-size: 0.9rem;
 }
-
+.youtube-outline {
+  border: 2px solid #eb4325; /* Darker blue border */
+}
+.article-outline {
+  border: 2px solid #21ad95; /* Darker blue border */
+}
 .ppcont h2 {
     margin-bottom: 8px;
     letter-spacing: -0.5px;
