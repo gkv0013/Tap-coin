@@ -73,6 +73,11 @@ export class TasksComponent {
       }
     }
   }
+  subscribeYoutube(){
+    this.telegramServices.hapticFeedback.impactOccurred('medium');
+    const telegramShareUrl = `https://www.youtube.com/@waveplusglobal`;
+    window.open(telegramShareUrl, '_blank');
+  }
   shareOnTelegram() {
     // const urlToShare = encodeURIComponent('https://yourapp.com/referral?user=123'); // Replace with your actual URL
     // const textToShare = encodeURIComponent('Join our app and earn rewards!'); // Optional text

@@ -11,31 +11,27 @@
           <p class="text-gray-400">Perform tasks to earn more Media Credits and level up real quick!</p>
         </div>
         <div class="mt-4">
-          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4"   [@cardAnimation]="'enter'"  (@cardAnimation.done)="onCardAnimationDone()">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <img src="/image/telegram.png" alt="Telegram Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
-                <div class="task-info">
-                  <div class="font-bold">Join my Telegram Channel</div>
-                </div>
+          <div class="task-card bg-gray-800 rounded-lg shadow p-4 mb-4">
+            <div class="flex items-center justify-start w-full">
+              <img src="/image/telegram.png" alt="Telegram Icon" class="icon">
+              <div class="task-info mx-2 text-center flex-shrink-0">
+                <div class="font-bold">Join my Wave+</div>
               </div>
-              <div class="task-buttons">
-                <button class="btn bg-gray-700 text-white"(click)="shareOnTelegram()" *ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Perform</button>
-                <button class="btn bg-gray-700 text-white"  (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"[@buttonAnimation]="'enter'">Verify</button>
+              <div class="task-buttons flex">
+                <button class="btn bg-gray-700 text-white ml-2">Perform</button>
+                <button class="btn bg-gray-700 text-white ml-2">Verify</button>
               </div>
             </div>
           </div>
-          <div class="bg-gray-800 rounded-lg shadow p-4 mb-4"  [@cardAnimation]="'enter'">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <img src="/image/youtube.png" alt="YouTube Icon" class="icon" *ngIf="isCardAnimationDone" [@imageRotate]="'enter'">
-                <div class="task-info">
-                  <div class="font-bold">Subscribe to my YouTube</div>
-                </div>
+          <div class="task-card bg-gray-800 rounded-lg shadow p-4 mb-4 youtube-outline">
+            <div class="flex items-center justify-start w-full">
+              <img src="/image/youtube.png" alt="YouTube Icon" class="icon">
+              <div class="task-info mx-2 text-center flex-shrink-0">
+                <div class="font-bold">Subscribe Wave Plus Global</div>
               </div>
-              <div class="task-buttons">
-                <button class="btn bg-gray-700 text-white" (click)="shareOnTelegram()"*ngIf="isCardAnimationDone"  [@buttonAnimation]="'enter'">Perform</button>
-                <button class="btn bg-gray-700 text-white"  (click)="shareOnTelegram()"*ngIf="isCardAnimationDone" [@buttonAnimation]="'enter'">Verify</button>
+              <div class="task-buttons flex">
+                <button class="btn bg-gray-700 text-white ml-2">Perform</button>
+                <button class="btn bg-gray-700 text-white ml-2">Verify</button>
               </div>
             </div>
           </div>
