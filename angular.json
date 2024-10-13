@@ -29,6 +29,7 @@
             "styles": [
               "node_modules/hopscotch/dist/css/hopscotch.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/swiper/swiper-bundle.min.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -90,6 +91,7 @@
             ],
             "styles": [
               "node_modules/hopscotch/dist/css/hopscotch.css",
+              "node_modules/swiper/swiper-bundle.min.css",
               "src/styles.css"
             ],
             "scripts": ["node_modules/hopscotch/dist/js/hopscotch.js"]

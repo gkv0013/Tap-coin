@@ -61,3 +61,8 @@ export interface Goal {
   article?: any;
   bannerimagepath:string;
 }
+export interface Card {
+  title: string;
+  description: string;
+  url: string;
+}

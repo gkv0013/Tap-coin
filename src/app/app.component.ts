@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgFor, NgIf, NgSwitch } from '@angular/common';
 import { Component, ElementRef, inject, OnDestroy, OnInit, Renderer2, TemplateRef } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
@@ -11,7 +11,8 @@ import { BsModalService, BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
 import { CollectService } from '../core/services/collect.service';
 import { LoadingComponent } from './loading/loading.component';
 import { environment } from '../environment/environment';
-//import { UserService } from '../core/services/user.service';
+import { WelcomeComponent } from './welcome/welcome.component';
+
 declare global {
   interface Window {
     Telegram: any;
@@ -26,7 +27,7 @@ interface InitUserData {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgClass, NgIf,NgFor,LoadingComponent],
+  imports: [RouterOutlet, NgClass, NgIf,NgFor,LoadingComponent,NgSwitch,WelcomeComponent,CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers:[BsModalService]
@@ -59,7 +60,8 @@ export class AppComponent implements OnInit, OnDestroy {
     achievements: []
   };
   currentImageIndex = 0;
-
+  isNewUser:boolean=false;
+  isWelcome:boolean=false;
   coins :any;
   
   platformInfo: string = '';
@@ -125,6 +127,9 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log(this.telegramServices.initDataUnsafe?.user);
     this.telegramServices.expand();
     this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
+    this.subscriptions.push(this.commonService.isWelcome$.subscribe((value: boolean) => {
+      this.isWelcome = value;
+    }));
   }
   ngAfterViewInit() {
     try {
@@ -199,14 +204,15 @@ export class AppComponent implements OnInit, OnDestroy {
           }
           setTimeout(() => {
             this.isLoading = false;
-            // this.commonService.setActiveTab('collect');
-            // this.router.navigate(['/collect'])
-            this.commonService.setActiveTab('green');
-            this.router.navigate(['/green'])
+            if(this.userInfo.isNewUser==1){
+              this.isWelcome=true;
+            }else{
+              this.commonService.setActiveTab('green');
+              this.router.navigate(['/green'])
+            }
           }, 1000);
           
         }
-        console.log('Data saved successfully:', response);
       },
       (error) => {
         console.error('Error saving data:', error);
