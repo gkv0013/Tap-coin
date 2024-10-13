@@ -22,7 +22,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 //     { path: 'green', loadComponent: () => import('./green/green.component').then(m => m.GreenComponent) },
 //   ];
 export const routes: Routes = [
-  { path: '', redirectTo: '/collect', pathMatch: 'full' },
+  { path: '', redirectTo: '/green', pathMatch: 'full' },
   { path: 'logs', component: LogsComponent },
   { path: 'collect', component: CollectComponent },
   { path: 'tasks', component: TasksComponent },
