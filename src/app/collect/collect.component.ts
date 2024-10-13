@@ -111,7 +111,7 @@ import { HopscotchService } from '../../core/services/hopscotch.service';
     ngAfterViewInit(): void {
       this.initBackgroundAnimation();
       this.initForegroundAnimation();
-      this.startTour();
+      //this.startTour();
     }
 
     startTour(){
