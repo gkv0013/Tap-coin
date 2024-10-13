@@ -10,6 +10,8 @@ import { MoreInfoComponent } from './more-info/more-info.component';
 import { LogsComponent } from './logs/logs.component';
 import { FaqComponent } from './faq/faq.component';
 
+import { WelcomeComponent } from './welcome/welcome.component';
+
 // export const routes: Routes = [
 //     { path: '', redirectTo: '/collect', pathMatch: 'full' },
 //     { path: 'collect', loadComponent: () => import('./collect/collect.component').then(m => m.CollectComponent) },
@@ -31,6 +33,7 @@ export const routes: Routes = [
   { path: 'more-info', component: MoreInfoComponent,},
   { path: 'goals/:id', component: GoalComponent },
   { path: 'faq', component: FaqComponent },
+  { path: 'swipe', component: WelcomeComponent },
 ];
 
 // export const routes: Routes = [

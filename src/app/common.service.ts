@@ -11,6 +11,8 @@ export class CommonService {
   private data:any; 
   private goalsdata: any;
   private activeTabSubject = new BehaviorSubject<string>('collect');
+  private isWelcomeSubject = new BehaviorSubject<boolean>(false); // default value is `true`
+  isWelcome$ = this.isWelcomeSubject.asObservable();
   constructor() { }
   private postDataService = inject(PostDataService);
 
@@ -41,5 +43,7 @@ export class CommonService {
   getActiveTab(): string {
     return this.activeTabSubject.value;
   }
-
+  setIsWelcome(value: boolean) {
+    this.isWelcomeSubject.next(value);
+  }
 }

@@ -1,0 +1,22 @@
+<swiper-container
+  appSwiper
+  #swiper
+  [config]="swiperConfig"
+  pagination="true"
+  (slidechange)="slideChange($event)"
+  class="swiper-container"
+>
+  <swiper-slide *ngFor="let item of contents; let i = index" class="swiper-slide-fullscreen">
+    <div class="content-wrapper">
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.description }}</p>
+      <!-- Display the Start button on the last slide -->
+      <button *ngIf="i === contents.length - 1" class="start-button" (click)="onStartClick()">Start</button>
+    </div>
+    <div class="background-image" [ngStyle]="{background: 'url(' + item.url +') no-repeat center center / cover'}"></div>
+    
+  </swiper-slide>
+
+  <!-- Pagination element for the round bullets -->
+  
+</swiper-container>
