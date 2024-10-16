@@ -97,7 +97,10 @@ section#goals {
   pointer-events: none; /* Prevent clicks */
   cursor: not-allowed; /* Show a not-allowed cursor */
 }
-
+.goal-status {
+  color: #ffcc00; /* Example color for the status text */
+  font-weight: bold;
+}
 
 
 
