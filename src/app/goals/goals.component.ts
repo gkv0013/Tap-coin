@@ -180,9 +180,30 @@ getNeonOutline(color: string): string {
     }
   }
 
-  claimReward(){
-    
+  async claimReward(type: number) {
+    let result;
+  
+    switch (type) {
+      case 1:
+        result = await this.callGoalAchieved(this.modalSponsors);
+        break;
+      case 2:
+        result = await this.callGoalAchieved(this.modalYoutube);
+        break;
+      case 3:
+        result = await this.callGoalAchieved(this.modalArticle);
+        break;
+      default:
+        console.error('Invalid type for claimReward:', type);
+        return;
+    }
+  
+    // Check the result and update goalStatus if applicable
+    if (result?.Result && result.Result.length > 0) {
+      this.goalStatus = result.Result[0];
+    }
   }
+  
   async modalArticle(modalArticle:any) {
     this.selectedArticle=modalArticle;
     const result = await this.callGoalAchieved(modalArticle);
