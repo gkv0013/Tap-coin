@@ -92,6 +92,11 @@ section#goals {
   gap: 10px;
   /* Adds some spacing between items */
 }
+.disabled-class {
+  opacity: 0.5; /* Example: Make the button semi-transparent */
+  pointer-events: none; /* Prevent clicks */
+  cursor: not-allowed; /* Show a not-allowed cursor */
+}
 
 
 
