@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router'; // Import ActivatedRoute
 import { TelegramWebappService } from '@zakarliuka/ng-telegram-webapp';
-import { Goal } from '../../core/interface/user';
+import { Goal, postDataInterface } from '../../core/interface/user';
 import { DialogService } from '../../core/components/dialog/dialog.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 declare var Telegram: any;
 import * as FastAverageColor from 'fast-average-color';
+import { PostDataService } from '../../core/services/post-data.service';
+import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
   selector: 'app-goals',
@@ -20,6 +22,7 @@ export class GoalComponent implements OnInit {
   public commonService = inject(CommonService);
   public router = inject(Router);
   private route = inject(ActivatedRoute);
+  private postDataService = inject(PostDataService);
   bsModalRef?: BsModalRef;
   private telegramServices = inject(TelegramWebappService);
   private dialogService = inject(DialogService);
@@ -27,6 +30,8 @@ export class GoalComponent implements OnInit {
   @ViewChild('modalarticle') modalarticle!: TemplateRef<any>;
   @ViewChild('modalsponsors') modalsponsors!: TemplateRef<any>;
   @ViewChild('bannerImage') bannerImageElement!: ElementRef;
+  timezone: string = '';
+  goalStatus: { isclaimed: boolean; status: string } | null = null;
   public currentGoalNo: string | null = null; // Store the user ID
   public selectedGoalData: any; // Variable to hold a single object
   public selectedYoutubeVideo:any;
@@ -36,6 +41,7 @@ export class GoalComponent implements OnInit {
   public goalsData: Goal[] = [];
   public youtubeVideos: any[] = [];
   public sponsorsData: any[] = [];
+  userInfo:any;
   isOverviewSelected: boolean = true;
   activeTab: string = 'overview';
   selectTab(tab: string) {
@@ -50,6 +56,8 @@ export class GoalComponent implements OnInit {
 
   ngOnInit(): void {
     this.goalsData=this.commonService.getGoalData() ?? [];
+    this.timezone = this.commonService.getTimeZoneOffset();
+    this.userInfo=this.commonService.getUserInfo();
     this.currentGoalNo = this.route.snapshot.paramMap.get('id');
     this.selectedGoalData = this.goalsData.find(
       (goal) => goal?.goalno === Number(this.currentGoalNo)
@@ -99,7 +107,8 @@ getNeonOutline(color: string): string {
   }
   closeModal() {
     this.dialogService.closeDialog();
-    this.selectedYoutubeVideo=[]
+    this.selectedYoutubeVideo=this.selectedSponsors=this.selectedArticle=[]
+    this.goalStatus = null;
   }
   parseYoutubeData(): void {
     if (this.selectedGoalData.youtube) {
@@ -128,8 +137,12 @@ getNeonOutline(color: string): string {
       }
     }
   }
-  modalYoutube(modalYoutube:any) {
+  async modalYoutube(modalYoutube:any) {
     this.selectedYoutubeVideo=modalYoutube;
+    const result = await this.callGoalAchieved(modalYoutube);
+    if (result?.Result && result.Result.length > 0) {
+      this.goalStatus = result.Result[0];
+    }
     if (this.bsModalRef) {
       this.bsModalRef.hide();
     }
@@ -142,8 +155,12 @@ getNeonOutline(color: string): string {
       onConfirm: () => {},
     });
   }
-  modalSponsors(modalSponsors:any) {
+  async modalSponsors(modalSponsors:any) {
     this.selectedSponsors=modalSponsors;
+    const result = await this.callGoalAchieved(modalSponsors);
+    if (result?.Result && result.Result.length > 0) {
+      this.goalStatus = result.Result[0];
+    }
     if (this.bsModalRef) {
       this.bsModalRef.hide();
     }
@@ -156,13 +173,22 @@ getNeonOutline(color: string): string {
       onConfirm: () => {},
     });
   }
-  sponsorsMore(){
+  async sponsorsMore(){
     if (this.selectedSponsors) {
+      await this.saveGoals(this.selectedSponsors);
       window.open(this.selectedSponsors.website, '_blank');
     }
   }
-  modalArticle(modalArticle:any) {
+
+  claimReward(){
+    
+  }
+  async modalArticle(modalArticle:any) {
     this.selectedArticle=modalArticle;
+    const result = await this.callGoalAchieved(modalArticle);
+    if (result?.Result && result.Result.length > 0) {
+      this.goalStatus = result.Result[0];
+    }
     this.dialogService.openDialog({
       title: '',
       message: '',
@@ -172,18 +198,79 @@ getNeonOutline(color: string): string {
       onConfirm: () => {},
     });
   }
-  watchVideo(): void {
+  async watchVideo(): Promise<void> {
     if (this.selectedYoutubeVideo) {
+      await this.saveGoals(this.selectedYoutubeVideo);
       window.open(this.selectedYoutubeVideo.video, '_blank');
     }
   }
+
+  saveGoals(data:any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const postData: postDataInterface = {
+        Mode: 0, // Mode depending on your logic
+        CrudType: 0, // Example value
+        SaveData: {
+          savegoals: [
+            {
+              mode: 0,
+              telegramId: this.userInfo.telegramId,
+              goalid: data.id,
+              cost: data.coins,
+              goaltype: data.typename,
+              goaltypeid: data.type,
+              time: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { 
+                hour12: false 
+            }),
+            timezone:this.timezone
+            },
+          ],
+        },
+      };
+      this.postDataService.sendData('Goals', postData).subscribe(
+        (response) => {
+          if (response.StatusCode === 200 && response.Result) {
+            resolve(response);  // Resolve the promise when successful
+          } else {
+            reject(new Error('Failed to save data.'));
+          }
+        },
+        (error) => {
+          console.error('Error saving data:', error);
+          reject(error);  // Reject the promise on error
+        }
+      );
+    });
+  }
+  
+
   routes(routePath: string): void {
     this.commonService.setActiveTab(routePath);
     this.router.navigate([`/${routePath}`], { queryParams: { source: `/goals/${this.currentGoalNo}`} });
   }  
-  ReadArticle(){
+  async ReadArticle(){
     if (this.selectedArticle) {
+      await this.saveGoals(this.selectedArticle);
       window.open(this.selectedArticle.url, '_blank');
     }
+  }
+  async callGoalAchieved(data: any): Promise<any> {
+    const postData: postDataInterface = {
+      Mode: 1, // Mode depending on your logic
+      CrudType: 1, // Example value
+      FetchData: [{
+        mode: 1,
+        telegramId: this.userInfo.telegramId,
+        goalid: data.id,
+        goaltype: data.typename,
+        goaltypeid: data.type,
+        time: new Date().toLocaleDateString('en-GB') + ' ' + new Date().toLocaleTimeString('en-US', { 
+          hour12: false 
+        }),
+      }],
+    };
+  
+    // Convert the Observable to a Promise and return the result
+    return firstValueFrom(this.postDataService.sendData('Goals', postData));
   }
 }

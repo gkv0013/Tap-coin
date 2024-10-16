@@ -46,4 +46,12 @@ export class CommonService {
   setIsWelcome(value: boolean) {
     this.isWelcomeSubject.next(value);
   }
+  getTimeZoneOffset(): string {
+    const date = new Date();
+    const offset = -date.getTimezoneOffset(); // getTimezoneOffset returns the offset in minutes with the opposite sign
+    const sign = offset >= 0 ? '+' : '-';
+    const hours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, '0');
+    const minutes = String(Math.abs(offset) % 60).padStart(2, '0');
+    return `${sign}${hours}:${minutes}`;
+  }
 }

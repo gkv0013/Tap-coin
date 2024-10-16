@@ -118,7 +118,13 @@
                     <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
                     <span class="cost-text">+{{selectedYoutubeVideo.coins}}</span>
                 </div>
-                <button class="boost-button-modal mt-3" (click)="watchVideo()">Watch</button>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="boost-button-modal me-2" (click)="watchVideo()">Watch</button>
+                    <button class="boost-button-modal"  [ngClass]="{ 'disabled-class': goalStatus !== null }" [disabled]="goalStatus !== null" (click)="claimReward()">Claim</button>
+                </div>
+                <div *ngIf="goalStatus?.status" class="mt-2 text-center">
+                    <span class="goal-status">{{ goalStatus?.status }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -146,7 +152,13 @@
                     <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
                     <span class="cost-text">+{{selectedArticle.coins}}</span>
                 </div>
-                <button class="boost-button-modal mt-3" (click)="ReadArticle()">Read</button>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="boost-button-modal me-2" (click)="ReadArticle()">Read</button>
+                    <button class="boost-button-modal"  [ngClass]="{ 'disabled-class': goalStatus !== null }" [disabled]="goalStatus !== null" (click)="claimReward()">Claim</button>
+                </div>
+                <div *ngIf="goalStatus?.status" class="mt-2 text-center">
+                    <span class="goal-status">{{ goalStatus?.status }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -174,7 +186,13 @@
                     <img src="/image/Nila.jpeg" alt="Profile Image" width="30" height="30">
                     <span class="cost-text">+{{selectedSponsors.coins}}</span>
                 </div>
-                <button class="boost-button-modal mt-3" (click)="sponsorsMore()">Visit website</button>
+                <div class="d-flex justify-content-center mt-3">
+                    <button class="boost-button-modal me-2" (click)="sponsorsMore()">Visit website</button>
+                    <button class="boost-button-modal"    [ngClass]="{ 'disabled-class': goalStatus !== null }" [disabled]="goalStatus !== null" (click)="claimReward()">Claim</button>
+                </div>
+                <div *ngIf="goalStatus?.status" class="mt-2 text-center">
+                    <span class="goal-status">{{ goalStatus?.status }}</span>
+                </div>
             </div>
         </div>
     </div>

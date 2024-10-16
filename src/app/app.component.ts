@@ -129,6 +129,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.collectService.getButtonPressCount().subscribe(count => this.buttonPressCount = count))
     this.subscriptions.push(this.commonService.isWelcome$.subscribe((value: boolean) => {
       this.isWelcome = value;
+      if(!this.isWelcome){
+        this.commonService.setActiveTab('green');
+        this.router.navigate(['/green'])
+      }
     }));
   }
   ngAfterViewInit() {
